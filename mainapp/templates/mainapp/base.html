@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Ask.me</title>
+  </head>
+  <body>
+
+    <div class="header-wrapper">
+      {%  include 'mainapp/header.html' %}
+    </div>
+
+    <div class="main-content-wrapper">
+      {% block main-content%}
+      {% endblock %}
+    </div>
+
+    <div class="sidebar-wrapper">
+      {% block sidebar%}
+      {% endblock %}
+    </div>
+
+  </body>
+</html>
