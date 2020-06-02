@@ -1,36 +1,39 @@
 import React,{Component} from 'react'
-
+import './styles.css'
+import Switch from './Switch'
 
 export default class QuestionForm extends Component {
   constructor(props){
     super(props)
 
-    this.state = {textValue:'', checkboxValue : true}
+    this.state = {textValue:'', toggleValue : true}
 
     this.handleTextChange = this.handleTextChange.bind(this)
-    this.handleCheckBox = this.handleCheckBox.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+
   handleTextChange(event){
     //do smth
+
      this.setState({textValue: event.target.value});
-     console.log("Text changed: ", event.target.value)
+     //console.log("Text changed af: ", event.target.value)
   }
+
 
   handleSubmit(event){
     //do smth
     console.log("submit")
   }
 
-  handleCheckBox(){
-    //do smth {checkboxValue: !this.state.checkboxValue}
-    this.setState((state,props) => ({
-      checkboxValue: !state.checkboxValue
-    }))
-
-    console.log("Checkbox ", this.state.checkboxValue)
+  handleToggle(){
+  
+    this.setState((state,props) => ({toggleValue : !state.toggleValue}))
+    //console.log("toggle after, ", this.state.toggleValue)
   }
+
+
 
   render(){
     return (
@@ -41,10 +44,7 @@ export default class QuestionForm extends Component {
 
             <input className ="question-form__input" type="text" value={this.state.textValue} onChange={this.handleTextChange} />
 
-            <label className= "switch">
-              <input  type="checkbox" onClick={this.handleCheckBox} />
-              <span className="switch__slider switch__round"></span>
-            </label>
+            <Switch ison={this.state.toggleValue} handleToggle={this.handleToggle}/>
 
             <input className ="question-form__submit" type="submit"  />
 
