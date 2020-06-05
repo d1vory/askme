@@ -1,6 +1,8 @@
 import React,{Component} from 'react'
 import './styles.css'
-import Switch from './Switch'
+import SendIcon from '@material-ui/icons/Send';
+import {Box,Typography,Card,TextField,CardHeader,CardContent,
+        FormControl,Input,FormGroup,FormControlLabel,Switch,FilledInput,IconButton,Grid} from '@material-ui/core'
 
 export default class QuestionForm extends Component {
   constructor(props){
@@ -28,29 +30,49 @@ export default class QuestionForm extends Component {
   }
 
   handleToggle(){
-  
-    this.setState((state,props) => ({toggleValue : !state.toggleValue}))
-    //console.log("toggle after, ", this.state.toggleValue)
-  }
 
+    this.setState((state,props) => ({toggleValue : !state.toggleValue}))
+    console.log("toggle after, ", this.state.toggleValue)
+  }
 
 
   render(){
     return (
-      <div className ="card">
-        <div className ="card-title">Ask a question!</div>
-        <div className ="form-holder">
-          <form className ="question-form" onSubmit={this.handleSubmit}>
+      <Box>
+        <Card>
+          <CardHeader title="Ask a question!">
 
-            <input className ="question-form__input" type="text" value={this.state.textValue} onChange={this.handleTextChange} />
 
-            <Switch ison={this.state.toggleValue} handleToggle={this.handleToggle}/>
+          </CardHeader>
 
-            <input className ="question-form__submit" type="submit"  />
+          <CardContent>
+            <FormGroup>
+              <FormControl fullWidth={false} variant='filled'>
+                <FilledInput id="kek"  placeholder="What's up?" />
+              </FormControl>
 
-          </form>
-        </div>
-      </div>
+              <Grid  container direction="row" justify="space-between">
+
+                  <FormControlLabel fullWidth={false} control={<Switch checked= {this.state.toggleValue} onChange={this.handleToggle} />}
+                    label="Anonymous question"
+                  />
+
+                  <IconButton type="submit" aria-label="Send!" component="span" >
+                    <SendIcon />
+                  </IconButton>
+
+
+              </Grid>
+
+            </FormGroup>
+
+
+          </CardContent>
+
+
+        </Card>
+
+      </Box>
     )
 
   }
