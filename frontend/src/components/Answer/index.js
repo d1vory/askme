@@ -1,8 +1,24 @@
 import React,{Component} from 'react'
 import './styles.css'
-import ReactionButton from './ReactionButton'
+import PropTypes from 'prop-types';
+//import ReactionButton from './ReactionButton'
 import AskerInfo from './AskerInfo'
-export default class Feed extends Component {
+import {Card,Box,Typography,CardContent,CardActionArea,CardActions,CardHeader,
+        FormGroup,FormControl,FilledInput,IconButton,Grid} from '@material-ui/core'
+import ThumbUpRoundedIcon from '@material-ui/icons/ThumbUpRounded';
+import ThumbDownRoundedIcon from '@material-ui/icons/ThumbDownRounded';
+import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
+import SendIcon from '@material-ui/icons/Send';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+
+  inputWrapper: {
+    flex:1,
+  },
+});
+
+class Answer extends Component {
 
   constructor(props){
     super(props)
@@ -10,38 +26,59 @@ export default class Feed extends Component {
   }
 
   render(){
+    const { classes } = this.props;
     return (
-      <div className="container-fluid answer">
-        <div className="question"> <span className="question-text"> {this.props.questionText} </span></div>
+      <Box my={2}>
+        <Card variant="outlined">
+          <CardHeader title= {this.props.questionText} titleTypographyProps = {{variant:'h4'}}/>
 
-
+          <CardContent>
             <AskerInfo askerWhenAsked={this.props.askerWhenAsked}
-              askerName={this.props.askerName} userImage = {require('../../common/assets/lena.png')} />
+              askerName={this.props.askerName} userImageSrc = {require('../../common/assets/lena.png')} />
 
-						<div className="answer-holder">
-							<p className="answer-text"> {this.props.answerText}</p>
-						</div>
+            <Typography variant='body1' >
+              {this.props.answerText}
+            </Typography>
 
-						<div>
-							<div className="bottom-panel">
+          </CardContent>
 
-                  <form className="container comment-form">
-                    <div className=" comment-holder">
-                      <input className="comment-form__input form-control" placeholder="comment" type="text" />
-                      <input className="btn btn-success comment-form__submit"  type="submit" Value="Send" />
-                    </div>
+          <CardActions>
 
-                  </form>
 
-								<div className="reaction-holder">
-                  <ReactionButton name ="rb-like" img = {require('../../common/assets/like2.svg')} imgHover = {require('../../common/assets/like-hover.svg')} />
-                  <ReactionButton name = "rb-dislike" img = {require('../../common/assets/dislike.svg')} imgHover = {require('../../common/assets/dislike-hover.svg')} />
-								</div>
-							</div>
-						</div>
+                <Grid container direction="row"  >
 
-      </div>
+                  <Grid className={classes.inputWrapper}>
+                    <FormControl fullWidth variant='filled'>
+                      <FilledInput fullWidth placeholder="Write a comment!" />
+                    </FormControl>
+                  </Grid>
+
+                  <Grid >
+                      <IconButton type="submit" aria-label="Send!" component="span" >
+                        <SendIcon />
+                      </IconButton>
+
+                      <IconButton type = 'button' component="span"> <ChatRoundedIcon/> </IconButton>
+                      <IconButton type = 'button' component="span"> <ThumbUpRoundedIcon/> </IconButton>
+                      <IconButton type = 'button' component="span"> <ThumbDownRoundedIcon/>  </IconButton>
+
+                   </Grid>
+
+                </Grid>
+
+
+          </CardActions>
+
+
+        </Card>
+      </Box>
     )
 
   }
 }
+
+Answer.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Answer)
