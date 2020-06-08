@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import Header from '../Header'
 import Wall from '../Wall'
+import Button from '@material-ui/core/Button';
 
 // main component
 export default class App extends Component {
@@ -10,7 +11,7 @@ export default class App extends Component {
       <div>
         <Header />
         <Wall />
-
+      
       </div>
     )
   }
