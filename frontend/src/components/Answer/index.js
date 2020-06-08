@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import './styles.css'
+
 import PropTypes from 'prop-types';
 //import ReactionButton from './ReactionButton'
 import AskerInfo from './AskerInfo'
