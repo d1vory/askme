@@ -47,13 +47,13 @@ export default class QuestionForm extends Component {
 
           <CardContent>
             <FormGroup>
-              <FormControl fullWidth={false} variant='filled'>
+              <FormControl fullWidth variant='filled'>
                 <FilledInput id="kek"  placeholder="What's up?" />
               </FormControl>
 
               <Grid  container direction="row" justify="space-between">
 
-                  <FormControlLabel fullWidth={false} control={<Switch checked= {this.state.toggleValue} onChange={this.handleToggle} />}
+                  <FormControlLabel  control={<Switch checked= {this.state.toggleValue} onChange={this.handleToggle} />}
                     label="Anonymous question"
                   />
 

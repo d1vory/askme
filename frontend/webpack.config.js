@@ -1,14 +1,28 @@
 module.exports = {
+  entry:  [ './src/index.js'],
+  output:  {
+      path: `${__dirname}/frontend/static/frontend`,
+      filename: 'main.js'
+  },
+  resolve: {
+      extensions: [ '.js', '.jsx', '.scss']
+
+  },
   module: {
     rules: [
       {
         test: /\.js$|jsx/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          query: {
+           presets: ["@babel/preset-env", "@babel/react"],
+           plugins: ["@babel/plugin-transform-runtime"]
+         }
         }
+
       },
-      
+
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],

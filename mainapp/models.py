@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.contrib.auth.models import AnonymousUser
 # Create your modes here.
 
 
-#TODO Make a reliable friend functionality 
+#TODO Make a reliable friend functionality
 
 class MyUser(models.Model):
     """
@@ -18,7 +19,7 @@ class MyUser(models.Model):
     isAnonymousQuestionsAllowed = models.BooleanField(default=True)
     isUserAnswersVisibleInFeed = models.BooleanField(default=True)
 
-    friends  = models.ManyToManyField('self',related_name='related_friends',blank=True)
+    #friends  = models.ManyToManyField('self',related_name='related_friends',blank=True)
 
     def __str__(self):
         return self.user.username
@@ -30,8 +31,11 @@ class Question(models.Model):
 
     question_text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    asker  = models.ForeignKey('MyUser', on_delete=models.CASCADE)
+    asker  = models.ForeignKey('MyUser', on_delete=models.CASCADE, blank=True,null=True, related_name="asker")
+    askedUser = models.ForeignKey('MyUser', on_delete=models.CASCADE, related_name="askedUser", default=None)
 
+    def __str__(self):
+        return self.question_text
 
 class Answer(models.Model):
     """
@@ -42,3 +46,6 @@ class Answer(models.Model):
     likes = models.IntegerField(default = 0)
     dislikes = models.IntegerField(default =  0)
     question = models.ForeignKey('Question',on_delete= models.CASCADE)
+
+    def __str__(self):
+        return self.answer_text

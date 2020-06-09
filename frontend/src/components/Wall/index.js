@@ -8,7 +8,7 @@ export default class Wall extends Component {
 
   render(){
     return(
-      <div class="container-fluid">
+      <div >
         <div className="wall">
           <QuestionForm />
           <Feed />
