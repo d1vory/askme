@@ -1,17 +1,20 @@
 import React,{Component} from 'react'
-import Header from '../Header'
-import Wall from '../Wall'
+
+import Wall from '../../containers/Wall'
 import CustomLayout from '../../containers/CustomLayout'
-import Button from '@material-ui/core/Button';
+import BaseRouter from '../../routes'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 // main component
 export default class App extends Component {
 
   render() {
     return (
-      <CustomLayout>
-        <Wall />
-      </CustomLayout>
+      <Router>
+        <CustomLayout>
+          <BaseRouter />
+        </CustomLayout>
+      </Router>
     )
   }
 }

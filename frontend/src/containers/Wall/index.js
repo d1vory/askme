@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-import QuestionForm from '../QuestionForm'
-import Feed from '../Feed'
+import QuestionForm from '../../components/QuestionForm'
+import Feed from '../../components/Feed'
 import './styles.css'
 
 export default class Wall extends Component {
