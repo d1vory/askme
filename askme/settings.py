@@ -132,6 +132,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
         # react works on this url
        'https://localhost:3000',
+       'http://localhost:3000'
 )
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

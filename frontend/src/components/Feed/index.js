@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import Answer from '../Answer'
 import answerExample from './answerExample.js'
 import {Box} from '@material-ui/core'
+import axios from 'axios'
 
 
 
@@ -24,7 +25,12 @@ export default class Feed extends Component {
   }
 
   componentDidMount(){
-    this.loadAnswers();
+    axios.get('http://127.0.0.1:8000/api/v0/answers/').then(res => {
+      this.setState({
+        answers: res.data
+      });
+      console.log(res.data)
+    })
   }
 
   render(){
