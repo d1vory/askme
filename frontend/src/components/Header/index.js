@@ -72,21 +72,23 @@ class Header extends Component {
                 this.props.isAuthenticated ?
 
                 <Box m = {2}>
-                <Link href="">
                   <Typography color="textPrimary">
                     Log out
                     </Typography>
-                 </Link>
+
                 </Box>
 
                 :
-                
+
                 <Box m = {2}>
-                <Link href="">
+
                   <Typography color="textPrimary">
-                    Log in
+                    <RouterLink to= '/signin'>
+                        Log in
+                    </RouterLink>
+
                     </Typography>
-                 </Link>
+
                 </Box>
               }
 
