@@ -6,6 +6,7 @@ import {AppBar,Toolbar, Typography, Button, IconButton,Link,Box} from '@material
 import './styles.css'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import {Link as RouterLink} from 'react-router-dom'
 
 const styles = theme => ({
   linkStyle:{
@@ -32,19 +33,23 @@ class Header extends Component {
 
           </div>
               <Box m = {2}>
-                <Link href="#" >
                   <Typography color="textPrimary">
-                    Home
+                    <RouterLink to="/wall">
+                        Home
+                    </RouterLink>
+
                   </Typography>
-                </Link>
+
               </Box>
 
               <Box m = {2}>
-              <Link href="">
+
                 <Typography color="textPrimary">
-                 Questions
+                  <RouterLink to="/questions">
+                      Questions
+                  </RouterLink>
                  </Typography>
-              </Link>
+
               </Box>
 
               <Box m = {2}>
@@ -63,13 +68,28 @@ class Header extends Component {
               </Link>
               </Box>
 
-              <Box m = {2}>
-              <Link href="">
-                <Typography color="textPrimary">
-                  Log in
-                  </Typography>
-               </Link>
-               </Box>
+              {
+                this.props.isAuthenticated ?
+
+                <Box m = {2}>
+                <Link href="">
+                  <Typography color="textPrimary">
+                    Log out
+                    </Typography>
+                 </Link>
+                </Box>
+
+                :
+                
+                <Box m = {2}>
+                <Link href="">
+                  <Typography color="textPrimary">
+                    Log in
+                    </Typography>
+                 </Link>
+                </Box>
+              }
+
 
 
 

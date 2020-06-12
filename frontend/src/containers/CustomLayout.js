@@ -5,7 +5,7 @@ import {Box} from '@material-ui/core'
 function CustomLayout(props){
   return(
     <Box>
-      <Header> </Header>
+      <Header isAuthenticated = {props.isAuthenticated}> </Header>
       <Box mx={10}  mt={2}>
         {props.children}
       </Box>

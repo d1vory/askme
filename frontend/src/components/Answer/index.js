@@ -45,7 +45,7 @@ class Answer extends Component {
           <CardActions>
 
 
-                <Grid container direction="row"  >
+                <Grid container direction="row" alignItems="center" >
 
                   <Grid className={classes.inputWrapper}>
                     <FormControl fullWidth variant='filled'>
@@ -53,18 +53,30 @@ class Answer extends Component {
                     </FormControl>
                   </Grid>
 
-                  <Grid >
+
                       <IconButton type="submit" aria-label="Send!" component="span" >
                         <SendIcon />
                       </IconButton>
 
-                      <IconButton type = 'button' component="span"> <ChatRoundedIcon/> </IconButton>
-                      <IconButton type = 'button' component="span"> <ThumbUpRoundedIcon/> </IconButton>
-                      <IconButton type = 'button' component="span"> <ThumbDownRoundedIcon/>  </IconButton>
+
+                        <IconButton type = 'button' component="span"> <ChatRoundedIcon/> </IconButton>
+                        <Typography> </Typography>
+
+
+
+                        <IconButton type = 'button' component="span"> <ThumbUpRoundedIcon/> </IconButton>
+                        <Typography>{this.props.likesAmount} </Typography>
+
+
+
+                        <IconButton type = 'button' component="span"> <ThumbDownRoundedIcon/>  </IconButton>
+                        <Typography>{this.props.dislikesAmount} </Typography>
+
+
 
                    </Grid>
 
-                </Grid>
+
 
 
           </CardActions>
