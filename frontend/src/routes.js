@@ -2,8 +2,8 @@ import React from 'react'
 import {Route} from 'react-router-dom'
 import Wall from './containers/Wall'
 import QuestionList from './containers/QuestionList'
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
+import SignIn from './containers/SignIn'
+import SignUp from './containers/SignUp'
 
 const BaseRouter = () => (
   <div>
