@@ -7,6 +7,8 @@ import './styles.css'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link as RouterLink} from 'react-router-dom'
+import {connect} from 'react-redux'
+import * as actions from '../../store/actions/auth'
 
 const styles = theme => ({
   linkStyle:{
@@ -72,9 +74,9 @@ class Header extends Component {
                 this.props.isAuthenticated ?
 
                 <Box m = {2}>
-                  <Typography color="textPrimary">
+                  <Button color="inherit" onClick={this.props.logout}>
                     Log out
-                    </Typography>
+                  </Button>
 
                 </Box>
 
@@ -106,4 +108,13 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Header)
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => {
+      dispatch(actions.logout())
+    }
+  }
+}
+
+
+export default connect(null,mapDispatchToProps)(withStyles(styles)(Header))

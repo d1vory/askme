@@ -1,19 +1,35 @@
+import React from 'react';
 import Header from '../components/Header'
-import React from 'react'
+import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 import {Box} from '@material-ui/core'
+import * as actions from '../store/actions/auth'
 
-function CustomLayout(props){
-  return(
-    <Box>
-      
-      <Header isAuthenticated = {props.isAuthenticated}> </Header>
-      <Box mx={10}  mt={2}>
-        {props.children}
+class CustomLayout extends React.Component{
+  render(){
+    return(
+      <Box>
+
+        <Header isAuthenticated = {this.props.isAuthenticated}  logoutFunc = {this.props.logout}> </Header>
+        <Box mx={10}  mt={2}>
+          {this.props.children}
+        </Box>
+
       </Box>
+    )
+  }
 
-    </Box>
-  )
 }
 
 
-export default CustomLayout;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => {
+      dispatch.actions.logout()
+    }
+  }
+}
+
+
+export default withRouter(connect(null,mapDispatchToProps)(CustomLayout))

@@ -40,8 +40,17 @@ INSTALLED_APPS = [
     'mainapp',
     'rest_framework',
     'corsheaders',
-    'frontend'
+    'frontend',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth.registration',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,3 +147,7 @@ CORS_ORIGIN_WHITELIST = (
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+ACCOUNT_EMAIL_VERIFICATION ='none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED= False
