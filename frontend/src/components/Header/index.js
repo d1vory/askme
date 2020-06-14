@@ -60,52 +60,51 @@ class Header extends Component {
 
           </div>
 
-                  <Typography >
+
                     <RouterLink className={classes.linkStyle} to="/wall">
                       <Box className={classes.linkWrapper} p = {1} m={1}>
                         Home
                         </Box>
                     </RouterLink>
 
-                  </Typography>
 
 
-                  <Typography >
+
+
                     <RouterLink className={classes.linkStyle}  to="/questions">
                       <Box className={classes.linkWrapper} p = {1} m={1}>
                         Questions
                         </Box>
                     </RouterLink>
 
-                  </Typography>
 
-                  <Typography >
+
                     <RouterLink className={classes.linkStyle} to="/wall">
                       <Box className={classes.linkWrapper} p = {1} m={1}>
                         Friends
                         </Box>
                     </RouterLink>
 
-                  </Typography>
 
-                  <Typography >
+
+
                     <RouterLink className={classes.linkStyle} to="/wall">
                       <Box className={classes.linkWrapper} p = {1} m={1}>
                         Account
                         </Box>
                     </RouterLink>
 
-                  </Typography>
 
 
-                  <Typography >
+
+
                     <RouterLink className={classes.linkStyle} to="/wall">
                       <Box className={classes.linkWrapper} p = {1} m={1}>
                         Settings
                         </Box>
                     </RouterLink>
 
-                  </Typography>
+                
 
 
               {
