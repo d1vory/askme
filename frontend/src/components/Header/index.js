@@ -64,9 +64,9 @@ class Header extends Component {
 
               <Box m = {2}>
               <Link href="">
-                <Typography color="textPrimary">
-                 Settings
-                 </Typography>
+                  <RouterLink to="/settings">
+                  Settings
+                  </RouterLink>
               </Link>
               </Box>
 
