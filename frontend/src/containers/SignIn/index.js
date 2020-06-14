@@ -7,6 +7,7 @@ import {Link as RouterLink} from 'react-router-dom'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import {connect} from 'react-redux'
 import * as actions from '../../store/actions/auth'
+import './styles.css'
 
 function Copyright() {
   return (
@@ -19,6 +20,16 @@ function Copyright() {
       {'.'}
     </Typography>
   );
+}
+
+function Loading(){
+  return(
+
+    <div className='loading-container' >
+      <CircularProgress />
+    </div>
+
+  )
 }
 
 const useStyles = (theme) => ({
@@ -52,16 +63,9 @@ class SignIn extends React.Component {
     this.state = {
       username: '',
       password: '',
-      isRemember:false
+      isRemember:false,
+      errorMessage:''
     }
-
-    this.errorMessage = null
-    if (props.error){
-      this.errorMessage = (
-        <Typography>{props.error.message} </Typography>
-      )
-    }
-
 
   }
 
@@ -83,23 +87,26 @@ class SignIn extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
+    console.log('error before auth', this.props.error);
     this.props.onAuth(this.state.username, this.state.password)
-    this.props.history.push('/wall')
+    console.log('error after auth', this.props.error);
+
   }
 
   render() {
     const { username,password,isRemember } = this.state;
     const { classes } = this.props;
+    const errorMessage = this.state.errorMessage && ( <Typography component="p" color='error' variant="body1">
+      {this.state.errorMessage}
+    </Typography>)
+
     return (
-      <div>
-        {this.errorMessage}
+      <div style = {this.props.loading ? {'backdropFilter': 'blur(6px)'} : {}}>
         {
-          this.props.loading ?
+          this.props.loading && (  <Loading />)
 
-          <CircularProgress />
-
-          :
-
+        }
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -153,6 +160,8 @@ class SignIn extends React.Component {
               label="Remember me"
             />
 
+            {errorMessage}
+
             <Button
 
               type="submit"
@@ -186,7 +195,6 @@ class SignIn extends React.Component {
           <Copyright />
         </Box>
       </Container>
-      }
       </div>
     );
 

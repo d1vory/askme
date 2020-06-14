@@ -12,7 +12,18 @@ import * as actions from '../../store/actions/auth'
 
 const styles = theme => ({
   linkStyle:{
-    color:'green',
+    color:'#e8e9eb',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'none',
+      color:'#e8e9eb'
+    }
+  },
+  linkWrapper:{
+    '&:hover':{
+      backgroundColor:'#293783',
+      borderRadius:'20%'
+    }
   }
 
 });
@@ -24,8 +35,22 @@ class Header extends Component {
 
   }
 
+  handleSignOutClick = () => {
+    this.props.logout()
+    this.props.history.push('/signin')
+  }
+
   render(){
-    //const { classes } = this.props;
+    const { classes } = this.props;
+
+    const logoutButton = this.props.isAuthenticated && (
+      <Box m = {2}>
+      <Button color="inherit" onClick={this.props.logout}>
+        Log out
+      </Button>
+
+    </Box>)
+
     return(
 
       <AppBar position ="sticky" >
@@ -34,65 +59,59 @@ class Header extends Component {
             <img className="logo-img" src={require("../../common/assets/logo-dumb.png")}/>
 
           </div>
-              <Box m = {2}>
-                  <Typography color="textPrimary">
-                    <RouterLink to="/wall">
+
+                  <Typography >
+                    <RouterLink className={classes.linkStyle} to="/wall">
+                      <Box className={classes.linkWrapper} p = {1} m={1}>
                         Home
+                        </Box>
                     </RouterLink>
 
                   </Typography>
 
-              </Box>
 
-              <Box m = {2}>
-
-                <Typography color="textPrimary">
-                  <RouterLink to="/questions">
-                      Questions
-                  </RouterLink>
-                 </Typography>
-
-              </Box>
-
-              <Box m = {2}>
-              <Link href="">
-                <Typography color="textPrimary">
-                Friends
-                </Typography>
-              </Link>
-              </Box>
-
-              <Box m = {2}>
-              <Link href="">
-                <Typography color="textPrimary">
-                 Settings
-                 </Typography>
-              </Link>
-              </Box>
-
-              {
-                this.props.isAuthenticated ?
-
-                <Box m = {2}>
-                  <Button color="inherit" onClick={this.props.logout}>
-                    Log out
-                  </Button>
-
-                </Box>
-
-                :
-
-                <Box m = {2}>
-
-                  <Typography color="textPrimary">
-                    <RouterLink to= '/signin'>
-                        Log in
+                  <Typography >
+                    <RouterLink className={classes.linkStyle}  to="/questions">
+                      <Box className={classes.linkWrapper} p = {1} m={1}>
+                        Questions
+                        </Box>
                     </RouterLink>
 
-                    </Typography>
+                  </Typography>
 
-                </Box>
+                  <Typography >
+                    <RouterLink className={classes.linkStyle} to="/wall">
+                      <Box className={classes.linkWrapper} p = {1} m={1}>
+                        Friends
+                        </Box>
+                    </RouterLink>
+
+                  </Typography>
+
+                  <Typography >
+                    <RouterLink className={classes.linkStyle} to="/wall">
+                      <Box className={classes.linkWrapper} p = {1} m={1}>
+                        Account
+                        </Box>
+                    </RouterLink>
+
+                  </Typography>
+
+
+                  <Typography >
+                    <RouterLink className={classes.linkStyle} to="/wall">
+                      <Box className={classes.linkWrapper} p = {1} m={1}>
+                        Settings
+                        </Box>
+                    </RouterLink>
+
+                  </Typography>
+
+
+              {
+                logoutButton
               }
+
 
 
 
@@ -112,6 +131,7 @@ const mapDispatchToProps = dispatch => {
   return {
     logout: () => {
       dispatch(actions.logout())
+
     }
   }
 }
