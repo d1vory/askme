@@ -1,19 +1,26 @@
 import React from 'react'
-import {Route} from 'react-router-dom'
+import {Route,Redirect,Switch} from 'react-router-dom'
 import Wall from './containers/Wall'
 import QuestionList from './containers/QuestionList'
 import SignIn from './containers/SignIn'
 import SignUp from './containers/SignUp'
 import Settings from "./containers/Settings";
+import { connect } from 'react-redux'
+import SaveRouter from './SaveRouter'
 
-const BaseRouter = () => (
-  <div>
-    <Route exact path = '/wall' component={Wall} />
-    <Route exact path = '/questions' component={QuestionList} />
-    <Route exact path='/signin' component={SignIn}/>
-    <Route exact path= '/signup' component={SignUp}/>
-      <Route exact path= '/settings' component={Settings}/>
-  </div>
+
+
+
+export  const BaseRouter = () => (
+  <Switch>
+
+    <SaveRouter path='/signin' component={SignIn}/>
+    <SaveRouter exact path= '/signup' component={SignUp}/>
+    <SaveRouter path = '/wall' component={Wall}/>
+    <SaveRouter path = '/questions' component={QuestionList}/>
+    <SaveRouter path = '/settings' component={Settings}/>
+
+  </Switch>
 );
 
-export default BaseRouter
+export default {BaseRouter}

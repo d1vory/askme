@@ -2,7 +2,8 @@ import React,{Component} from 'react'
 
 import Wall from '../../containers/Wall'
 import CustomLayout from '../../containers/CustomLayout'
-import BaseRouter from '../../routes'
+import {BaseRouter} from '../../routes'
+import {withRouter,Switch,Redirect,useHistory,useLocation,Route} from 'react-router-dom'
 import {BrowserRouter as Router} from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -20,6 +21,7 @@ class App extends Component {
       <Router>
         <CustomLayout {...this.props}>
           <BaseRouter />
+
         </CustomLayout>
       </Router>
     )
@@ -37,5 +39,6 @@ const mapDispatchToProps = dispatch => {
     onTryAutoSignup: () => dispatch(actions.authCheckState())
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
