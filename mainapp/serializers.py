@@ -1,6 +1,31 @@
 from rest_framework import serializers
 from .models import MyUser,Question, Answer
 from django.contrib.auth.models import User
+from rest_auth.serializers import UserDetailsSerializer
+
+
+
+class UserSerializer(UserDetailsSerializer):
+
+    gender = serializers.CharField(source="myuser.gender")
+
+    class Meta(UserDetailsSerializer.Meta):
+        fields = UserDetailsSerializer.Meta.fields + ('gender',)
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('myuser', {})
+        gender = profile_data.get('gender')
+
+        instance = super(UserSerializer, self).update(instance, validated_data)
+
+        # get and update user profile
+        profile = instance.userprofile
+        if profile_data and gender:
+            profile.gender = gender
+            profile.save()
+        return instance
+
+
 
 class DefaultUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,8 +39,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class QuestionSerializer(serializers.ModelSerializer):
-    askedUser = MyUserSerializer(many=False, read_only=True)
-    asker = MyUserSerializer(many=False, read_only=True)
+
     class Meta:
         model = Question
         fields = '__all__'

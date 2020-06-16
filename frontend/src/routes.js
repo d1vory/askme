@@ -6,21 +6,43 @@ import SignIn from './containers/SignIn'
 import SignUp from './containers/SignUp'
 import Settings from "./containers/Settings";
 import { connect } from 'react-redux'
-import SaveRouter from './SaveRouter'
 
 
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const authenticated = localStorage.getItem("token") !== null;
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        authenticated === true ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/signin",
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  );
+};
+
+const Hoc = props => props.children;
 
 
 export  const BaseRouter = () => (
-  <Switch>
+  <Hoc>
+    <Route path="/signin" component={SignIn} />
+    <Route path="/signup" component={SignUp} />
 
-    <SaveRouter path='/signin' component={SignIn}/>
-    <SaveRouter exact path= '/signup' component={SignUp}/>
-    <SaveRouter path = '/wall' component={Wall}/>
-    <SaveRouter path = '/questions' component={QuestionList}/>
-    <SaveRouter path = '/settings' component={Settings}/>
+    <PrivateRoute path = '/wall' component={Wall}/>
+    <PrivateRoute path = '/questions' component={QuestionList}/>
+    <PrivateRoute path = '/settings' component={Settings}/>
 
-  </Switch>
+  </Hoc>
 );
 
-export default {BaseRouter}
+export default BaseRouter

@@ -31,8 +31,8 @@ class Question(models.Model):
 
     question_text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    asker  = models.ForeignKey('MyUser', on_delete=models.CASCADE, blank=True,null=True, related_name="asker")
-    askedUser = models.ForeignKey('MyUser', on_delete=models.CASCADE, related_name="askedUser", default=None)
+    asker  = models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True, related_name="asker")
+    askedUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="askedUser", default=None)
 
     def __str__(self):
         return self.question_text

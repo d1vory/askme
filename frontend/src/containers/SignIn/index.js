@@ -87,11 +87,12 @@ class SignIn extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
-    console.log('error before auth', this.props.error);
+
     this.props.onAuth(this.state.username, this.state.password)
-    console.log('error after auth', this.props.error);
+
     this.props.history.push('/wall')
+    // it redirects before auth is done
+    // fix it
   }
 
   render() {
