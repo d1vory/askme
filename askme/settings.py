@@ -52,15 +52,22 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+# CSRF_COOKIE_SECURE = False
+# CSRF_COOKIE_HTTPONLY = False
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'mainapp.serializers.UserSerializer'
 }
 
-REST_FRAMEWORK ={
-    'DEFAULT_AUTHENTICATION_CLASSES' : {
-        #'rest_framework.authentication.TokenAuthentication'
-    }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }
+#CSRF_COOKIE_NAME = "csrftoken"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -151,7 +158,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
         # react works on this url
        'https://localhost:3000',
-       'http://localhost:3000'
+       'http://localhost:3000',
+       'http://127.0.0.1:8000'
 )
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -4,5 +4,5 @@ from .views import *
 
 router = DefaultRouter()
 router.register('answers', AnswerViewSet)
-router.register('questions', QuestionListViewSet)
+router.register('questions', QuestionListViewSet, basename='questions')
 urlpatterns = router.urls

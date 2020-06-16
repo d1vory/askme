@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Question from '../../components/Question'
 import axios from 'axios'
+import {connect} from 'react-redux'
 
 const styles = theme => ({
 
@@ -21,12 +22,37 @@ class QuestionList extends React.Component{
     };
   }
 
-  componentDidMount(){
-    axios.get('http://127.0.0.1:8000/api/v0/questions/').then(res => {
+  fetchQuestions= (token) => {
+    const url = 'http://127.0.0.1:8000/api/v0/questions/'
+    axios.get(url,{
+        headers: {
+          'Authorization' : `Token ${token}`
+        },
+        params:{
+          token:token
+        }
+    }).then(res => {
       this.setState({
         questions: res.data
       });
     })
+
+  }
+
+  componentWillReceiveProps(newProps){
+    if (newProps.token){
+      this.fetchQuestions(newProps.token)
+    }
+
+  }
+
+  componentDidMount(){
+
+    if (this.props.token !== null){
+      this.fetchQuestions(this.props.token)
+    }
+
+
   }
 
   render(){
@@ -55,4 +81,12 @@ QuestionList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(QuestionList)
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+const styledList = withStyles(styles)(QuestionList)
+
+export default connect(mapStateToProps)(styledList)
