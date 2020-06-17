@@ -15,7 +15,11 @@ class QuestionListViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
 
     def get_queryset(self):
-        tokenVal = self.request.query_params.get('token')
+
+        #get token string from corsheaders
+        tokenStr = self.request.headers['Authorization']
+        tokenVal = tokenStr.split()[1]
+
         user = User.objects.get(auth_token=tokenVal)
         queryset = Question.objects.filter(askedUser__id = user.id)
         return queryset

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Question from '../../components/Question'
 import axios from 'axios'
 import {connect} from 'react-redux'
+import AnswerForm from '../../components/AnswerForm'
 
 const styles = theme => ({
 
@@ -18,7 +19,8 @@ class QuestionList extends React.Component{
     super(props)
 
     this.state = {
-      questions : []
+      questions : [],
+      error: ''
     };
   }
 
@@ -27,14 +29,15 @@ class QuestionList extends React.Component{
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`
-        },
-        params:{
-          token:token
         }
     }).then(res => {
       this.setState({
         questions: res.data
       });
+    }).catch(err => {
+      this.setState({
+        error: err
+      })
     })
 
   }
