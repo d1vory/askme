@@ -45,7 +45,24 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AnswerSerializer(serializers.ModelSerializer):
-    question = QuestionSerializer(many=False, read_only =True)
+    #question = QuestionSerializer(many=False, read_only =True)
+    question_text = serializers.CharField(source='question.question_text')
+    question_id = serializers.CharField(source='question.id')
     class Meta:
         model = Answer
-        fields = '__all__'
+        fields = ('id','answer_text','likes','dislikes','question_text','question_id')
+
+
+
+
+class AnswerCreateSerializer(serializers.ModelSerializer):
+    question_id = serializers.CharField()
+    class Meta:
+        model = Answer
+        fields = ('answer_text','question_id')
+
+    def create(self,validated_data):
+        print(validated_data)
+        text = validated_data.pop('answer_text')
+        question_id = validated_data.pop('question_id')
+        return Answer.objects.create(answer_text= text,question_id= question_id )

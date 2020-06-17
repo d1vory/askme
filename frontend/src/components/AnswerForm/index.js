@@ -2,6 +2,8 @@ import React from 'react'
 import {Card,Grid,Box,CardHeader,CardActions,TextField, IconButton,CardContent,Container,Typography,Button} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 import CancelIcon from '@material-ui/icons/Cancel';
+import axios from 'axios'
+import {connect} from 'react-redux'
 
 class AnswerForm extends React.Component {
 
@@ -14,6 +16,26 @@ class AnswerForm extends React.Component {
       answerValue:event.target.value
     })
   }
+
+  handleSendButton = (event) => {
+    const postData = {
+      question_id: this.props.question_id,
+      answer_text: this.state.answerValue
+
+
+    }
+
+    const config = {
+      headers: {
+        'Authorization' : `Token ${this.props.token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+    axios.post('http://127.0.0.1:8000/api/answers/',postData,config)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
   render(){
     const closeButton =(
      <IconButton onClick={this.props.closeElement} >
@@ -31,7 +53,7 @@ class AnswerForm extends React.Component {
               <Box mt={1} bm={2}>
                 <Grid  container direction="row" justify="flex-end"  alignItems="center">
 
-                  <Button variant="contained" color='secondary' endIcon={<SendIcon />} >
+                  <Button variant="contained" color='secondary' onClick={this.handleSendButton} endIcon={<SendIcon />} >
                     Send
                   </Button>
                 </Grid>
@@ -46,5 +68,11 @@ class AnswerForm extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
 
-export default AnswerForm
+
+export default connect(mapStateToProps)(AnswerForm)

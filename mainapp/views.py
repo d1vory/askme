@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from .serializers import *
 from .models import MyUser,Question, Answer
 from django.contrib.auth.models import User
+from rest_framework import generics
 # Create your views here.
 
 
@@ -11,11 +12,18 @@ class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
 
-class QuestionListViewSet(viewsets.ModelViewSet):
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return AnswerSerializer
+        elif self.action == 'create':
+            return AnswerCreateSerializer
+
+
+
+class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
 
     def get_queryset(self):
-
         #get token string from corsheaders
         tokenStr = self.request.headers['Authorization']
         tokenVal = tokenStr.split()[1]

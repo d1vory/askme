@@ -4,5 +4,11 @@ from .views import *
 
 router = DefaultRouter()
 router.register('answers', AnswerViewSet)
-router.register('questions', QuestionListViewSet, basename='questions')
-urlpatterns = router.urls
+router.register('questions', QuestionViewSet, basename='questions')
+
+# urlpatterns = [
+#     path('questions/',QuestionList.as_view(), name= 'questions'),
+#     path('answer/create',QuestionList.as_view(), name= 'questions'),
+# ]
+
+urlpatterns =  router.urls

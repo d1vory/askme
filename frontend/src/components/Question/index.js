@@ -40,8 +40,8 @@ class Question extends React.Component{
               <Typography color='textSecondary' variant ='subtitle2'>yesterday </Typography>
 
               <Popup lockScroll modal closeOnEscape closeOnDocumentClick trigger = {  <Button color="primary" variant="contained"  endIcon={<ChevronRightIcon />}>Answer</Button>}>
-                {close => (<AnswerForm closeElement = {close} question_text= {question_text}/>)
-                  
+                {close => (<AnswerForm closeElement = {close} question_id={this.props.question.id} question_text= {question_text}/>)
+
                 }
 
               </Popup>
