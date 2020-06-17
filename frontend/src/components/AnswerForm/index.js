@@ -16,7 +16,7 @@ class AnswerForm extends React.Component {
   }
   render(){
     const closeButton =(
-     <IconButton  >
+     <IconButton onClick={this.props.closeElement} >
       <CancelIcon />
     </IconButton>)
     return (

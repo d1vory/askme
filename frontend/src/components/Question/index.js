@@ -38,7 +38,14 @@ class Question extends React.Component{
           <CardContent>
             <Grid container direction="row" justify="space-between">
               <Typography color='textSecondary' variant ='subtitle2'>yesterday </Typography>
-              <Button color="primary" variant="contained" onClick={this.handleAnswerButon} endIcon={<ChevronRightIcon />}>Answer</Button>
+
+              <Popup lockScroll modal closeOnEscape closeOnDocumentClick trigger = {  <Button color="primary" variant="contained"  endIcon={<ChevronRightIcon />}>Answer</Button>}>
+                {close => (<AnswerForm closeElement = {close} question_text= {question_text}/>)
+                  
+                }
+
+              </Popup>
+
             </Grid>
           </CardContent>
         </Card>
