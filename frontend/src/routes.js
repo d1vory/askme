@@ -5,6 +5,7 @@ import QuestionList from './containers/QuestionList'
 import SignIn from './containers/SignIn'
 import SignUp from './containers/SignUp'
 import Settings from "./containers/Settings";
+import Friends from './containers/Friends'
 import { connect } from 'react-redux'
 
 
@@ -30,6 +31,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
+
 const Hoc = props => props.children;
 
 
@@ -41,6 +43,7 @@ export  const BaseRouter = () => (
     <PrivateRoute path = '/wall' component={Wall}/>
     <PrivateRoute path = '/questions' component={QuestionList}/>
     <PrivateRoute path = '/settings' component={Settings}/>
+    <Route exact path= '/friends' component={Friends}/>
 
   </Hoc>
 );
