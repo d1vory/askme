@@ -3,12 +3,12 @@ from rest_framework.routers import DefaultRouter
 from .views import *
 
 router = DefaultRouter()
-router.register('answers', AnswerViewSet)
-router.register('questions', QuestionViewSet, basename='questions')
+router.register(r'answers', AnswerViewSet)
+router.register(r'questions', QuestionViewSet, basename='questions')
 
-# urlpatterns = [
-#     path('questions/',QuestionList.as_view(), name= 'questions'),
-#     path('answer/create',QuestionList.as_view(), name= 'questions'),
-# ]
+urlpatterns = [
+    #path('questions/',QuestionList.as_view(), name= 'questions'),
+    path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
+]
 
-urlpatterns =  router.urls
+urlpatterns +=  router.urls

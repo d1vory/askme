@@ -62,7 +62,7 @@ class AnswerCreateSerializer(serializers.ModelSerializer):
         fields = ('answer_text','question_id')
 
     def create(self,validated_data):
-        print(validated_data)
+        #print(validated_data)
         text = validated_data.pop('answer_text')
         question_id = validated_data.pop('question_id')
         return Answer.objects.create(answer_text= text,question_id= question_id )

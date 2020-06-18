@@ -5,6 +5,7 @@ from .serializers import *
 from .models import MyUser,Question, Answer
 from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework import permissions
 # Create your views here.
 
 
@@ -19,6 +20,10 @@ class AnswerViewSet(viewsets.ModelViewSet):
             return AnswerCreateSerializer
 
 
+class QestionDeleteView(generics.DestroyAPIView):
+    serializer_class = QuestionSerializer
+    queryset = Question.objects.all()
+    #permission_classes = (permissions.IsAuthenticated, )
 
 class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
@@ -30,4 +35,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         user = User.objects.get(auth_token=tokenVal)
         queryset = Question.objects.filter(askedUser__id = user.id)
+        # allQuestions = Question.objects.filter(askedUser__id = user.id)
+        # unAnsweredQuestions = filter((lambda question: question.entry_set.count() == 0  ), allQuestions)
         return queryset
+
+        #For evety qurstion:
+        #   find count of related AnswerSerializer
+        #   if count == 0 then include question

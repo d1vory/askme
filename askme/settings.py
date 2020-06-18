@@ -25,7 +25,7 @@ SECRET_KEY = 'u19^ro7urq*1+)^m01nibds(u@863l589^5mix@m&u-%a*9kc_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost:3000']
 
 
 # Application definition
@@ -54,6 +54,8 @@ SITE_ID = 1
 
 # CSRF_COOKIE_SECURE = False
 # CSRF_COOKIE_HTTPONLY = False
+
+
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'mainapp.serializers.UserSerializer'
 }
@@ -67,7 +69,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
-#CSRF_COOKIE_NAME = "csrftoken"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -149,10 +151,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+#ALLOWED_HOSTS =  ['http://localhost:3000' ]
 
 # is cors accessible to all domens
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 # allowed url
 CORS_ORIGIN_WHITELIST = (
@@ -161,8 +163,32 @@ CORS_ORIGIN_WHITELIST = (
        'http://localhost:3000',
        'http://127.0.0.1:8000'
 )
+
+CORS_ALLOW_METHODS = (
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'OPTIONS'
+    )
+
+# CORS_ALLOW_HEADERS = (
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# )
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+#CSRF_COOKIE_NAME = "csrftoken"
 
 STATIC_URL = '/static/'
 

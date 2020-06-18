@@ -7,9 +7,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Popup from "reactjs-popup";
 import AnswerForm from '../AnswerForm'
+import DeleteIcon from '@material-ui/icons/Delete';
+import {connect} from 'react-redux'
+import axios from 'axios'
 
 const styles = theme => ({
-
+  deleteButton: {
+    backgroundColor:'#f90000'
+  }
 
 });
 
@@ -17,8 +22,19 @@ const styles = theme => ({
 class Question extends React.Component{
 
 
-  handleAnswerButon = () => {
-    console.log("ANSWER")
+  handleDeleteQuestionButton = () => {
+    console.log(this.props.token);
+    const data = {
+      id: this.props.question.id,
+    }
+    const config = {
+      headers: {
+        'Authorization' : `Token ${this.props.token}`
+      }
+    }
+    axios.delete(`http://127.0.0.1:8000/api/questions/${this.props.question.id}/delete/`,config)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   render(){
@@ -29,11 +45,31 @@ class Question extends React.Component{
       <AccountCircleIcon />
     </Avatar> )
     const moreButton = (<IconButton aria-label="more"> <MoreVertIcon /> </IconButton>)
+    const deleteQuestionButton = (
+      <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        className={classes.deleteButton}
+        startIcon={<DeleteIcon />}
+        onClick={this.handleDeleteQuestionButton}
+      >
+        Delete question
+      </Button>)
+
+    const popupMore = (
+      <Popup trigger = {moreButton}  position="left center">
+        <Grid >
+          {deleteQuestionButton}
+        </Grid>
+
+      </Popup>
+    )
     return(
       <Box>
 
         <Card>
-          <CardHeader  avatar={ava} action={moreButton}
+          <CardHeader  avatar={ava} action={popupMore}
           title={question_text} titleTypographyProps= {{variant:'h4'}}/>
           <CardContent>
             <Grid container direction="row" justify="space-between">
@@ -59,4 +95,12 @@ Question.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Question)
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+const styledQuestion = withStyles(styles)(Question)
+
+export default connect(mapStateToProps)(styledQuestion)

@@ -90,7 +90,7 @@ class SignIn extends React.Component {
 
     this.props.onAuth(this.state.username, this.state.password)
 
-    this.props.history.push('/wall')
+    //this.props.history.push('/wall')
     // it redirects before auth is done
     // fix it
   }

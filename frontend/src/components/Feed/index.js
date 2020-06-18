@@ -25,7 +25,7 @@ export default class Feed extends Component {
   }
 
   componentDidMount(){
-    axios.get('http://127.0.0.1:8000/api/v0/answers/').then(res => {
+    axios.get('http://127.0.0.1:8000/api/answers/').then(res => {
       this.setState({
         answers: res.data
       });
