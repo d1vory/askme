@@ -19,7 +19,7 @@ var transformtimestamp = function(date){
 
     var res = Math.round(diff/(1000*60*60*24));
 
-    console.log(res)
+    console.log(res);
 
     if (res < 1) {
         return "Posted today";
@@ -32,9 +32,3 @@ var transformtimestamp = function(date){
     }
 
 }
-
-var date = '2020-6-15T06:28:15.677Z';
-
-var res = transformtimestamp(date);
-console.log(transformtimestamp(date))
-
