@@ -33,8 +33,9 @@ class Question extends React.Component{
       }
     }
     axios.delete(`http://127.0.0.1:8000/api/questions/${this.props.question.id}/delete/`,config)
-      .then(res => console.log(res))
+      .then(res => this.props.handleDelete(this.props.question.id))
       .catch(err => console.log(err))
+
   }
 
   render(){
@@ -76,7 +77,7 @@ class Question extends React.Component{
               <Typography color='textSecondary' variant ='subtitle2'>yesterday </Typography>
 
               <Popup lockScroll modal closeOnEscape closeOnDocumentClick trigger = {  <Button color="primary" variant="contained"  endIcon={<ChevronRightIcon />}>Answer</Button>}>
-                {close => (<AnswerForm closeElement = {close} question_id={this.props.question.id} question_text= {question_text}/>)
+                {close => (<AnswerForm closeElement = {close} deleteQuestionFromDOM={this.props.handleDelete} question_id={this.props.question.id} question_text= {question_text}/>)
 
                 }
 

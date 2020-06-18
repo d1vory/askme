@@ -23,7 +23,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
 class QestionDeleteView(generics.DestroyAPIView):
     serializer_class = QuestionSerializer
     queryset = Question.objects.all()
-    #permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated, )
 
 class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer

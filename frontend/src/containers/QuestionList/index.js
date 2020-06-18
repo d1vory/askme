@@ -7,6 +7,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import AnswerForm from '../../components/AnswerForm'
 
+
 const styles = theme => ({
 
 
@@ -32,7 +33,10 @@ class QuestionList extends React.Component{
         }
     }).then(res => {
       this.setState({
-        questions: res.data
+        questions: res.data.map((question, index) => {
+          question.isVisible = true;
+          return question;
+        })
       });
     }).catch(err => {
       this.setState({
@@ -54,8 +58,12 @@ class QuestionList extends React.Component{
     if (this.props.token !== null){
       this.fetchQuestions(this.props.token)
     }
+  }
 
-
+  removeQuestion= (questionId) => {
+    //1.fin INDEX of object with given //
+    const questions = this.state.questions.filter(question => question.id !== questionId)
+    this.setState({questions:questions})
   }
 
   render(){
@@ -69,10 +77,12 @@ class QuestionList extends React.Component{
 
         {
           this.state.questions.map((question,index) => (
+            question.isVisible ?
             <Box key={question.id} my={2}>
-              <Question  question= {question}/>
+              <Question  question= {question} handleDelete={this.removeQuestion}/>
             </Box>
 
+            : {}
           ))
         }
       </Box>

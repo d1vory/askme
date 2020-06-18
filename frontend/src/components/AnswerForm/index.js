@@ -32,7 +32,7 @@ class AnswerForm extends React.Component {
       }
     }
     axios.post('http://127.0.0.1:8000/api/answers/',postData,config)
-      .then(res => console.log(res))
+      .then(res => this.props.deleteQuestionFromDOM(this.props.question_id))
       .catch(err => console.log(err))
   }
 
