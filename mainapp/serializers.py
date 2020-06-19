@@ -8,7 +8,7 @@ from friendship.models import FriendshipRequest,Friend
 class UserSerializer(UserDetailsSerializer):
 
     gender = serializers.CharField(source="myuser.gender")
-    
+
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + ('gender',)
@@ -31,13 +31,13 @@ class UserSerializer(UserDetailsSerializer):
 class DefaultUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username','first_name','last_name']
+        fields = ['id','username','first_name','last_name']
 
 class MyUserSerializer(serializers.ModelSerializer):
     user = DefaultUserSerializer(many=False, read_only=True)
     class Meta:
         model = MyUser
-        fields = '__all__'
+        fields = ['id','username', 'first_name','last_name']
 
 class QuestionSerializer(serializers.ModelSerializer):
 

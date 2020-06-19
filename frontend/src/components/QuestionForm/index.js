@@ -3,12 +3,18 @@ import './styles.css'
 import SendIcon from '@material-ui/icons/Send';
 import {Box,Card,CardHeader,CardContent,
         FormControl,FormGroup,FormControlLabel,Switch,FilledInput,IconButton,Grid} from '@material-ui/core'
+import CancelIcon from '@material-ui/icons/Cancel';
+import axios from 'axios'
+import {connect} from 'react-redux'
 
-export default class QuestionForm extends Component {
+
+class QuestionForm extends Component {
+
   constructor(props){
     super(props)
 
-    this.state = {textValue:'', toggleValue : true}
+    this.state = {textValue:'',
+                  toggleValue : true}
 
     this.handleTextChange = this.handleTextChange.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
@@ -25,8 +31,23 @@ export default class QuestionForm extends Component {
 
 
   handleSubmit(event){
-    //do smth
-    console.log("submit")
+
+    const postData = {
+      question_text: this.state.textValue,
+      askedUser: this.props.askedUser,
+      isAnon: this.state.toggleValue
+    }
+
+    const config = {
+      headers: {
+        'Authorization' : `Token ${this.props.token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+    axios.post('http://127.0.0.1:8000/api/questions/create/',postData,config)
+      .then(res => this.props.closeElement())
+      .catch(err => console.log(err))
+
   }
 
   handleToggle(){
@@ -37,10 +58,16 @@ export default class QuestionForm extends Component {
 
 
   render(){
+    const closeButton =(
+     <IconButton onClick={this.props.closeElement} >
+      <CancelIcon />
+    </IconButton>)
+
+    const titleText = this.props.firstLastName ? ('Ask a question to ' + this.props.firstLastName +' !') : "Ask a question!"
     return (
       <Box>
         <Card>
-          <CardHeader title="Ask a question!">
+          <CardHeader title={titleText} action={this.props.isFriendPage ? closeButton : {}}>
 
 
           </CardHeader>
@@ -48,7 +75,7 @@ export default class QuestionForm extends Component {
           <CardContent>
             <FormGroup>
               <FormControl fullWidth variant='filled'>
-                <FilledInput id="kek"  placeholder="What's up?" />
+                <FilledInput id="kek" onChange={this.handleTextChange}  placeholder="What's up?" />
               </FormControl>
 
               <Grid  container direction="row" justify="space-between">
@@ -57,7 +84,7 @@ export default class QuestionForm extends Component {
                     label="Anonymous question"
                   />
 
-                  <IconButton type="submit" aria-label="Send!" component="span" >
+                  <IconButton type="submit" aria-label="Send!" onClick={this.handleSubmit} component="span" >
                     <SendIcon />
                   </IconButton>
 
@@ -77,3 +104,11 @@ export default class QuestionForm extends Component {
 
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+export default connect(mapStateToProps)(QuestionForm)

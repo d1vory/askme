@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework import permissions
 from friendship.models import FriendshipRequest,Friend
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 
 
@@ -20,11 +22,36 @@ class AnswerViewSet(viewsets.ModelViewSet):
         elif self.action == 'create':
             return AnswerCreateSerializer
 
+class QuestionCreateView(generics.CreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def create(self,request, *args, **kwargs):
+        tokenStr = self.request.headers['Authorization']
+        tokenVal = tokenStr.split()[1]
+        user = User.objects.get(auth_token=tokenVal)
+
+        questionData = request.data
+        resData = {}
+        resData['askedUser'] = request.data['askedUser']
+        resData['question_text'] = request.data['question_text']
+        if not request.data['isAnon']:
+            resData['asker'] = user.id
+
+        serializer = self.get_serializer(data=resData)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class QestionDeleteView(generics.DestroyAPIView):
     serializer_class = QuestionSerializer
     queryset = Question.objects.all()
     permission_classes = (permissions.IsAuthenticated, )
+
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
@@ -41,7 +68,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
         return queryset
 
 class FriendListView(generics.ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = DefaultUserSerializer
 
     def get_queryset(self):
         tokenStr = self.request.headers['Authorization']

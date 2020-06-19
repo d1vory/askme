@@ -66,7 +66,7 @@ class FriendList extends React.Component{
             <List >
               {
                 this.state.friends.map((friend,index) => (
-                  <FriendItem key={friend.pk} firstName={friend.first_name}  lastName={friend.last_name} username={friend.username}  />
+                  <FriendItem key={friend.id} friendId = {friend.id} firstName={friend.first_name}  lastName={friend.last_name} username={friend.username}  />
                 ))
               }
             </List>
