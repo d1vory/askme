@@ -14,21 +14,25 @@ var transformtimestamp = function(date){
     var postedDate = new Date(date.replace('T', ' '));
 
     postedDate = Date.parse(postedDate);
+    postedDate = postedDate - 3*3600000;
 
     var diff = timeNow - postedDate;
 
     var res = Math.round(diff/(1000*60*60*24));
 
-    console.log(res);
+    var minutes = Math.round(diff/(1000*60));
 
-    if (res < 1) {
-        return "Posted today";
+    if (minutes < 60) {
+        return "Posted " + minutes + " minutes ago";
+    } else if (res < 1) {
+        return "Posted " + Math.round(diff/(1000*60*60)) + " hours ago";
     } else if (res == 1) {
         return "Posted yesterday";
     } else if (1 < res && res < 31) {
         return "Posted " + res + " days ago";
-    } else if (res > 32) {
+    } else if (res > 32 && res < 365) {
         return "Posted " + Math.round(res/30) + " months ago";
+    } else if (res/365 > 1){
+        return "Posted " + Math.round(res/365) + " years ago";
     }
-
 }
