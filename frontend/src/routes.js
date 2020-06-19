@@ -1,12 +1,12 @@
 import React from 'react'
-import {Route,Redirect,Switch} from 'react-router-dom'
+import {Route,Redirect} from 'react-router-dom'
 import Wall from './containers/Wall'
 import QuestionList from './containers/QuestionList'
 import SignIn from './containers/SignIn'
 import SignUp from './containers/SignUp'
 import Settings from "./containers/Settings";
 import Friends from './containers/Friends'
-import { connect } from 'react-redux'
+
 
 
 

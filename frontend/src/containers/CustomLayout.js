@@ -1,11 +1,10 @@
 import React from 'react';
 import Header from '../components/Header'
-import {withRouter,Switch,Redirect,useHistory,useLocation,Route} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Box} from '@material-ui/core'
 import * as actions from '../store/actions/auth'
-import SignIn from './SignIn'
-import SignUp from './SignUp'
+
 
 class CustomLayout extends React.Component{
   render(){
@@ -32,7 +31,7 @@ class CustomLayout extends React.Component{
 const mapDispatchToProps = dispatch => {
   return {
     logout: () => {
-      dispatch.actions.logout()
+      dispatch(actions.logout())
     }
   }
 }

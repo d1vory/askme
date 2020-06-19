@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Question from '../../components/Question'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import AnswerForm from '../../components/AnswerForm'
+
 
 
 const styles = theme => ({
@@ -67,7 +67,7 @@ class QuestionList extends React.Component{
   }
 
   render(){
-    const { classes } = this.props;
+    //const { classes } = this.props;
 
     return(
       <Box>

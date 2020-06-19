@@ -1,8 +1,5 @@
 import React,{Component} from 'react'
-import Logo from './Logo.js'
-import Navigation from './Navigation'
-import { makeStyles } from '@material-ui/core/styles';
-import {AppBar,Toolbar, Typography, Button, IconButton,Link,Box} from '@material-ui/core'
+import {AppBar,Toolbar,  Button, Box} from '@material-ui/core'
 import './styles.css'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -30,11 +27,6 @@ const styles = theme => ({
 
 class Header extends Component {
 
-  constructor(props){
-    super(props)
-
-  }
-
   handleSignOutClick = () => {
     this.props.logout()
     this.props.history.push('/signin')
@@ -56,7 +48,7 @@ class Header extends Component {
       <AppBar position ="sticky" >
         <Toolbar>
           <div className="logo-holder">
-            <img className="logo-img" src={require("../../common/assets/logo-dumb.png")}/>
+            <img className="logo-img" alt="logo" src={require("../../common/assets/logo-dumb.png")}/>
 
           </div>
 

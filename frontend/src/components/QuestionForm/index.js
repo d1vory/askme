@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
 import './styles.css'
 import SendIcon from '@material-ui/icons/Send';
-import {Box,Typography,Card,TextField,CardHeader,CardContent,
-        FormControl,Input,FormGroup,FormControlLabel,Switch,FilledInput,IconButton,Grid} from '@material-ui/core'
+import {Box,Card,CardHeader,CardContent,
+        FormControl,FormGroup,FormControlLabel,Switch,FilledInput,IconButton,Grid} from '@material-ui/core'
 
 export default class QuestionForm extends Component {
   constructor(props){

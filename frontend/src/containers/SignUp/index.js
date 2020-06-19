@@ -1,9 +1,9 @@
 import React from 'react';
 import {Avatar,Button,CssBaseline,TextField,
-        FormControlLabel,Checkbox,Link,Grid,Box,Typography,Container} from '@material-ui/core';
+        Link,Grid,Box,Typography,Container} from '@material-ui/core';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles,withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import {Link as RouterLink} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'

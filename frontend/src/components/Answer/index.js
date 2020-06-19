@@ -3,8 +3,8 @@ import React,{Component} from 'react'
 import PropTypes from 'prop-types';
 //import ReactionButton from './ReactionButton'
 import AskerInfo from './AskerInfo'
-import {Card,Box,Typography,CardContent,CardActionArea,CardActions,CardHeader,
-        FormGroup,FormControl,FilledInput,IconButton,Grid} from '@material-ui/core'
+import {Card,Box,Typography,CardContent,CardActions,CardHeader,
+        FormControl,FilledInput,IconButton,Grid} from '@material-ui/core'
 import ThumbUpRoundedIcon from '@material-ui/icons/ThumbUpRounded';
 import ThumbDownRoundedIcon from '@material-ui/icons/ThumbDownRounded';
 import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
@@ -20,10 +20,7 @@ const styles = theme => ({
 
 class Answer extends Component {
 
-  constructor(props){
-    super(props)
-
-  }
+  
 
   render(){
     const { classes } = this.props;

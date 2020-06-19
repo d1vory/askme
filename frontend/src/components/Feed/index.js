@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
 import Answer from '../Answer'
-import answerExample from './answerExample.js'
 import {Box} from '@material-ui/core'
 import axios from 'axios'
 

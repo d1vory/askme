@@ -1,9 +1,8 @@
 import React,{Component} from 'react'
 
-import Wall from '../../containers/Wall'
+
 import CustomLayout from '../../containers/CustomLayout'
 import {BaseRouter} from '../../routes'
-import {withRouter,Switch,Redirect,useHistory,useLocation,Route} from 'react-router-dom'
 import {BrowserRouter as Router} from 'react-router-dom'
 import { connect } from 'react-redux'
 

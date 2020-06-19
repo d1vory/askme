@@ -23,10 +23,7 @@ class Question extends React.Component{
 
 
   handleDeleteQuestionButton = () => {
-    console.log(this.props.token);
-    const data = {
-      id: this.props.question.id,
-    }
+
     const config = {
       headers: {
         'Authorization' : `Token ${this.props.token}`
