@@ -6,7 +6,7 @@ import {Box,Card,CardHeader,CardContent,
 import CancelIcon from '@material-ui/icons/Cancel';
 import axios from 'axios'
 import {connect} from 'react-redux'
-
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 
 class QuestionForm extends Component {
 
@@ -74,9 +74,27 @@ class QuestionForm extends Component {
 
           <CardContent>
             <FormGroup>
-              <FormControl fullWidth variant='filled'>
-                <FilledInput id="kek" onChange={this.handleTextChange}  placeholder="What's up?" />
-              </FormControl>
+              <ValidatorForm
+                  ref="form"
+                  onSubmit={this.handleSubmit}
+                  onError={errors => console.log(errors)}
+              >
+
+                <TextValidator
+                  variant="filled"
+
+                  fullWidth
+                  required
+
+                  label="Question"
+                  name="question"
+                  value={this.state.textValue}
+                  autoFocus
+                  onChange={this.handleTextChange}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                />
+
 
               <Grid  container direction="row" justify="space-between">
 
@@ -84,12 +102,13 @@ class QuestionForm extends Component {
                     label="Anonymous question"
                   />
 
-                  <IconButton type="submit" aria-label="Send!" onClick={this.handleSubmit} component="span" >
+                  <IconButton type="submit" aria-label="Send!"   >
                     <SendIcon />
                   </IconButton>
 
 
               </Grid>
+              </ValidatorForm>
 
             </FormGroup>
 
