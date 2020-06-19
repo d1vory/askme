@@ -2,12 +2,13 @@ from rest_framework import serializers
 from .models import MyUser,Question, Answer
 from django.contrib.auth.models import User
 from rest_auth.serializers import UserDetailsSerializer
-
+from friendship.models import FriendshipRequest,Friend
 
 
 class UserSerializer(UserDetailsSerializer):
 
     gender = serializers.CharField(source="myuser.gender")
+    
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + ('gender',)
@@ -53,7 +54,17 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = ('id','answer_text','likes','dislikes','question_text','question_id')
 
 
+class FriendshipRequestSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = FriendshipRequest
+        fields = ('id', 'from_user', 'to_user', 'message', 'created', 'rejected', 'viewed')
+
+class FriendSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Friend
+        fields = ('id','created','from_user_id','to_user_id')
 
 class AnswerCreateSerializer(serializers.ModelSerializer):
     question_id = serializers.CharField()

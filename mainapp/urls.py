@@ -9,6 +9,7 @@ router.register(r'questions', QuestionViewSet, basename='questions')
 urlpatterns = [
     #path('questions/',QuestionList.as_view(), name= 'questions'),
     path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
+    path('friends/', FriendListView.as_view(),name='friends_list')
 ]
 
 urlpatterns +=  router.urls

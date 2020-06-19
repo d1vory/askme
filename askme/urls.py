@@ -22,6 +22,7 @@ urlpatterns = [
     #re_path(r'^.*',include('frontend.urls')),
     path('',include('frontend.urls')),
     path('api/',include('mainapp.urls')),
+    #url('friendship/', include('friendship.urls')),
     url('rest-auth/', include('rest_auth.urls')),
     url('rest-auth/registration/', include('rest_auth.registration.urls'))
 ]

@@ -1,62 +1,84 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from "@material-ui/core/Avatar";
+import {Box, List,Divider } from "@material-ui/core";
 
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Button from "@material-ui/core/Button";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import Divider from "@material-ui/core/Divider";
-import {Box} from "@material-ui/core";
+import FriendItem from './FriendItem'
+import axios from 'axios'
+import {connect} from 'react-redux'
 
 
-
-const UsersTable = props => {
-    const useStyles = makeStyles({
-        table: {
-            minWidth: 650,
-        },
-    });
+const useStyles = makeStyles({
+    table: {
+        minWidth: 650,
+    },
+});
 
 
-        const classes = useStyles();
+class FriendList extends React.Component{
 
-        return (
+    constructor(props){
+      super(props)
+
+      this.state = {
+        friends : [],
+        error: ''
+      };
+    }
+
+    fetchFriends= (token) => {
+      const url = 'http://127.0.0.1:8000/api/friends/'
+      axios.get(url,{
+          headers: {
+            'Authorization' : `Token ${token}`
+          }
+      }).then(res => {
+        console.log(res.data);
+        this.setState({
+          friends : res.data
+        });
+      }).catch(err => {
+        this.setState({
+          error: err
+        })
+      })
+
+    }
+
+    componentWillReceiveProps(newProps){
+      if (newProps.token){
+        this.fetchFriends(newProps.token)
+      }
+
+    }
+
+    componentDidMount(){
+
+      if (this.props.token !== null){
+        this.fetchFriends(this.props.token)
+      }
+    }
+
+
+        //const classes = useStyles();
+    render(){
+      return (
         <Box boxShadow={3}>
-            <List className={classes.root}>
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar scr={''}>
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="misiura" secondary="@mimi" />
-                    <ListItemSecondaryAction>
-                        <Button variant="contained" color="primary">
-                            Запитати
-                        </Button>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar scr={''}>
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="misiura" secondary="@mimi" />
-                    <ListItemSecondaryAction>
-                        <Button variant="contained" color="primary">
-                            Запитати
-                        </Button>
-                    </ListItemSecondaryAction>
-                </ListItem>
+            <List >
+              {
+                this.state.friends.map((friend,index) => (
+                  <FriendItem key={friend.pk} firstName={friend.first_name}  lastName={friend.last_name} username={friend.username}  />
+                ))
+              }
             </List>
-</Box>
-
-    );
+        </Box>
+    );}
 };
 
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
 
 
-export default UsersTable;
+export default connect(mapStateToProps)(FriendList);

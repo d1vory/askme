@@ -43,7 +43,7 @@ export  const BaseRouter = () => (
     <PrivateRoute path = '/wall' component={Wall}/>
     <PrivateRoute path = '/questions' component={QuestionList}/>
     <PrivateRoute path = '/settings' component={Settings}/>
-    <Route exact path= '/friends' component={Friends}/>
+    <PrivateRoute  path= '/friends' component={Friends}/>
 
   </Hoc>
 );
