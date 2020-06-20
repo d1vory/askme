@@ -10,7 +10,8 @@ urlpatterns = [
     #path('questions/',QuestionList.as_view(), name= 'questions'),
     path('questions/create/',QuestionCreateView.as_view(), name='create_question' ),
     path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
-    path('friends/', FriendListView.as_view(),name='friends_list')
+    path('friends/', FriendListView.as_view(),name='friends_list'),
+    path('users/search/', UserSearchListView.as_view(), name='user_search')
 ]
 
 urlpatterns +=  router.urls

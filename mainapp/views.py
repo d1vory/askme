@@ -9,6 +9,7 @@ from rest_framework import permissions
 from friendship.models import FriendshipRequest,Friend
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import filters
 # Create your views here.
 
 
@@ -58,6 +59,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         #get token string from corsheaders
+        #print('USER IS ====== ' , self.request.user)
         tokenStr = self.request.headers['Authorization']
         tokenVal = tokenStr.split()[1]
 
@@ -79,3 +81,10 @@ class FriendListView(generics.ListAPIView):
         serializer = self.serializer_class(queryset, many=True)
         #print(queryset)
         return queryset
+
+
+class UserSearchListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = DefaultUserSerializer
+    search_fields= ['username']
+    filter_backends = (filters.SearchFilter,)

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Box, List,Divider } from "@material-ui/core";
 
 import FriendItem from './FriendItem'
+import UserItem from './UserItem'
 import axios from 'axios'
 import {connect} from 'react-redux'
 
@@ -14,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 
-class FriendList extends React.Component{
+class UserList extends React.Component{
 
     constructor(props){
       super(props)
@@ -32,10 +33,17 @@ class FriendList extends React.Component{
             'Authorization' : `Token ${token}`
           }
       }).then(res => {
-        console.log(res.data);
-        this.setState({
-          friends : res.data
-        });
+        //console.log(res.data);
+        if( res.data.length > 0){
+          this.setState({
+            friends : res.data
+          });
+        }else{
+          this.setState({
+            error: 'You have not any friends!'
+          })
+        }
+
       }).catch(err => {
         this.setState({
           error: err
@@ -52,22 +60,32 @@ class FriendList extends React.Component{
     }
 
     componentDidMount(){
+      if( this.props.renderFriends){
+        if (this.props.token !== null){
+          this.fetchFriends(this.props.token)
+        }
+      }else{
 
-      if (this.props.token !== null){
-        this.fetchFriends(this.props.token)
       }
+
+
     }
 
 
-        //const classes = useStyles();
     render(){
       return (
         <Box boxShadow={3}>
             <List >
+
               {
-                this.state.friends.map((friend,index) => (
+                (this.props.renderFriends) ?
+                (this.state.friends.map((friend,index) => (
                   <FriendItem key={friend.id} friendId = {friend.id} firstName={friend.first_name}  lastName={friend.last_name} username={friend.username}  />
-                ))
+                )))
+                :
+                (this.props.users.map((user,index) => (
+                  <UserItem key={user.id} userId = {user.id} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
+                )))
               }
             </List>
         </Box>
@@ -81,4 +99,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps)(FriendList);
+export default connect(mapStateToProps)(UserList);
