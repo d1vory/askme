@@ -67,18 +67,14 @@ class QuestionForm extends Component {
     return (
       <Box>
         <Card>
-          <CardHeader title={titleText} action={this.props.isFriendPage ? closeButton : {}}>
-
-
-          </CardHeader>
+          <CardHeader title={titleText} action={this.props.isFriendPage ? closeButton : undefined } />
 
           <CardContent>
             <FormGroup>
               <ValidatorForm
                   ref="form"
                   onSubmit={this.handleSubmit}
-                  onError={errors => console.log(errors)}
-              >
+                  onError={errors => console.log(errors)}>
 
                 <TextValidator
                   variant="filled"

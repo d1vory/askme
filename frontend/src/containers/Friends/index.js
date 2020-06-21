@@ -3,9 +3,12 @@ import React,{Component} from 'react'
 
 import './styles.css'
 import Search from "../../components/UserSearch";
-import UserList from "../../components/UserList";
-import {Grid,Typography } from "@material-ui/core";
+//import UserList from "../../components/UserList";
+import {Grid,Typography,Box, List,Divider } from "@material-ui/core";
 import {connect} from 'react-redux'
+import axios from 'axios'
+import UserItem from '../../components/UserList/UserItem'
+
 
 class Friends extends Component {
 
@@ -15,26 +18,60 @@ class Friends extends Component {
     userList:[]
   }
 
-  componentDidMount(){
-    // this.setState({
-    //   showFriends: true
-    // })
+  fetchFriends= (token) => {
+    const url = 'http://127.0.0.1:8000/api/friends/'
+    axios.get(url,{
+        headers: {
+          'Authorization' : `Token ${token}`
+        }
+    }).then(res => {
+      //console.log(res.data);
+      console.log("FETCHED ", res.data);
+      if( res.data.length > 0){
+        this.setState({
+          userList : res.data
+        });
+      }else{
+        this.setState({
+          error: 'You have not any friends!'
+        })
+      }
+
+    }).catch(err => {
+      this.setState({
+        error: err
+      })
+    })
+
   }
 
-  changeView = (userList, error) => {
-    if( !error){
-      this.setState({
-        showFriends: !this.state.showFriends
-      })
-      this.setState({
-        userList: userList
-      })
-    }else{
-      this.setState({
-        error:error
-      })
+  componentWillReceiveProps(newProps){
+    if (newProps.token !== null){
+      this.fetchFriends(newProps.token)
     }
 
+  }
+
+  componentDidMount(){
+    console.log("DID MOUNT FETCH without token");
+    if (this.props.token !== null){
+      console.log("DID MOUNT FETCH");
+      this.fetchFriends(this.props.token)
+    }
+  }
+
+
+
+  changeView = (userList, error,showFriends) => {
+
+      this.setState({
+        error:error,
+        showFriends: showFriends,
+        userList:userList
+      })
+      if(showFriends){
+        this.componentDidMount()
+      }
   }
 
   render(){
@@ -48,7 +85,17 @@ class Friends extends Component {
               <Grid item xs={6} >
                 {
                   (!this.state.error) ?
-                    (<UserList  renderFriends={this.state.showFriends} changeView= {this.changeView} users= {this.state.userList}/>)
+                    (
+                      <Box boxShadow={3}>
+                          <List >
+                            {
+                              (this.state.userList.map((user,index) => (
+                                <UserItem key={user.id} isFriend={this.state.showFriends} userId = {user.id} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
+                              )))
+                            }
+                          </List>
+                      </Box> )
+                      //<UserList  isFriend={this.state.showFriends} changeView= {this.changeView} users= {this.state.userList}/>)
                     :
                     (<Typography variant="h5" >
                       {this.state.error}

@@ -6,7 +6,7 @@ import SignIn from './containers/SignIn'
 import SignUp from './containers/SignUp'
 import Settings from "./containers/Settings";
 import Friends from './containers/Friends'
-
+import Account from './containers/Account'
 
 
 
@@ -44,7 +44,7 @@ export  const BaseRouter = () => (
     <PrivateRoute path = '/questions' component={QuestionList}/>
     <PrivateRoute path = '/settings' component={Settings}/>
     <PrivateRoute  path= '/friends' component={Friends}/>
-
+    <PrivateRoute path= '/account' component={Account}/>
   </Hoc>
 );
 

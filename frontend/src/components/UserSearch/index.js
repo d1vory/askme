@@ -25,13 +25,13 @@ class UserSearch extends React.Component {
     }).then(res => {
       console.log(res.data);
       if(res.data.length > 0 ){
-        this.props.changeView(res.data)
+        this.props.changeView(res.data, '', false)
       }else{
-        this.props.changeView(null, 'Nothing found!')
+        this.props.changeView(null, 'Nothing found!',false)
       }
 
     }).catch(error => {
-      this.props.changeView(null, error)
+      this.props.changeView(null, error,false)
     })
   }
 
@@ -51,19 +51,22 @@ class UserSearch extends React.Component {
     if( this.state.searchValue.length > 3 ){
       this.filter()
     }else{
-      this.props.changeView(null,'nothing found')
+      this.props.changeView(null,'nothing found',false)
     }
   }
 
   handleCloseButton = () => {
-    console.log("ClOSE");
+    this.setState({
+      searchValue:''
+    })
+    //this.props.changeView(null,'',true)
   }
 
   render(){
-    const closeButton=  ( <IconButton onClick={this.handleCloseButton}> <CloseIcon /> </IconButton>)
+    const closeButton=  ( <CloseIcon onClick={this.handleCloseButton}/>)
     return (
       <SearchBar
-      onClear={this.handleCloseButton}
+      closeIcon ={closeButton}
       onChange={this.handleSearchChange}
       onRequestSearch={this.handleSearchRequest}
       value= {this.state.searchValue}

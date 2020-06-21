@@ -80,7 +80,7 @@ class Header extends Component {
 
 
 
-                    <RouterLink className={classes.linkStyle} to="/wall">
+                    <RouterLink className={classes.linkStyle} to="/account">
                       <Box className={classes.linkWrapper} p = {1} m={1}>
                         Account
                         </Box>

@@ -103,7 +103,7 @@ class SignUp extends React.Component {
     event.preventDefault();
     this.props.onAuth(this.state.username,this.state.email,this.state.password,this.state.repeatPassword)
     console.log(this.state)
-    this.props.history.push('/wall')
+    //this.props.history.push('/wall')
   }
 
 
