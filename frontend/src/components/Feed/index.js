@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import Answer from '../Answer'
 import {Box,Typography} from '@material-ui/core'
 import axios from 'axios'
-
+import transformtimestamp from '../utils'
 
 
 export default class Feed extends Component {
@@ -33,19 +33,19 @@ export default class Feed extends Component {
   // }
 
   render(){
-    // const emptyOrAnswers = this.props.answers.length ?
-    // (this.props.answers.map((answer,index) => (
-    //   <Box  key = {answer.id}>
-    //     <Answer answerID={answer.id} userID={answer.question.askedUser.id}
-    //     askerName= "@Rick_Astley" questionText= {answer.question.question_text}
-    //     askerWhenAsked = {answer.question.timestamp}
-    //     answerText= {answer.answer_text} likesAmount= {answer.likes}
-    //     dislikesAmount= {answer.dislikes}  />
-    //   </Box>
-    // )) ) : <Typography>No answers yet </Typography>
+    const emptyOrAnswers = this.props.answers ?
+    (this.props.answers.map((answer,index) => (
+      <Box  key = {answer.id}>
+        <Answer answerID={answer.id}
+        askerName= "@Rick_Astley" questionText= {answer.question_text}
+        askerWhenAsked = {transformtimestamp(answer.timestamp)}
+        answerText= {answer.answer_text} likesAmount= {answer.likes}
+        dislikesAmount= {answer.dislikes}  />
+      </Box>
+    )) ) : <Typography variant="h3">No answers yet </Typography>
     return (
       <Box >
-          <Typography variant="h3">No answers yet </Typography>
+          {emptyOrAnswers}
       </Box>
     )
   }

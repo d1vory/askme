@@ -13,15 +13,47 @@ from rest_framework import filters
 # Create your views here.
 
 
-class AnswerViewSet(viewsets.ModelViewSet):
+# class AnswerViewSet(viewsets.ModelViewSet):
+#     queryset = Answer.objects.all()
+#     serializer_class = AnswerSerializer
+#
+#     def get_serializer_class(self):
+#         if self.action == 'list':
+#             return AnswerSerializer
+#         elif self.action == 'create':
+#             return AnswerCreateSerializer
+
+class AnswerCreateView(generics.CreateAPIView):
+    serializer_class = AnswerCreateSerializer
     queryset = Answer.objects.all()
+
+class AnswersAccountListView(generics.ListAPIView):
     serializer_class = AnswerSerializer
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return AnswerSerializer
-        elif self.action == 'create':
-            return AnswerCreateSerializer
+    def get_queryset(self):
+        user  = self.request.user
+        queryset = Answer.objects.raw("""
+                                        SELECT *
+                                        FROM mainapp_answer
+                                        WHERE question_id IN(
+                                        SELECT id
+                                        FROM mainapp_question
+                                        where askeduser_id = %s AND mainapp_question.id IN (
+                                          SELECT mainapp_answer.question_id
+                                          FROM mainapp_answer))
+                                        ORDER BY timestamp DESC; """,[user.id])
+        return queryset
+
+
+class AnswersListView(generics.ListAPIView):
+    serializer_class = AnswerSerializer
+
+    def get_queryset(self):
+        user  = self.request.user
+        friends = Friend.objects.friends(user)
+        print(friends)
+
+        return Answer.objects.all()
 
 class QuestionCreateView(generics.CreateAPIView):
     queryset = Question.objects.all()

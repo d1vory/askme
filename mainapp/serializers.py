@@ -49,9 +49,11 @@ class AnswerSerializer(serializers.ModelSerializer):
     #question = QuestionSerializer(many=False, read_only =True)
     question_text = serializers.CharField(source='question.question_text')
     question_id = serializers.CharField(source='question.id')
+    #asker_first_name = serializers.CharField(source = 'question.asker.first_name')
+    asker = UserSerializer(source = 'question.asker', many=False)
     class Meta:
         model = Answer
-        fields = ('id','answer_text','likes','dislikes','question_text','question_id')
+        fields = ('id','answer_text','likes','dislikes','timestamp', 'question_text','question_id', 'asker')
 
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):

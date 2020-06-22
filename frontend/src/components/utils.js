@@ -7,9 +7,10 @@
  * @param {String} date in string format
  * @returns {String} time in string format
  */
-var transformtimestamp = function(date){
-
-    var timeNow = Date.now();
+const transformtimestamp = function(date){
+    //subtract 3 hours to match timezone
+    var timeNow = Date.now() - 10800000;
+    console.log("TIME   ",timeNow);
 
     var postedDate = new Date(date.replace('T', ' '));
 
@@ -36,3 +37,5 @@ var transformtimestamp = function(date){
         return "Posted " + Math.round(res/365) + " years ago";
     }
 }
+
+export default transformtimestamp

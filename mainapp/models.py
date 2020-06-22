@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.contrib.auth.models import AnonymousUser
+from django.utils import timezone
 # Create your modes here.
 
 
@@ -46,6 +47,6 @@ class Answer(models.Model):
     likes = models.IntegerField(default = 0)
     dislikes = models.IntegerField(default =  0)
     question = models.ForeignKey('Question',on_delete= models.CASCADE)
-
+    timestamp = models.DateTimeField(default= timezone.now)
     def __str__(self):
         return self.answer_text
