@@ -50,10 +50,21 @@ class AnswersListView(generics.ListAPIView):
 
     def get_queryset(self):
         user  = self.request.user
-        friends = Friend.objects.friends(user)
-        print(friends)
+        queryset = Answer.objects.raw("""
+                                            SELECT *
+                                            FROM mainapp_answer
+                                            WHERE question_id IN(
+                                            	SELECT id
+                                            	FROM mainapp_question
+                                            	WHERE askeduser_id IN (SELECT to_user_id
+                                            							FROM friendship_friend
+                                            							WHERE from_user_id = %s) AND mainapp_question.id IN (
+                                            									  SELECT mainapp_answer.question_id
+                                            									  FROM mainapp_answer))
+                                            ORDER BY timestamp DESC;
+                                        """,[user.id])
 
-        return Answer.objects.all()
+        return queryset
 
 class QuestionCreateView(generics.CreateAPIView):
     queryset = Question.objects.all()

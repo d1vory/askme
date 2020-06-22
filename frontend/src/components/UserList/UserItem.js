@@ -24,7 +24,7 @@ export default function UserItem(props){
           (
             <Popup  lockScroll modal closeOnEscape closeOnDocumentClick
               trigger={<Button variant="contained" color="primary" > Запитати</Button>}>
-              { close =>(<QuestionForm closeElement = {close} askedUser={props.friendId} firstLastName={firstLastName} isFriendPage={true} username={ props.username}  />) }
+              { close =>(<QuestionForm closeElement = {close} askedUser={props.userId} firstLastName={firstLastName} isFriendPage={true} username={ props.username}  />) }
             </Popup>
           )
           :

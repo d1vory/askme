@@ -21,10 +21,10 @@ class Wall extends Component {
         this.setState({
           answers: res.data
         });
-        console.log("FAILED")
+        console.log("FETCHED ", res.data)
       })
   }
-  
+
   componentWillReceiveProps(newProps){
     if (newProps.token){
       this.fetchAnswers(newProps.token)
@@ -43,8 +43,8 @@ class Wall extends Component {
     return(
       <div >
         <div className="wall">
-          <QuestionForm answers={this.state.answers}/>
-          <Feed />
+          <QuestionForm />
+          <Feed answers={this.state.answers} />
         </div>
       </div>
     )

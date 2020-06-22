@@ -15,22 +15,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function AskerInfo(props){
+export default function UserInfo(props){
   const classes = useStyles();
 
+  const askedUserFirstLastName = props.firstName + ' ' + props.lastName
   return(
     <Box mb={2}>
       <Grid container direction="row">
         <Box mr = {2}>
-          <Avatar alt="lana" src={props.userImageSrc} className={classes.largeAvatar} />
+          <Avatar alt="lana"  className={classes.largeAvatar} />
         </Box>
         <Box >
+
           <Typography variant= 'h6'>
-            {props.askerName}
+            {askedUserFirstLastName}
           </Typography>
 
+
+          <Typography variant= 'subtitle1' color='textSecondary'>
+            {'@' + props.askedUserUsername}
+          </Typography>
+
+
           <Typography  variant='subtitle2' color='textSecondary'>
-            {props.askerWhenAsked}
+            {props.whenAnswered}
           </Typography>
         </Box>
       </Grid>

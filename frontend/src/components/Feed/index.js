@@ -37,8 +37,12 @@ export default class Feed extends Component {
     (this.props.answers.map((answer,index) => (
       <Box  key = {answer.id}>
         <Answer answerID={answer.id}
-        askerName= "@Rick_Astley" questionText= {answer.question_text}
-        askerWhenAsked = {transformtimestamp(answer.timestamp)}
+        askedUserFirstName = {answer.askedUser.first_name}
+        askedUserLastName = {answer.askedUser.last_name}
+        askedUserUsername = {answer.askedUser.username}
+        asker = {answer.asker}
+        questionText= {answer.question_text}
+        whenAnswered = {transformtimestamp(answer.timestamp)}
         answerText= {answer.answer_text} likesAmount= {answer.likes}
         dislikesAmount= {answer.dislikes}  />
       </Box>

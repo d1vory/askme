@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 
 import PropTypes from 'prop-types';
 //import ReactionButton from './ReactionButton'
-import AskerInfo from './AskerInfo'
+import UserInfo from './UserInfo'
 import {Card,Box,Typography,CardContent,CardActions,CardHeader,
         FormControl,FilledInput,IconButton,Grid} from '@material-ui/core'
 import ThumbUpRoundedIcon from '@material-ui/icons/ThumbUpRounded';
@@ -20,18 +20,23 @@ const styles = theme => ({
 
 class Answer extends Component {
 
-  
+
 
   render(){
     const { classes } = this.props;
     return (
       <Box my={2}>
         <Card variant="outlined">
-          <CardHeader title= {this.props.questionText} titleTypographyProps = {{variant:'h4'}}/>
+          <CardHeader title= {this.props.questionText} titleTypographyProps = {{variant:'h4'}}
+                      subheader={this.props.asker ? ('@' + this.props.asker.username) : undefined}/>
 
           <CardContent>
-            <AskerInfo askerWhenAsked={this.props.askerWhenAsked}
-              askerName={this.props.askerName} userImageSrc = {require('../../common/assets/lena.png')} />
+            <UserInfo whenAnswered={this.props.whenAnswered}
+                        userImageSrc = {require('../../common/assets/lena.png')}
+                        firstName = {this.props.askedUserFirstName}
+                        lastName = {this.props.askedUserLastName}
+                        askedUserUsername = {this.props.askedUserUsername}
+                       />
 
             <Typography variant='body1' >
               {this.props.answerText}

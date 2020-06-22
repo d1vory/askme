@@ -10,8 +10,7 @@
 const transformtimestamp = function(date){
     //subtract 3 hours to match timezone
     var timeNow = Date.now() - 10800000;
-    console.log("TIME   ",timeNow);
-
+  
     var postedDate = new Date(date.replace('T', ' '));
 
     postedDate = Date.parse(postedDate);
