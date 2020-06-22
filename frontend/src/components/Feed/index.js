@@ -21,6 +21,7 @@ class Feed extends Component {
         answerText= {answer.answer_text}
         likesAmount= {answer.likes}
         dislikesAmount= {answer.dislikes}
+        avatar = {answer.askedUser.avatar}
         token={this.props.token}/>
       </Box>
     )) ) : <Typography variant="h3">No answers yet </Typography>

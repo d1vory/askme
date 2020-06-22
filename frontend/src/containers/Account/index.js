@@ -30,7 +30,7 @@ class Account extends React.Component {
         }
     }).then(res => {
 
-        //console.log("FETCHED   " ,res.data);
+        console.log("FETCHED   " ,res.data);
         this.setState({
           answers: res.data
         });

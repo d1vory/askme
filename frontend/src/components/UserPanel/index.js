@@ -21,13 +21,13 @@ class UserPanel extends React.Component {
 
   render(){
     const { classes } = this.props;
-
+    
     return(
       <Grid container direction="row" justify="space-between">
         <Box>
         <Grid container direction="row">
         <Box m= {2 }>
-          <Avatar className={classes.largeAvatar}/>
+          <Avatar src={this.props.user.avatar} className={classes.largeAvatar}/>
         </Box>
 
         <Box>

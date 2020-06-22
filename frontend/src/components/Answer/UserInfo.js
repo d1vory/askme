@@ -23,7 +23,7 @@ export default function UserInfo(props){
     <Box mb={2}>
       <Grid container direction="row">
         <Box mr = {2}>
-          <Avatar alt="lana"  className={classes.largeAvatar} />
+          <Avatar alt="avatar" src = {props.avatar}  className={classes.largeAvatar} />
         </Box>
         <Box >
 

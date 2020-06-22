@@ -13,7 +13,7 @@ class MyUser(models.Model):
     Represents user for authentication and information
     """
     user = models.OneToOneField(User, on_delete= models.CASCADE)
-    avatar = models.ImageField(upload_to="static/media/profile", blank = True)
+    avatar = models.ImageField(upload_to="profile_images", blank = True)
     selfDescription = models.TextField( blank=True)
     DateOfBirth = models.DateField(default=datetime.today, blank = True)
     gender = models.CharField(blank=True, max_length=3, choices = [('ml','male'),('fml','female'),('oth','other')])

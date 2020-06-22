@@ -121,7 +121,7 @@ class Answer extends Component {
 
           <CardContent>
             <UserInfo whenAnswered={this.props.whenAnswered}
-                        userImageSrc = {require('../../common/assets/lena.png')}
+                        avatar = {this.props.avatar}
                         firstName = {this.props.askedUserFirstName}
                         lastName = {this.props.askedUserLastName}
                         askedUserUsername = {this.props.askedUserUsername}
