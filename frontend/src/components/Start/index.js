@@ -28,15 +28,21 @@ const styles = (theme) => ({
         },
     },
     h5: {
-        marginBottom: theme.spacing(4),
-        marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(5),
+        marginTop: theme.spacing(11) ,
         [theme.breakpoints.up('sm')]: {
             marginTop: theme.spacing(10),
         },
 
     },
+    h2: {
+
+        marginTop: theme.spacing(8) ,
+        marginBottom: theme.spacing(8),
+
+    },
     more: {
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(),
     },
 });
 
@@ -47,7 +53,7 @@ function ProductHero(props) {
         <ProductHeroLayout backgroundClassName={classes.background}>
             {/* Increase the network loading priority of the background image. */}
             <img style={{ display: 'none' }} src={backgroundImage} alt="increase priority" />
-            <Typography color="inherit" align="center" variant="h2" marked="center">
+            <Typography color="inherit" align="center" variant="h2" marked="center" className={classes.h2}>
                Welcome to AskMe!
             </Typography>
             <Typography color="inherit" align="center" variant="h5" className={classes.h5}>
