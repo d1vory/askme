@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { capitalize } from '@material-ui/core/utils';
 import MuiTypography from '@material-ui/core/Typography';
-import {primaryColor} from "../../common/assets/material-kit-react";
+//import {primaryColor} from "../../common/assets/material-kit-react";
 
 const styles = (theme) => ({
     markedH2Center: {

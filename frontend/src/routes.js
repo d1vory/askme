@@ -38,9 +38,9 @@ const Hoc = props => props.children;
 
 export  const BaseRouter = () => (
   <Hoc>
+    <Route exact path="/" component={Start} />
     <Route path="/signin" component={SignIn} />
     <Route path="/signup" component={SignUp} />
-    <Route path="/start" component={Start} />
     <PrivateRoute path = '/wall' component={Wall}/>
     <PrivateRoute path = '/questions' component={QuestionList}/>
     <PrivateRoute path = '/settings' component={Settings}/>

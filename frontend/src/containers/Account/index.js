@@ -83,7 +83,7 @@ class Account extends React.Component {
       <Grid>
         <UserPanel user={this.state.user}/>
         <Box>
-          <QuestionForm firstLastName="yourself" isFriendPage={false} page="Account" askedUser={1}   username="d1vory"/>
+          <QuestionForm firstLastName="yourself" isFriendPage={false} page="Account" askedUser={this.state.user.pk}   username="d1vory"/>
 
         </Box>
         <Feed answers = {this.state.answers}/>

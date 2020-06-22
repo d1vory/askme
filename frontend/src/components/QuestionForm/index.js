@@ -42,7 +42,7 @@ class QuestionForm extends Component {
       }
     }
     axios.post('http://127.0.0.1:8000/api/questions/create/',postData,config)
-      .then(res => this.props.closeElement())
+      .then(res => {this.props.closeElement(); this.setState({textValue:''})}  )
       .catch(err => console.log(err))
 
   }
