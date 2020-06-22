@@ -23,10 +23,7 @@ class QuestionForm extends Component {
 
 
   handleTextChange(event){
-    //do smth
-
      this.setState({textValue: event.target.value});
-     //console.log("Text changed af: ", event.target.value)
   }
 
 
@@ -51,9 +48,7 @@ class QuestionForm extends Component {
   }
 
   handleToggle(){
-
     this.setState((state,props) => ({toggleValue : !state.toggleValue}))
-    console.log("toggle after, ", this.state.toggleValue)
   }
 
 
@@ -78,10 +73,8 @@ class QuestionForm extends Component {
 
                 <TextValidator
                   variant="filled"
-
                   fullWidth
                   required
-
                   label="Question"
                   name="question"
                   value={this.state.textValue}

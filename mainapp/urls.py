@@ -8,6 +8,9 @@ router.register(r'questions', QuestionViewSet, basename='questions')
 
 urlpatterns = [
     #path('questions/',QuestionList.as_view(), name= 'questions'),
+    path('users/<username>/info/', UserAccountInfoView.as_view(), name="user_account_info"),
+    path('users/<username>/answers/', AnswersAccountListView.as_view(), name="user_account_answers"),
+    path('account/info/', AccountInfoView.as_view(), name="account_info"),
     path('answers/create/',AnswerCreateView.as_view(), name='create_answer' ),
     path('account/answers/',AnswersAccountListView.as_view(), name='account_answers' ),
     path('answers/',AnswersListView.as_view(), name='wall_answers' ),

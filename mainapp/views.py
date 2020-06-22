@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 from rest_framework import viewsets
 from .serializers import *
@@ -10,6 +10,8 @@ from friendship.models import FriendshipRequest,Friend
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import filters
+
+
 # Create your views here.
 
 
@@ -23,25 +25,49 @@ from rest_framework import filters
 #         elif self.action == 'create':
 #             return AnswerCreateSerializer
 
+class UserAccountInfoView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def get_object(self):
+        #print(self.request.__dict__)
+        print(self.kwargs)
+        username = self.kwargs['username']
+        print(username)
+        user = User.objects.get(username=username)
+        obj = get_object_or_404(User, pk=user.id)
+        return obj
+
+class AccountInfoView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def get_object(self):
+        user = self.request.user
+        obj = get_object_or_404(User, pk=user.id)
+        return obj
+
 class AnswerCreateView(generics.CreateAPIView):
     serializer_class = AnswerCreateSerializer
     queryset = Answer.objects.all()
+
+
 
 class AnswersAccountListView(generics.ListAPIView):
     serializer_class = AnswerSerializer
 
     def get_queryset(self):
-        user  = self.request.user
+        user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
         queryset = Answer.objects.raw("""
                                         SELECT *
                                         FROM mainapp_answer
                                         WHERE question_id IN(
-                                        SELECT id
-                                        FROM mainapp_question
-                                        where askeduser_id = %s AND mainapp_question.id IN (
-                                          SELECT mainapp_answer.question_id
-                                          FROM mainapp_answer))
-                                        ORDER BY timestamp DESC; """,[user.id])
+                                                        SELECT id
+                                                        FROM mainapp_question
+                                                        where askeduser_id = %s AND mainapp_question.id IN (
+                                                                      SELECT mainapp_answer.question_id
+                                                                      FROM mainapp_answer))
+                                                                    ORDER BY timestamp DESC; """,[user.id])
         return queryset
 
 

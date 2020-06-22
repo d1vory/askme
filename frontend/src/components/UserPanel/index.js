@@ -34,15 +34,16 @@ class UserPanel extends React.Component {
 
           <Box>
             <Box>
-              <Typography variant="subtitle1" color='textSecondary'>
-                @username
+              <Typography variant="h4">
+                {this.props.user.first_name + ' ' + this.props.user.last_name}
               </Typography>
             </Box>
             <Box>
-              <Typography variant="h4">
-                Olexandr Dubchak
+              <Typography variant="subtitle1" color='textSecondary'>
+                {'@' + this.props.user.username}
               </Typography>
             </Box>
+
 
             <Grid>
               <Button variant="outlined" > Add to friends </Button>

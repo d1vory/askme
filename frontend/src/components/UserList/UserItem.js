@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {ListItem,ListItemAvatar,Avatar,ListItemText,ListItemSecondaryAction,Button} from '@material-ui/core'
 import Popup from "reactjs-popup";
 import QuestionForm from '../QuestionForm'
+import {Link } from 'react-router-dom'
 
 export default function UserItem(props){
 
@@ -11,13 +12,22 @@ export default function UserItem(props){
   }
 
   const firstLastName = props.firstName + ' ' + props.lastName
+  const primaryLink = <Link to = {`/user/${props.username}/`}  style={{ textDecoration: 'none', color:'inherit' }} >{firstLastName} </Link>
+  const secondaryLink = <Link to = {`/user/${props.username}/`}  style={{ textDecoration: 'none', color:'inherit' }} >{'@' + props.username} </Link>
   return(
     <ListItem >
-        <ListItemAvatar>
-            <Avatar scr={''}>
-            </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={firstLastName} secondary={'@' + props.username} />
+
+
+          <ListItemAvatar>
+              <Link to = {`/user/:${props.username}/`} >
+              <Avatar scr={''}>
+              </Avatar>
+            </Link>
+          </ListItemAvatar>
+
+
+            <ListItemText primary={primaryLink} secondary={secondaryLink} > </ListItemText>
+
 
         {
           props.isFriend ?
