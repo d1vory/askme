@@ -52,6 +52,15 @@ class AnswerCreateView(generics.CreateAPIView):
     queryset = Answer.objects.all()
 
 
+class AnswerLikeView(generics.UpdateAPIView):
+    serializer_class = AnswerSerializer
+    queryset = Answer.objects.all()
+
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+
 
 class AnswersAccountListView(generics.ListAPIView):
     serializer_class = AnswerSerializer
