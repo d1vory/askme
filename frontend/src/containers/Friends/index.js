@@ -81,7 +81,7 @@ class Friends extends Component {
           <Grid container spacing={2} direction="column">
             <Grid container item spacing={0} justify="center" >
               <Grid item xs={3}> <Search changeView={this.changeView}  token ={this.props.token} placeholder="Знайти користувача"></Search></Grid>
-            
+
             </Grid>
             <Grid container item spacing={0} justify="center" >
               <Grid item xs={6} >
@@ -92,7 +92,7 @@ class Friends extends Component {
                           <List >
                             {
                               (this.state.userList.map((user,index) => (
-                                <UserItem key={user.id} isFriend={this.state.showFriends} userId = {user.id} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
+                                <UserItem key={user.id} avatar={user.avatar} isFriend={this.state.showFriends} userId = {user.id} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
                               )))
                             }
                           </List>

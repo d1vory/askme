@@ -156,12 +156,12 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         user = User.objects.get(auth_token=tokenVal)
         # get unanswered questions
-        queryset = Question.objects.raw('SELECT * FROM mainapp_question where askeduser_id = %s AND mainapp_question.id NOT IN ( SELECT mainapp_answer.question_id FROM mainapp_answer);',[user.id])
+        queryset = Question.objects.raw('SELECT * FROM mainapp_question where askeduser_id = %s AND mainapp_question.id NOT IN ( SELECT mainapp_answer.question_id FROM mainapp_answer) ORDER BY timestamp DESC;',[user.id])
 
         return queryset
 
 class FriendListView(generics.ListAPIView):
-    serializer_class = DefaultUserSerializer
+    serializer_class = UserSerializer
 
     def get_queryset(self):
         tokenStr = self.request.headers['Authorization']

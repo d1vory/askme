@@ -30,6 +30,8 @@ class UserSerializer(UserDetailsSerializer):
             profile.save()
         return instance
 
+    
+
 
 
 class DefaultUserSerializer(serializers.ModelSerializer):

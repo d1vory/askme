@@ -9,6 +9,7 @@ import Popup from "reactjs-popup";
 import AnswerForm from '../AnswerForm'
 import DeleteIcon from '@material-ui/icons/Delete';
 import {connect} from 'react-redux'
+import transformtimestamp from '../utils'
 import axios from 'axios'
 
 const styles = theme => ({
@@ -67,11 +68,11 @@ class Question extends React.Component{
       <Box>
 
         <Card>
-          <CardHeader  avatar={ava} action={popupMore}
+          <CardHeader  action={popupMore}
           title={question_text} titleTypographyProps= {{variant:'h4'}}/>
           <CardContent>
             <Grid container direction="row" justify="space-between">
-              <Typography color='textSecondary' variant ='subtitle2'>yesterday </Typography>
+              <Typography color='textSecondary' variant ='subtitle2'>{transformtimestamp(this.props.question.timestamp)} </Typography>
 
               <Popup lockScroll modal closeOnEscape closeOnDocumentClick trigger = {  <Button color="primary" variant="contained"  endIcon={<ChevronRightIcon />}>Answer</Button>}>
                 {close => (<AnswerForm closeElement = {close} deleteQuestionFromDOM={this.props.handleDelete} question_id={this.props.question.id} question_text= {question_text}/>)

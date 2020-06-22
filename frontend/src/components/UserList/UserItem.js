@@ -19,10 +19,9 @@ export default function UserItem(props){
 
 
           <ListItemAvatar>
-              <Link to = {`/user/:${props.username}/`} >
-              <Avatar scr={''}>
-              </Avatar>
-            </Link>
+              <Link to = {`/user/${props.username}/`} >
+                <Avatar alt ="avatar"  scr={props.avatar} />
+              </Link>
           </ListItemAvatar>
 
 
