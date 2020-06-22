@@ -3,8 +3,9 @@ import Edit from '../../components/infoEdit'
 import './styles.css'
 import Grid from "@material-ui/core/Grid";
 import Password from "../../components/Password";
+import {connect} from 'react-redux'
 
-export default class Settings extends Component {
+class Settings extends Component {
 
 
   render(){
@@ -19,7 +20,7 @@ export default class Settings extends Component {
               md={7}
               xs={12}
           >
-            <Edit/>
+            <Edit  />
           </Grid>
           <Grid
               item
@@ -33,3 +34,14 @@ export default class Settings extends Component {
     )
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+
+
+export default connect(mapStateToProps)(Settings)

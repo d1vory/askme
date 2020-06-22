@@ -31,12 +31,25 @@ class UserAccountInfoView(generics.RetrieveAPIView):
 
     def get_object(self):
         #print(self.request.__dict__)
-        print(self.kwargs)
+        #print(self.kwargs)
         username = self.kwargs['username']
-        print(username)
+        #print(username)
         user = User.objects.get(username=username)
         obj = get_object_or_404(User, pk=user.id)
         return obj
+
+class AccountSettingsView(generics.UpdateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def get_object(self):
+        user = self.request.user
+        obj = get_object_or_404(User, pk=user.id)
+        return obj
+
+    def put(self, request, *args, **kwargs):
+        print("PUT CALLED")
+        return self.partial_update(request, *args, **kwargs)
 
 class AccountInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer

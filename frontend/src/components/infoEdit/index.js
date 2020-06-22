@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
 import { makeStyles } from '@material-ui/styles';
 import {
     Card,
@@ -10,9 +11,11 @@ import {
     Divider,
     Grid,
     Button,
-    TextField
+    TextField,Typography
 
 } from '@material-ui/core';
+import axios from 'axios'
+import ImageUpload from './ImageUpload'
 // import InputLabel from "@material-ui/core/InputLabel";
 // import Input from "@material-ui/core/Input";
 const useStyles = makeStyles(() => ({
@@ -25,17 +28,44 @@ const AccountDetails = props => {
     const classes = useStyles();
 
     const [values, setValues] = useState({
-        firstName: 'Shen',
-        lastName: 'Zhi',
-        email: 'shen.zhi@devias.io',
-        phone: '',
-        sex: 'female',
-        country: 'USA',
-        day:'12',
-        month:'april',
-        year:'2000',
-        about_me:'fghjkl;juihy'
+        firstName: '',
+        lastName: '',
+        email: '',
+        sex: '',
+        image: null,
+        about_me:''
     });
+
+    const fetchValues = () => {
+      let url ='http://127.0.0.1:8000/api/account/info/'
+      axios.get(url,{
+          headers: {
+            'Authorization' : `Token ${props.token}`
+          }
+      }).then(res => {
+          //console.log("FETCHED   " ,res.data);
+          setValues({
+            ...values,
+            firstName: res.data.first_name,
+            lastName: res.data.last_name,
+            username: res.data.username,
+            email: res.data.email,
+            sex: res.data.gender
+          })
+
+        }).catch(error => (console.log(error)))
+    }
+
+
+    useEffect(() => {
+
+      console.log("mounted ", props.token);
+      if( props.token){
+        fetchValues();
+      }
+
+    }, [props.token])
+
 
     const handleChange = event => {
         setValues({
@@ -44,68 +74,49 @@ const AccountDetails = props => {
         });
     };
 
+    const handleImageChange = event => {
+          setValues({
+            ...values,
+            image: event.target.files[0]
+          })
+    }
+
+    const putChanges = () => {
+      const postData = {
+          first_name: values.firstName,
+          last_name: values.lastName,
+          email: values.email,
+          gender: values.sex
+      }
+      const config = {
+        headers: {
+          'Authorization' : `Token ${props.token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+      axios.patch(`http://127.0.0.1:8000/api/account/settings/update/`,postData,config)
+        .then(res => {
+            console.log("OOOOKKKK");
+          })
+
+        .catch(err => console.log(err))
+    }
+
+    const handleSubmit = event => {
+        putChanges();
+    }
+
     const sex = [
         {
             value: 'male',
-            label: 'чоловік'
+            label: 'male'
         },
         {
             value: 'female',
-            label: 'жінка'
+            label: 'female'
         },
 
     ];
-    const monthes = [
-        {
-            value: 'january',
-            label: 'Січень'
-        },
-        {
-            value: 'february',
-            label: 'Лютий'
-        },
-        {
-            value: 'march',
-            label: 'Березень'
-        },
-        {
-            value: 'april',
-            label: 'Квітень'
-        },
-        {
-            value: 'may',
-            label: 'Травень'
-        },
-        {
-            value: 'june',
-            label: 'Червень'
-        },
-        {
-            value: 'july',
-            label: 'Серпень'
-        },
-        {
-            value: 'august',
-            label: 'Липень'
-        },
-        {
-            value: 'september',
-            label: 'Вересень'
-        },
-        {
-            value: 'october',
-            label: 'Жовтень'
-        },
-        {
-            value: 'november',
-            label: 'Листопат'
-        },
-        {
-            value: 'december',
-            label: 'Грудень'
-        },
-    ];
-
     return (
         <Card
             {...rest}
@@ -117,7 +128,7 @@ const AccountDetails = props => {
             >
                 <CardHeader
                    // subheader="The information can be edited"
-                    title="Інформація користувача"
+                    title="User information"
                 />
                 <Divider />
                 <CardContent>
@@ -132,12 +143,12 @@ const AccountDetails = props => {
                         >
                             <TextField
                                 fullWidth
-                                label="Ім'я"
+                                label="first name"
                                 margin="dense"
                                 name="firstName"
                                 onChange={handleChange}
                                 required
-                                value={"Анастасія"}
+                                value={values.firstName}
                                 variant="outlined"
                             />
                         </Grid>
@@ -148,12 +159,12 @@ const AccountDetails = props => {
                         >
                             <TextField
                                 fullWidth
-                                label="Прізвище"
+                                label="last name"
                                 margin="dense"
                                 name="lastName"
                                 onChange={handleChange}
                                 required
-                                value={"Місюра"}
+                                value={values.lastName}
                                 variant="outlined"
                             />
                         </Grid>
@@ -180,12 +191,12 @@ const AccountDetails = props => {
                         >
                             <TextField
                                 fullWidth
-                                label="Ім'я користувача"
+                                label="username"
                                 margin="dense"
                                 name="username"
                                 onChange={handleChange}
-
-                                value={"mimi"}
+                                required
+                                value={values.username}
                                 variant="outlined"
                             />
                         </Grid>
@@ -196,7 +207,7 @@ const AccountDetails = props => {
                         >
                             <TextField
                                 fullWidth
-                                label="Ваша стать"
+                                label="Sex"
                                 margin="dense"
                                 name="state"
                                 onChange={handleChange}
@@ -217,83 +228,16 @@ const AccountDetails = props => {
                                 ))}
                             </TextField>
                         </Grid>
+
+
                         <Grid
                             item
                             md={6}
                             xs={12}
                         >
-                            <TextField
-                                fullWidth
-                                label="Країна"
-                                margin="dense"
-                                name="country"
-                                onChange={handleChange}
-                                required
-                                value={values.country}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={4}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="День"
-                                margin="dense"
-                                name="day"
-                                onChange={handleChange}
-                                type="number"
-                                value={values.day}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={4}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Місяць"
-                                margin="dense"
-                                name="month"
-                                onChange={handleChange}
-                                required
-                                select
-                                // eslint-disable-next-line react/jsx-sort-props
-                                SelectProps={{ native: true }}
-                                value={values.month}
-                                variant="outlined"
-                            >
-                                {monthes.map(option => (
-                                    <option
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </TextField>
-                        </Grid>
-                        <Grid
-                            item
-                            md={4}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Рік"
-                                margin="dense"
-                                name="year"
-                                onChange={handleChange}
-                                type="number"
-                                value={values.year}
-                                variant="outlined"
-                            />
 
                         </Grid>
+
                         <Grid
                             item
                             md={6}
@@ -303,7 +247,7 @@ const AccountDetails = props => {
                                 fullWidth
                                 multiline={true}
                                 rows={3}
-                                label="Про мене"
+                                label="About yourself"
                                 margin="dense"
                                 name="about_me"
                                 onChange={handleChange}
@@ -311,8 +255,17 @@ const AccountDetails = props => {
                                 variant="outlined"
                             />
 
+
                         </Grid>
 
+                        <Grid item md={6} xs={12}>
+                          <Typography>
+                            Avatar
+                          </Typography>
+                          <input type="file"
+                                id="image"
+                                  accept="image/png, image/jpeg"  onChange={handleImageChange} required/>
+                        </Grid>
 
                     </Grid>
                 </CardContent>
@@ -321,8 +274,9 @@ const AccountDetails = props => {
                     <Button
                         color="primary"
                         variant="contained"
+                        onClick={handleSubmit}
                     >
-                       Зберегти
+                       Save
                     </Button>
                 </CardActions>
             </form>
@@ -334,4 +288,15 @@ AccountDetails.propTypes = {
     className: PropTypes.string
 };
 
-export default AccountDetails;
+
+
+
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+
+
+export default connect(mapStateToProps)(AccountDetails)

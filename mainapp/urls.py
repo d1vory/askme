@@ -11,6 +11,7 @@ urlpatterns = [
     path('users/<username>/info/', UserAccountInfoView.as_view(), name="user_account_info"),
     path('users/<username>/answers/', AnswersAccountListView.as_view(), name="user_account_answers"),
 
+    path('account/settings/update/', AccountSettingsView.as_view(), name="account_settings_update"),
     path('account/info/', AccountInfoView.as_view(), name="account_info"),
     path('account/answers/',AnswersAccountListView.as_view(), name='account_answers' ),
 

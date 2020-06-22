@@ -8,7 +8,7 @@ import {Grid,Typography,Box, List,Divider } from "@material-ui/core";
 import {connect} from 'react-redux'
 import axios from 'axios'
 import UserItem from '../../components/UserList/UserItem'
-
+import FriendRequests from '../../components/FriendRequests'
 
 class Friends extends Component {
 
@@ -77,9 +77,11 @@ class Friends extends Component {
   render(){
     return(
         <div style={{ display: 'flex', marginTop: 40  }}>
+
           <Grid container spacing={2} direction="column">
             <Grid container item spacing={0} justify="center" >
               <Grid item xs={3}> <Search changeView={this.changeView}  token ={this.props.token} placeholder="Знайти користувача"></Search></Grid>
+            
             </Grid>
             <Grid container item spacing={0} justify="center" >
               <Grid item xs={6} >

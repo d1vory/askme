@@ -8,21 +8,25 @@ from friendship.models import FriendshipRequest,Friend
 class UserSerializer(UserDetailsSerializer):
 
     gender = serializers.CharField(source="myuser.gender")
-
+    avatar = serializers.ImageField(source="myuser.avatar")
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('gender',)
+        fields = UserDetailsSerializer.Meta.fields + ('gender','avatar')
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('myuser', {})
         gender = profile_data.get('gender')
-
+        avatar = profile_data.get('avatar')
         instance = super(UserSerializer, self).update(instance, validated_data)
 
+        print("UPDATE CALLED")
         # get and update user profile
-        profile = instance.userprofile
-        if profile_data and gender:
-            profile.gender = gender
+        profile = instance.myuser
+        if profile_data:
+            if gender:
+                profile.gender = gender
+            if avatar:
+                profile.avatar = avatar
             profile.save()
         return instance
 
