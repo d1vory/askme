@@ -82,19 +82,28 @@ const AccountDetails = props => {
     }
 
     const putChanges = () => {
+      let form_data = new FormData();
+      if(values.image){
+          form_data.append('avatar',values.image, values.image.name );
+      }
+      form_data.append('first_name' , values.firstName)
+      form_data.append('last_name' , values.lastName,)
+      form_data.append('email', values.email,)
+      form_data.append('gender',  values.sex)
       const postData = {
           first_name: values.firstName,
           last_name: values.lastName,
           email: values.email,
-          gender: values.sex
+          gender: values.sex,
+          avatar: values.image
       }
       const config = {
         headers: {
           'Authorization' : `Token ${props.token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         }
       }
-      axios.patch(`http://127.0.0.1:8000/api/account/settings/update/`,postData,config)
+      axios.patch(`http://127.0.0.1:8000/api/account/settings/update/`,form_data,config)
         .then(res => {
             console.log("OOOOKKKK");
           })
