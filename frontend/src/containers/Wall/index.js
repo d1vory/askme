@@ -43,7 +43,7 @@ class Wall extends Component {
     return(
       <div >
         <div className="wall">
-          <QuestionForm />
+          <QuestionForm caller="wall"/>
           <Feed answers={this.state.answers} />
         </div>
       </div>

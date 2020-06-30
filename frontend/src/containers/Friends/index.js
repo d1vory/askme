@@ -92,7 +92,7 @@ class Friends extends Component {
                           <List >
                             {
                               (this.state.userList.map((user,index) => (
-                                <UserItem key={user.id} avatar={user.avatar} isFriend={this.state.showFriends} userId = {user.id} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
+                                <UserItem key={user.pk} avatar={user.avatar} isFriend={this.state.showFriends} userId = {user.pk} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
                               )))
                             }
                           </List>

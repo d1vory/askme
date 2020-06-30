@@ -85,12 +85,33 @@ class SignIn extends React.Component {
     this.setState({isRemember:isRemember})
   }
 
-  handleSubmit = (e) => {
+  firstFunction = (_callback) => {
+    // do some asynchronous work
+    // and when the asynchronous stuff is complete
+
+    _callback();
+  }
+
+  main =  async() => {
+  try {
+    await this.props.onAuth(this.state.username, this.state.password);
+
+  } catch(error) {
+    console.error(error);
+    }
+  }
+
+
+  handleSubmit = async (e) => {
     e.preventDefault();
 
-    this.props.onAuth(this.state.username, this.state.password)
+    //this.props.onAuth(this.state.username, this.state.password)
+    this.main();
+    this.props.history.push('/wall')
+    // this.firstFunction(() => {
+    //   this.props.history.push('/wall')
+    // })
 
-    //this.props.history.push('/wall')
     // it redirects before auth is done
     // fix it
   }

@@ -12,18 +12,6 @@ from rest_framework import status
 from rest_framework import filters
 
 
-# Create your views here.
-
-
-# class AnswerViewSet(viewsets.ModelViewSet):
-#     queryset = Answer.objects.all()
-#     serializer_class = AnswerSerializer
-#
-#     def get_serializer_class(self):
-#         if self.action == 'list':
-#             return AnswerSerializer
-#         elif self.action == 'create':
-#             return AnswerCreateSerializer
 
 class UserAccountInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
@@ -113,6 +101,33 @@ class AnswersListView(generics.ListAPIView):
                                         """,[user.id])
 
         return queryset
+
+class MultipleQuestionsCreateView(generics.CreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    # def get_serializer(self, *args, **kwargs):
+    #     serializer_class = self.get_serializer_class()
+    #     kwargs['context'] = self.get_serializer_context()
+    #     return serializer_class(*args, **kwargs)
+
+    def create(self,request, *args, **kwargs ):
+        user = self.request.user
+
+        questionData = request.data
+        resData = []
+        for askedUserId in questionData['askedUsers']:
+            dict = {'question_text' :questionData['question_text'], 'askedUser': askedUserId }
+            if not questionData['isAnon']:
+                dict['asker'] = user.id
+            resData.append(dict)
+
+        serializer = self.get_serializer(data=resData, many=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class QuestionCreateView(generics.CreateAPIView):
     queryset = Question.objects.all()

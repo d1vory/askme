@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(9),
     height: theme.spacing(9),
   },
+  disableLink:{
+    pointerEvents: 'none'
+  }
 }));
 
 
@@ -24,27 +27,31 @@ export default function UserInfo(props){
     <Box mb={2}>
       <Grid container direction="row">
         <Box mr = {2}>
-          <Link to = {`/user/${props.askedUserUsername}/`} >
+          <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} >
           <Avatar alt="avatar" src = {props.avatar}  className={classes.largeAvatar} />
           </Link>
         </Box>
         <Box >
 
-          <Link to = {`/user/${props.askedUserUsername}/`} style={{ textDecoration: 'none', color:'inherit' }} >
+          <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} style={{ textDecoration: 'none', color:'inherit' }} >
           <Typography variant= 'h6'>
             {askedUserFirstLastName}
           </Typography>
         </Link>
 
-          <Link to = {`/user/${props.askedUserUsername}/`} style={{ textDecoration: 'none', color:'inherit' }} >
+          <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} style={{ textDecoration: 'none', color:'inherit' }} >
           <Typography variant= 'subtitle1' color='textSecondary'>
             {'@' + props.askedUserUsername}
           </Typography>
           </Link>
+          {
+            props.whenAnswered ? (  <Typography  variant='subtitle2' color='textSecondary'>
+                {props.whenAnswered}
+              </Typography>)
+              :
+              undefined
+          }
 
-          <Typography  variant='subtitle2' color='textSecondary'>
-            {props.whenAnswered}
-          </Typography>
         </Box>
       </Grid>
     </Box>

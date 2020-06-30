@@ -114,11 +114,12 @@ class Answer extends Component {
     const { classes } = this.props;
     const likeIcon =  this.state.isLiked ?  <ThumbUpRoundedIcon className={classes.likedButton}/> :   <ThumbUpRoundedIcon/>
     const dislikeIcon =  this.state.isDisliked ?  <ThumbDownRoundedIcon className={classes.dislikedButton}/> :   <ThumbDownRoundedIcon/>
+    const subheader = this.props.asker ? (<Link style={{ textDecoration: 'none', color:'inherit' }} to = {`/user/${this.props.asker.username}/`} > {'@' + this.props.asker.username} </Link> ): undefined
     return (
       <Box my={2}>
         <Card variant="outlined">
           <CardHeader title= {this.props.questionText} titleTypographyProps = {{variant:'h4'}}
-                      subheader={this.props.asker ? ('@' + this.props.asker.username) : undefined}/>
+                      subheader={subheader}  subheaderTypographyProps={{ color:'textSecondary' }}/>
 
           <CardContent>
             <UserInfo whenAnswered={this.props.whenAnswered}

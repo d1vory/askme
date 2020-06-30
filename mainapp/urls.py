@@ -20,6 +20,7 @@ urlpatterns = [
     path('answers/create/',AnswerCreateView.as_view(), name='create_answer' ),
     path('answers/',AnswersListView.as_view(), name='wall_answers' ),
 
+    path('questions/multiple/create/',MultipleQuestionsCreateView.as_view(), name='create_multiple_questions' ),
     path('questions/create/',QuestionCreateView.as_view(), name='create_question' ),
     path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
 
