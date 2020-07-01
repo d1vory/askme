@@ -9,6 +9,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
   },
+  mediumAvatar: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
   largeAvatar: {
     width: theme.spacing(9),
     height: theme.spacing(9),
@@ -21,14 +25,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserInfo(props){
   const classes = useStyles();
-
   const askedUserFirstLastName = props.firstName + ' ' + props.lastName
   return(
     <Box mb={2}>
       <Grid container direction="row">
         <Box mr = {2}>
           <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} >
-          <Avatar alt="avatar" src = {props.avatar}  className={classes.largeAvatar} />
+          <Avatar alt="avatar" src = {props.avatar}  className={props.avatarSize ? classes[props.avatarSize] : classes.largeAvatar} />
           </Link>
         </Box>
         <Box >

@@ -191,6 +191,6 @@ class FriendListView(generics.ListAPIView):
 
 class UserSearchListView(generics.ListAPIView):
     queryset = User.objects.all()
-    serializer_class = DefaultUserSerializer
-    search_fields= ['username']
+    serializer_class = UserSerializer
+    search_fields= ['username','first_name','last_name']
     filter_backends = (filters.SearchFilter,)

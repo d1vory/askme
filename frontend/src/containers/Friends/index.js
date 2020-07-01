@@ -4,7 +4,7 @@ import React,{Component} from 'react'
 import './styles.css'
 import Search from "../../components/UserSearch";
 //import UserList from "../../components/UserList";
-import {Grid,Typography,Box, List,Divider } from "@material-ui/core";
+import {Grid,Typography,Box, List,Divider,Container } from "@material-ui/core";
 import {connect} from 'react-redux'
 import axios from 'axios'
 import UserItem from '../../components/UserList/UserItem'
@@ -26,7 +26,7 @@ class Friends extends Component {
         }
     }).then(res => {
       //console.log(res.data);
-      console.log("FETCHED ", res.data);
+    //  console.log("FETCHED ", res.data);
       if( res.data.length > 0){
         this.setState({
           userList : res.data
@@ -53,9 +53,9 @@ class Friends extends Component {
   }
 
   componentDidMount(){
-    console.log("DID MOUNT FETCH without token");
+
     if (this.props.token !== null){
-      console.log("DID MOUNT FETCH");
+
       this.fetchFriends(this.props.token)
     }
   }
@@ -83,8 +83,10 @@ class Friends extends Component {
               <Grid item xs={3}> <Search changeView={this.changeView}  token ={this.props.token} placeholder="Знайти користувача"></Search></Grid>
 
             </Grid>
-            <Grid container item spacing={0} justify="center" >
-              <Grid item xs={6} >
+
+
+            <Grid  justify="center" >
+              <Container>
                 {
                   (!this.state.error) ?
                     (
@@ -104,7 +106,7 @@ class Friends extends Component {
                     </Typography>)
                 }
 
-              </Grid>
+              </Container>
             </Grid>
           </Grid>
         </div>

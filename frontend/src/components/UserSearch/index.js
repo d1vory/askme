@@ -27,11 +27,11 @@ class UserSearch extends React.Component {
       if(res.data.length > 0 ){
         this.props.changeView(res.data, '', false)
       }else{
-        this.props.changeView(null, 'Nothing found!',false)
+        this.props.changeView([], 'Nothing found!',false)
       }
 
     }).catch(error => {
-      this.props.changeView(null, error,false)
+      this.props.changeView([], error,false)
     })
   }
 
@@ -51,7 +51,7 @@ class UserSearch extends React.Component {
     if( this.state.searchValue.length > 3 ){
       this.filter()
     }else{
-      this.props.changeView(null,'nothing found',false)
+      this.props.changeView([],'nothing found',false)
     }
   }
 
@@ -59,7 +59,7 @@ class UserSearch extends React.Component {
     this.setState({
       searchValue:''
     })
-    //this.props.changeView(null,'',true)
+    this.props.changeView([],'',true)
   }
 
   render(){
