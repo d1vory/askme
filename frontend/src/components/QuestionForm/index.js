@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
 import './styles.css'
 import SendIcon from '@material-ui/icons/Send';
-import {Box,Card,CardHeader,CardContent,Typography,Button,
+import {Box,Card,CardHeader,CardContent,Typography,Button,Snackbar,
         FormControl,FormGroup,FormControlLabel,Switch,FilledInput,IconButton,Grid,List,Checkbox} from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
+import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios'
 import {connect} from 'react-redux'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
@@ -11,6 +12,11 @@ import UserItem from '../UserList/UserItem'
 import UserInfo from '../Answer/UserInfo'
 import UserCheckbox from './UserCheckbox'
 import Popup from "reactjs-popup";
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 class QuestionForm extends Component {
@@ -24,7 +30,8 @@ class QuestionForm extends Component {
                   openFriends:false,
                   userList:[],
                   checkedUsers:[],
-                  error:''
+                  error:'',
+                  snackbarOpen:false
                  }
 
     this.handleTextChange = this.handleTextChange.bind(this)
@@ -114,23 +121,32 @@ class QuestionForm extends Component {
       askedUsers: this.state.userList.filter((item,i) => this.state.checkedUsers[i]).map((user) => user.pk),
       isAnon: this.state.toggleValue
     }
-    console.log(postData);
-
-    const config = {
-      headers: {
-        'Authorization' : `Token ${this.props.token}`,
-        'Content-Type': 'application/json'
+    if( postData.askedUsers.length == 0){
+      this.setState({snackbarOpen:true})
+    }else{
+      const config = {
+        headers: {
+          'Authorization' : `Token ${this.props.token}`,
+          'Content-Type': 'application/json'
+        }
       }
+      axios.post('http://127.0.0.1:8000/api/questions/multiple/create/',postData,config)
+        .then(res => {this.setState({textValue:'',openFriends:false}) }  )
+        .catch(err => console.log(err))
     }
-    axios.post('http://127.0.0.1:8000/api/questions/multiple/create/',postData,config)
-      .then(res => {this.setState({textValue:''}); this.props.closeElement(); }  )
-      .catch(err => console.log(err))
   }
 
   handleToggle(){
     this.setState((state,props) => ({toggleValue : !state.toggleValue}))
   }
 
+  handleSnackbarClose = (event,reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({snackbarOpen:false})
+  }
 
   render(){
     const closeButton =(
@@ -205,6 +221,12 @@ class QuestionForm extends Component {
           </Popup>
 
         </Card>
+
+        <Snackbar open={this.state.snackbarOpen} autoHideDuration={2000} onClose = {this.handleSnackbarClose}>
+          <Alert onClose={this.handleSnackbarClose} severity = 'error' >
+            You should select one or more friends
+          </Alert>
+        </Snackbar>
 
       </Box>
     )
