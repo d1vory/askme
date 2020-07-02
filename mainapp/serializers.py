@@ -30,7 +30,7 @@ class UserSerializer(UserDetailsSerializer):
             profile.save()
         return instance
 
-    
+
 
 
 
@@ -64,10 +64,10 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
-
+    from_user = UserSerializer(many=False)
     class Meta:
         model = FriendshipRequest
-        fields = ('id', 'from_user', 'to_user', 'message', 'created', 'rejected', 'viewed')
+        fields = ('id', 'from_user', 'to_user', 'message', 'created', 'rejected')
 
 class FriendSerializer(serializers.ModelSerializer):
 

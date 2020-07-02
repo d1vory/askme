@@ -28,7 +28,7 @@ export default function UserInfo(props){
   const askedUserFirstLastName = props.firstName + ' ' + props.lastName
   return(
     <Box mb={2}>
-      <Grid container direction="row">
+      <Grid container direction="row" alignItems="center">
         <Box mr = {2}>
           <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} >
           <Avatar alt="avatar" src = {props.avatar}  className={props.avatarSize ? classes[props.avatarSize] : classes.largeAvatar} />
@@ -37,13 +37,13 @@ export default function UserInfo(props){
         <Box >
 
           <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} style={{ textDecoration: 'none', color:'inherit' }} >
-          <Typography variant= 'h6'>
+          <Typography variant={ props.firstLastNameVariant ?  props.firstLastNameVariant : 'h6'}>
             {askedUserFirstLastName}
           </Typography>
         </Link>
 
           <Link to = {`/user/${props.askedUserUsername}/`} className={props.isDisabled && classes.disableLink} style={{ textDecoration: 'none', color:'inherit' }} >
-          <Typography variant= 'subtitle1' color='textSecondary'>
+          <Typography variant= {props.usernameVariant ? props.usernameVariant : 'subtitle2'} color='textSecondary'>
             {'@' + props.askedUserUsername}
           </Typography>
           </Link>

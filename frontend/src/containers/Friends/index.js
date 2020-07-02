@@ -4,18 +4,19 @@ import React,{Component} from 'react'
 import './styles.css'
 import Search from "../../components/UserSearch";
 //import UserList from "../../components/UserList";
-import {Grid,Typography,Box, List,Divider,Container } from "@material-ui/core";
+import {Grid,Typography,Box, List,Divider,Container,Button } from "@material-ui/core";
 import {connect} from 'react-redux'
 import axios from 'axios'
 import UserItem from '../../components/UserList/UserItem'
-import FriendRequests from '../../components/FriendRequests'
+import FriendRequestsDrawer from '../../components/FriendRequestsDrawer'
 
 class Friends extends Component {
 
   state = {
     showFriends:true,
     error:'',
-    userList:[]
+    userList:[],
+    isFriendReqestsDrawerOpen:false
   }
 
   fetchFriends= (token) => {
@@ -74,12 +75,30 @@ class Friends extends Component {
       }
   }
 
+  toggleFriendReqestsDrawer = (open) => {
+    this.setState({
+      isFriendReqestsDrawerOpen:open
+    })
+  }
+
+
+  handleFriendReqestsButton =  (event) => {
+    this.toggleFriendReqestsDrawer(true)
+
+
+  }
+
   render(){
     return(
         <div style={{ display: 'flex', marginTop: 40  }}>
 
           <Grid container spacing={2} direction="column">
-            <Grid container item spacing={0} justify="center" >
+            <Grid container item spacing={0} justify="space-around" alignItems='baseline'>
+
+              <Grid item xs={3} >
+                <Button variant="outlined" color="primary" onClick={this.handleFriendReqestsButton}> Friend requests</Button>
+              </Grid>
+
               <Grid item xs={3}> <Search changeView={this.changeView}  token ={this.props.token} placeholder="Знайти користувача"></Search></Grid>
 
             </Grid>
@@ -109,6 +128,7 @@ class Friends extends Component {
               </Container>
             </Grid>
           </Grid>
+          <FriendRequestsDrawer isOpen={this.state.isFriendReqestsDrawerOpen} fetchFriends= {this.fetchFriends} toggleDrawer={this.toggleFriendReqestsDrawer}/>
         </div>
     )
   }

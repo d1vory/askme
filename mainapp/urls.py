@@ -24,6 +24,10 @@ urlpatterns = [
     path('questions/create/',QuestionCreateView.as_view(), name='create_question' ),
     path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
 
+
+    path('friendship/reject/<pk>/', rejectFriendshipView ,name='reject_friend_request'),
+    path('friendship/create/<pk>/', AcceptFriendshipView.as_view(),name='accept_friend_request'),
+    path('friends/requests/', FriendRequestsListView.as_view(),name='friend_requests_list'),
     path('friends/', FriendListView.as_view(),name='friends_list'),
     path('users/search/', UserSearchListView.as_view(), name='user_search')
 ]

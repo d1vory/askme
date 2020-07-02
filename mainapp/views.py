@@ -1,16 +1,15 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
-from rest_framework import viewsets
+
 from .serializers import *
 from .models import MyUser,Question, Answer
 from django.contrib.auth.models import User
-from rest_framework import generics
-from rest_framework import permissions
+from rest_framework import generics,viewsets, permissions, status, filters
+
 from friendship.models import FriendshipRequest,Friend
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import filters
 
+from rest_framework.decorators import api_view
 
 
 class UserAccountInfoView(generics.RetrieveAPIView):
@@ -188,6 +187,34 @@ class FriendListView(generics.ListAPIView):
         #print(queryset)
         return queryset
 
+@api_view(['GET', 'POST'])
+def rejectFriendshipView(request,pk):
+    friend_request = FriendshipRequest.objects.get(id=pk)
+    friend_request.cancel()
+    return Response({'message':'friendship request rejected'}, status=status.HTTP_200_OK)
+
+
+class AcceptFriendshipView(generics.CreateAPIView):
+    serializer_class = FriendshipRequestSerializer
+    queryset = Friend.objects.all()
+
+    def create(self,request, *args, **kwargs ):
+        print('CREATE CALLED')
+        print(self.kwargs)
+        friend_request = FriendshipRequest.objects.get(id=self.kwargs['pk'])
+        friend_request.accept()
+
+        return Response({'Success':'friendship created'}, status=status.HTTP_201_CREATED )
+
+class FriendRequestsListView(generics.ListAPIView):
+    serializer_class = FriendshipRequestSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        #queryset= Friend.objects.unrejected_requests(user)
+        q2 = FriendshipRequest.objects.filter(to_user=user.id).filter(rejected = None)
+
+        return q2
 
 class UserSearchListView(generics.ListAPIView):
     queryset = User.objects.all()
