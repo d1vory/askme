@@ -4,11 +4,14 @@ import React,{Component} from 'react'
 import './styles.css'
 import Search from "../../components/UserSearch";
 //import UserList from "../../components/UserList";
-import {Grid,Typography,Box, List,Divider,Container,Button } from "@material-ui/core";
+import {Grid,Typography,Box, List,Divider,Container,Button,Snackbar } from "@material-ui/core";
 import {connect} from 'react-redux'
 import axios from 'axios'
 import UserItem from '../../components/UserList/UserItem'
 import FriendRequestsDrawer from '../../components/FriendRequestsDrawer'
+import MuiAlert from '@material-ui/lab/Alert';
+
+
 
 class Friends extends Component {
 
@@ -16,7 +19,10 @@ class Friends extends Component {
     showFriends:true,
     error:'',
     userList:[],
-    isFriendReqestsDrawerOpen:false
+    isFriendReqestsDrawerOpen:false,
+    openInfo:false,
+    infoMessage:'',
+    infoType:''
   }
 
   fetchFriends= (token) => {
@@ -85,7 +91,20 @@ class Friends extends Component {
   handleFriendReqestsButton =  (event) => {
     this.toggleFriendReqestsDrawer(true)
 
+  }
 
+  openInfo = (message, type) => {
+    this.setState({
+      openInfo:true,
+      infoMessage:message,
+      infoType:type
+    })
+  }
+
+  handleInfoClose = () => {
+    this.setState({
+      openInfo:false
+    })
   }
 
   render(){
@@ -113,7 +132,9 @@ class Friends extends Component {
                           <List >
                             {
                               (this.state.userList.map((user,index) => (
-                                <UserItem key={user.pk} avatar={user.avatar} isFriend={this.state.showFriends} userId = {user.pk} firstName={user.first_name}  lastName={user.last_name} username={user.username}  />
+                                <UserItem token={this.props.token} key={user.pk} avatar={user.avatar}
+                                  isFriend={this.state.showFriends} userId = {user.pk} firstName={user.first_name}
+                                  lastName={user.last_name} username={user.username}  openInfo={this.openInfo}/>
                               )))
                             }
                           </List>
@@ -129,6 +150,13 @@ class Friends extends Component {
             </Grid>
           </Grid>
           <FriendRequestsDrawer isOpen={this.state.isFriendReqestsDrawerOpen} fetchFriends= {this.fetchFriends} toggleDrawer={this.toggleFriendReqestsDrawer}/>
+
+          <Snackbar open={this.state.openInfo} autoHideDuration={6000} onClose={this.handleInfoClose}>
+             <MuiAlert elevation={6} severity={this.state.infoType} onClose={this.handleInfoClose} >
+               {this.state.infoMessage}
+             </MuiAlert>
+          </Snackbar>
+
         </div>
     )
   }

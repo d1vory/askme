@@ -25,6 +25,7 @@ urlpatterns = [
     path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
 
 
+    path('friendship/request/create/<pk>/', createFrienshipRequestView ,name='create_friendship_request'),
     path('friendship/reject/<pk>/', rejectFriendshipView ,name='reject_friend_request'),
     path('friendship/create/<pk>/', AcceptFriendshipView.as_view(),name='accept_friend_request'),
     path('friends/requests/', FriendRequestsListView.as_view(),name='friend_requests_list'),

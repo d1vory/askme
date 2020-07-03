@@ -10,7 +10,8 @@ from friendship.models import FriendshipRequest,Friend
 from rest_framework.response import Response
 
 from rest_framework.decorators import api_view
-
+from django.core.exceptions import ValidationError
+from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
 
 class UserAccountInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
@@ -186,6 +187,19 @@ class FriendListView(generics.ListAPIView):
         serializer = self.serializer_class(queryset, many=True)
         #print(queryset)
         return queryset
+
+@api_view(['GET', 'POST'])
+def createFrienshipRequestView(request,pk):
+    sender = request.user
+    recipient = User.objects.get(pk=pk)
+    try:
+        Friend.objects.add_friend(sender,recipient)
+    except (ValidationError,AlreadyFriendsError,AlreadyExistsError) as e:
+        print('--------',type(e))
+        print('=======',str(e))
+        return Response({'message':str(e)}, status = status.HTTP_409_CONFLICT)
+
+    return Response({'message':'friendship request created'}, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
 def rejectFriendshipView(request,pk):

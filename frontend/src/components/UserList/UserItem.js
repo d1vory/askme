@@ -5,11 +5,24 @@ import Popup from "reactjs-popup";
 import QuestionForm from '../QuestionForm'
 import UserInfo from '../Answer/UserInfo'
 import {Link } from 'react-router-dom'
+import axios from 'axios'
 
 export default function UserItem(props){
-
   const handleSendFriendRequestButton = (event) => {
+    const config = {
+      headers: {
+        'Authorization' : `Token ${props.token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+    axios.post(`http://127.0.0.1:8000/api/friendship/request/create/${props.userId}/`,{}, config)
+      .then(res => {
+            props.openInfo(res.data.message, 'success')
+                    })
+      .catch(err => {
 
+        props.openInfo(err.response.data.message, 'error')
+      })
   }
 
   const firstLastName = props.firstName + ' ' + props.lastName
