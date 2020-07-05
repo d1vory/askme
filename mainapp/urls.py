@@ -9,7 +9,7 @@ router.register(r'questions', QuestionViewSet, basename='questions')
 urlpatterns = [
     #path('questions/',QuestionList.as_view(), name= 'questions'),
     path('users/<username>/info/stats/', AccountInfoStatsView, name="user_info_stats"),
-    path('users/<username>/info/', UserAccountInfoView.as_view(), name="user_account_info"),
+    path('users/<username>/info/', AccountInfoView.as_view(), name="user_account_info"),
     path('users/<username>/answers/', AnswersAccountListView.as_view(), name="user_account_answers"),
 
     path('account/settings/update/', AccountSettingsView.as_view(), name="account_settings_update"),
@@ -24,7 +24,7 @@ urlpatterns = [
 
     path('questions/multiple/create/',MultipleQuestionsCreateView.as_view(), name='create_multiple_questions' ),
     path('questions/create/',QuestionCreateView.as_view(), name='create_question' ),
-    path('questions/<pk>/delete/',QestionDeleteView.as_view(), name= 'delete_question'),
+    path('questions/<pk>/delete/',QuestionDeleteView.as_view(), name= 'delete_question'),
 
 
     path('friendship/delete/<pk>/',deleteFrienshipView ,name='delete_friendship'),

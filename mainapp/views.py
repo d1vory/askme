@@ -1,51 +1,25 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db.models import Sum, Subquery
+
+from rest_framework import generics,viewsets, permissions, status, filters
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
+from friendship.models import FriendshipRequest,Friend
 
 from .serializers import *
 from .models import MyUser,Question, Answer
-from django.contrib.auth.models import User
-from rest_framework import generics,viewsets, permissions, status, filters
-
-from friendship.models import FriendshipRequest,Friend
-from rest_framework.response import Response
-
-from rest_framework.decorators import api_view
-from django.core.exceptions import ValidationError
-from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
-from django.db.models import Sum, Subquery
-from .utils import get_len
-from django.db import connection
 
 
-def selectAnswers(user):
-    queryset = Answer.objects.raw("""
-                                        SELECT *
-                                        FROM mainapp_answer
-                                        WHERE question_id IN(
-                                        				SELECT id
-                                        				FROM mainapp_question
-                                        				where askeduser_id = %s AND mainapp_question.id IN (
-                                        							  SELECT mainapp_answer.question_id
-                                        							  FROM mainapp_answer))
-                                        							ORDER BY timestamp DESC;
-                                    """,[user.id])
-    return queryset
-
-
-class UserAccountInfoView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-
-    def get_object(self):
-        #print(self.request.__dict__)
-        #print(self.kwargs)
-        username = self.kwargs['username']
-        #print(username)
-        user = User.objects.get(username=username)
-        obj = get_object_or_404(User, pk=user.id)
-        return obj
 
 class AccountSettingsView(generics.UpdateAPIView):
+    """
+        updates information about user
+    """
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
@@ -55,15 +29,19 @@ class AccountSettingsView(generics.UpdateAPIView):
         return obj
 
     def put(self, request, *args, **kwargs):
-        #print("PUT CALLED")
         return self.partial_update(request, *args, **kwargs)
 
+
 class AccountInfoView(generics.RetrieveAPIView):
+    """
+        provides basic information about user
+    """
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
     def get_object(self):
-        user = self.request.user
+        # if it's called with username in url then use that user and signed in user otherwise
+        user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
         obj = get_object_or_404(User, pk=user.id)
         return obj
 
@@ -87,7 +65,6 @@ def AccountInfoStatsView(request,username=None):
     answersCount = answers.count()
 
     friendsCount = len(Friend.objects.friends(user))
-
     likesCount = answers.aggregate(Sum('likes'))['likes__sum']
 
     return Response(data = {'answersCount': answersCount, 'friendsCount':friendsCount,'likesCount':likesCount}, status = status.HTTP_200_OK)
@@ -95,14 +72,20 @@ def AccountInfoStatsView(request,username=None):
 
 
 class AnswerCreateView(generics.CreateAPIView):
+    """
+        Creates answers
+    """
+
     serializer_class = AnswerCreateSerializer
     queryset = Answer.objects.all()
 
 
 class AnswerLikeView(generics.UpdateAPIView):
+    """
+        Updates like or dislike amount of specific answer
+    """
     serializer_class = AnswerSerializer
     queryset = Answer.objects.all()
-
 
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
@@ -110,15 +93,27 @@ class AnswerLikeView(generics.UpdateAPIView):
 
 
 class AnswersAccountListView(generics.ListAPIView):
+    """
+        Provides queryset of all answers that answered specific user
+    """
+
     serializer_class = AnswerSerializer
 
     def get_queryset(self):
         user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
-        queryset = selectAnswers(user)
-        return queryset
+        #questions related to specific user
+        questions = Question.objects.filter(askedUser_id = user.id)
+
+        #answers related to specific user
+        answers = Answer.objects.filter(question__in  = questions)
+        return answers.order_by('-timestamp')
 
 
 class AnswersListView(generics.ListAPIView):
+    """
+        Provides queryset of all answers that user's friends posted
+    """
+
     serializer_class = AnswerSerializer
 
     def get_queryset(self):
@@ -140,14 +135,12 @@ class AnswersListView(generics.ListAPIView):
         return queryset
 
 class MultipleQuestionsCreateView(generics.CreateAPIView):
+    """
+        Creates questions with same text to multiple users
+    """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = (permissions.IsAuthenticated, )
-
-    # def get_serializer(self, *args, **kwargs):
-    #     serializer_class = self.get_serializer_class()
-    #     kwargs['context'] = self.get_serializer_context()
-    #     return serializer_class(*args, **kwargs)
 
     def create(self,request, *args, **kwargs ):
         user = self.request.user
@@ -166,20 +159,22 @@ class MultipleQuestionsCreateView(generics.CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+
+
 class QuestionCreateView(generics.CreateAPIView):
+    """
+        Creates a single question to user
+    """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
     def create(self,request, *args, **kwargs):
-        tokenStr = self.request.headers['Authorization']
-        tokenVal = tokenStr.split()[1]
-        user = User.objects.get(auth_token=tokenVal)
+        user = request.user
 
-        questionData = request.data
-        resData = {}
-        resData['askedUser'] = request.data['askedUser']
-        resData['question_text'] = request.data['question_text']
+        resData = {'askedUser': request.data['askedUser'], 'question_text':request.data['question_text']    }
+
+        #if question is anonymous then asker = null
         if not request.data['isAnon']:
             resData['asker'] = user.id
 
@@ -190,7 +185,10 @@ class QuestionCreateView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class QestionDeleteView(generics.DestroyAPIView):
+class QuestionDeleteView(generics.DestroyAPIView):
+    """
+        Deletes specific question
+    """
     serializer_class = QuestionSerializer
     queryset = Question.objects.all()
     permission_classes = (permissions.IsAuthenticated, )
@@ -198,21 +196,26 @@ class QestionDeleteView(generics.DestroyAPIView):
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
+    """
+        Provides unaswered questions to related user
+    """
     serializer_class = QuestionSerializer
 
     def get_queryset(self):
-        #get token string from corsheaders
-        #print('USER IS ====== ' , self.request.user)
-        tokenStr = self.request.headers['Authorization']
-        tokenVal = tokenStr.split()[1]
+        user = self.request.user
 
-        user = User.objects.get(auth_token=tokenVal)
-        # get unanswered questions
-        queryset = Question.objects.raw('SELECT * FROM mainapp_question where askeduser_id = %s AND mainapp_question.id NOT IN ( SELECT mainapp_answer.question_id FROM mainapp_answer) ORDER BY timestamp DESC;',[user.id])
+        #all answers
+        answers = Answer.objects.all()
 
-        return queryset
+        #unaswered questions asked to user
+        questions = Question.objects.filter(askedUser = user).exclude(answer__in  = answers).order_by('-timestamp')
+
+        return questions
 
 class FriendListView(generics.ListAPIView):
+    """
+        Provides list of user's friends
+    """
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -228,6 +231,10 @@ class FriendListView(generics.ListAPIView):
 
 @api_view(['GET', 'POST'])
 def deleteFrienshipView(request,pk):
+    """
+        Remove specific user from friends
+    """
+
     other_user = User.objects.get(pk=pk)
     if Friend.objects.remove_friend(request.user, other_user ):
         return Response({'message':'User was deleted from friends'}, status=status.HTTP_200_OK)
@@ -239,25 +246,32 @@ def deleteFrienshipView(request,pk):
 
 @api_view(['GET', 'POST'])
 def createFrienshipRequestView(request,pk):
+    """
+        Add specific user to friends
+    """
     sender = request.user
     recipient = User.objects.get(pk=pk)
     try:
         Friend.objects.add_friend(sender,recipient)
     except (ValidationError,AlreadyFriendsError,AlreadyExistsError) as e:
-        #print('--------',type(e))
-        #print('=======',str(e))
         return Response({'message':str(e)}, status = status.HTTP_409_CONFLICT)
 
     return Response({'message':'friendship request created'}, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
 def rejectFriendshipView(request,pk):
+    """
+        Reject friendship request
+    """
     friend_request = FriendshipRequest.objects.get(id=pk)
     friend_request.cancel()
     return Response({'message':'friendship request rejected'}, status=status.HTTP_200_OK)
 
 
 class AcceptFriendshipView(generics.CreateAPIView):
+    """
+        Accept frienship request
+    """
     serializer_class = FriendshipRequestSerializer
     queryset = Friend.objects.all()
 
@@ -270,6 +284,9 @@ class AcceptFriendshipView(generics.CreateAPIView):
         return Response({'Success':'friendship created'}, status=status.HTTP_201_CREATED )
 
 class FriendRequestsListView(generics.ListAPIView):
+    """
+        Provides list of friend requests to specific user
+    """
     serializer_class = FriendshipRequestSerializer
 
     def get_queryset(self):
@@ -280,6 +297,10 @@ class FriendRequestsListView(generics.ListAPIView):
         return q2
 
 class UserSearchListView(generics.ListAPIView):
+    """
+        Search users
+    """
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     search_fields= ['username','first_name','last_name']
