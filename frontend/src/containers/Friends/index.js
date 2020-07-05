@@ -67,6 +67,14 @@ class Friends extends Component {
     }
   }
 
+  removeFromFriends = (index) => {
+    let friendsCopy = [...this.state.userList]
+    friendsCopy.splice(index,1)
+    this.setState({
+      userList:friendsCopy
+    })
+  }
+
 
 
   changeView = (userList, error,showFriends) => {
@@ -134,7 +142,8 @@ class Friends extends Component {
                               (this.state.userList.map((user,index) => (
                                 <UserItem token={this.props.token} key={user.pk} avatar={user.avatar}
                                   isFriend={this.state.showFriends} userId = {user.pk} firstName={user.first_name}
-                                  lastName={user.last_name} username={user.username}  openInfo={this.openInfo}/>
+                                  lastName={user.last_name} username={user.username}  openInfo={this.openInfo}
+                                  removeFromFriends= {this.removeFromFriends} index = {index}/>
                               )))
                             }
                           </List>

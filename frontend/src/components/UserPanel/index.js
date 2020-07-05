@@ -21,7 +21,7 @@ class UserPanel extends React.Component {
 
   render(){
     const { classes } = this.props;
-    
+
     return(
       <Grid container direction="row" justify="space-between">
         <Box>
@@ -45,15 +45,13 @@ class UserPanel extends React.Component {
             </Box>
 
 
-            <Grid>
-              <Button variant="outlined" > Add to friends </Button>
-            </Grid>
+
           </Box>
 
       </Box>
         </Grid>
     </Box>
-      <UserStats />
+      <UserStats stats={this.props.stats}/>
       </Grid>
     )
   }

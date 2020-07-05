@@ -12,6 +12,25 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.core.exceptions import ValidationError
 from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
+from django.db.models import Sum, Subquery
+from .utils import get_len
+from django.db import connection
+
+
+def selectAnswers(user):
+    queryset = Answer.objects.raw("""
+                                        SELECT *
+                                        FROM mainapp_answer
+                                        WHERE question_id IN(
+                                        				SELECT id
+                                        				FROM mainapp_question
+                                        				where askeduser_id = %s AND mainapp_question.id IN (
+                                        							  SELECT mainapp_answer.question_id
+                                        							  FROM mainapp_answer))
+                                        							ORDER BY timestamp DESC;
+                                    """,[user.id])
+    return queryset
+
 
 class UserAccountInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
@@ -36,7 +55,7 @@ class AccountSettingsView(generics.UpdateAPIView):
         return obj
 
     def put(self, request, *args, **kwargs):
-        print("PUT CALLED")
+        #print("PUT CALLED")
         return self.partial_update(request, *args, **kwargs)
 
 class AccountInfoView(generics.RetrieveAPIView):
@@ -47,6 +66,33 @@ class AccountInfoView(generics.RetrieveAPIView):
         user = self.request.user
         obj = get_object_or_404(User, pk=user.id)
         return obj
+
+@api_view(['GET'])
+def AccountInfoStatsView(request,username=None):
+    """
+        Provides user statistics related to specific user
+    """
+
+    #if username is passed through url, then send stat to its user
+    #else send stat to signed in user
+    user = request.user
+    if username is not None:
+        user = User.objects.get(username=username)
+
+    #questions related to specific user
+    questions = Question.objects.filter(askedUser_id = user.id)
+
+    #answers related to specific user
+    answers = Answer.objects.filter(question__in  = questions)
+    answersCount = answers.count()
+
+    friendsCount = len(Friend.objects.friends(user))
+
+    likesCount = answers.aggregate(Sum('likes'))['likes__sum']
+
+    return Response(data = {'answersCount': answersCount, 'friendsCount':friendsCount,'likesCount':likesCount}, status = status.HTTP_200_OK)
+
+
 
 class AnswerCreateView(generics.CreateAPIView):
     serializer_class = AnswerCreateSerializer
@@ -68,16 +114,7 @@ class AnswersAccountListView(generics.ListAPIView):
 
     def get_queryset(self):
         user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
-        queryset = Answer.objects.raw("""
-                                        SELECT *
-                                        FROM mainapp_answer
-                                        WHERE question_id IN(
-                                                        SELECT id
-                                                        FROM mainapp_question
-                                                        where askeduser_id = %s AND mainapp_question.id IN (
-                                                                      SELECT mainapp_answer.question_id
-                                                                      FROM mainapp_answer))
-                                                                    ORDER BY timestamp DESC; """,[user.id])
+        queryset = selectAnswers(user)
         return queryset
 
 
@@ -188,6 +225,18 @@ class FriendListView(generics.ListAPIView):
         #print(queryset)
         return queryset
 
+
+@api_view(['GET', 'POST'])
+def deleteFrienshipView(request,pk):
+    other_user = User.objects.get(pk=pk)
+    if Friend.objects.remove_friend(request.user, other_user ):
+        return Response({'message':'User was deleted from friends'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'message':'Something went wrong'}, status = status.HTTP_409_CONFLICT)
+
+
+
+
 @api_view(['GET', 'POST'])
 def createFrienshipRequestView(request,pk):
     sender = request.user
@@ -195,8 +244,8 @@ def createFrienshipRequestView(request,pk):
     try:
         Friend.objects.add_friend(sender,recipient)
     except (ValidationError,AlreadyFriendsError,AlreadyExistsError) as e:
-        print('--------',type(e))
-        print('=======',str(e))
+        #print('--------',type(e))
+        #print('=======',str(e))
         return Response({'message':str(e)}, status = status.HTTP_409_CONFLICT)
 
     return Response({'message':'friendship request created'}, status=status.HTTP_200_OK)

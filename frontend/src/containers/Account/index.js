@@ -13,7 +13,8 @@ import Feed from '../../components/Feed'
 class Account extends React.Component {
   state = {
     answers: [],
-    user: {}
+    user: {},
+    stats:{}
   }
 
   fetchAnswers = (token, username) => {
@@ -51,7 +52,7 @@ class Account extends React.Component {
           'Authorization' : `Token ${token}`
         }
     }).then(res => {
-        console.log("FETCHED   " ,res.data);
+        //console.log("FETCHED   " ,res.data);
         this.setState({
           user: res.data
         });
@@ -59,6 +60,26 @@ class Account extends React.Component {
       }).catch(error => (console.log(error)))
   }
 
+  fetchUserStats = (token,username) => {
+    let url =''
+    if(!username){
+      url = 'http://127.0.0.1:8000/api/account/info/stats/'
+    }else{
+      url = `http://127.0.0.1:8000/api/users/${username}/info/stats/`
+    }
+
+    axios.get(url,{
+        headers: {
+          'Authorization' : `Token ${token}`
+        }
+    }).then(res => {
+      //  console.log("FETCHED   " ,res.data);
+        this.setState({
+          stats: res.data
+        });
+
+      }).catch(error => (console.log(error)))
+  }
 
 
   componentWillReceiveProps(newProps){
@@ -66,6 +87,7 @@ class Account extends React.Component {
 
       this.fetchAnswers(newProps.token, newProps.match.params.username)
       this.fetchUserInfo(newProps.token, newProps.match.params.username)
+      this.fetchUserStats(newProps.token, newProps.match.params.username)
     }
 
   }
@@ -74,6 +96,7 @@ class Account extends React.Component {
     if (this.props.token !== null){
       this.fetchAnswers(this.props.token, this.props.match.params.username)
       this.fetchUserInfo(this.props.token, this.props.match.params.username)
+      this.fetchUserStats(this.props.token, this.props.match.params.username)
     }
   }
 
@@ -81,7 +104,7 @@ class Account extends React.Component {
   render(){
     return(
       <Grid>
-        <UserPanel user={this.state.user}/>
+        <UserPanel user={this.state.user} stats = {this.state.stats}/>
         <Box>
           <QuestionForm firstLastName="yourself" isFriendPage={false} page="Account" askedUser={this.state.user.pk}   username="d1vory"/>
 

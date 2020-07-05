@@ -48,7 +48,7 @@ class UserSearch extends React.Component {
 
   handleSearchRequest = () => {
     console.log(this.state.searchValue.length);
-    if( this.state.searchValue.length > 3 ){
+    if( this.state.searchValue.length >= 3 ){
       this.filter()
     }else{
       this.props.changeView([],'nothing found',false)

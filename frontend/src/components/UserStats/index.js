@@ -34,8 +34,7 @@ class UserStats extends React.Component {
   }
 
   render(){
-    const { classes } = this.props;
-
+    const { classes, stats } = this.props;
     return(
       <Paper>
       <Box p = {2}>
@@ -44,7 +43,7 @@ class UserStats extends React.Component {
           <Grid   direction="column" justify="center" >
             <Avatar className={classes.mediumAvatar}> <ChatBubbleIcon /> </Avatar>
             <Typography align="center">
-              6
+              {stats.answersCount}
             </Typography>
             <Typography align="center">
               Posts
@@ -57,7 +56,7 @@ class UserStats extends React.Component {
           <Grid   direction="column" justify="center" >
             <Avatar className={classes.mediumAvatar} > <FavoriteIcon /> </Avatar>
             <Typography align="center">
-              12
+              {stats.likesCount}
             </Typography>
             <Typography align="center">
               Likes
@@ -70,7 +69,7 @@ class UserStats extends React.Component {
           <Grid   direction="column" justify="center" >
             <Avatar className={classes.mediumAvatar}> <PeopleIcon /> </Avatar>
             <Typography align="center">
-              3
+              {stats.friendsCount}
             </Typography>
             <Typography align="center">
               Friends
