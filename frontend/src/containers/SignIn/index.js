@@ -85,35 +85,23 @@ class SignIn extends React.Component {
     this.setState({isRemember:isRemember})
   }
 
-  firstFunction = (_callback) => {
-    // do some asynchronous work
-    // and when the asynchronous stuff is complete
-
-    _callback();
-  }
-
-  main =  async() => {
-  try {
-    await this.props.onAuth(this.state.username, this.state.password);
-
-  } catch(error) {
-    console.error(error);
+  componentWillReceiveProps(newProps){
+    if(newProps.error){
+      this.setState({
+        errorMessage:'Invalid username or password'
+      })
+    }else if(newProps.token){
+      this.props.history.push('/wall')
     }
+    
   }
 
 
   handleSubmit = async (e) => {
     e.preventDefault();
 
-    //this.props.onAuth(this.state.username, this.state.password)
-    this.main();
-    this.props.history.push('/wall')
-    // this.firstFunction(() => {
-    //   this.props.history.push('/wall')
-    // })
+    this.props.onAuth(this.state.username, this.state.password)
 
-    // it redirects before auth is done
-    // fix it
   }
 
   render() {
@@ -227,7 +215,8 @@ class SignIn extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.loading,
-    error: state.error
+    error: state.error,
+    token:state.token
   }
 }
 

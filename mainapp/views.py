@@ -28,7 +28,12 @@ class AccountSettingsView(generics.UpdateAPIView):
         obj = get_object_or_404(User, pk=user.id)
         return obj
 
+    def patch(self, request, *args, **kwargs):
+        print('PATCH called', request.data)
+        return self.partial_update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
+        print('REQESET put:', request.data)
         return self.partial_update(request, *args, **kwargs)
 
 
@@ -45,14 +50,15 @@ class AccountInfoView(generics.RetrieveAPIView):
         obj = get_object_or_404(User, pk=user.id)
         return obj
 
+
 @api_view(['GET'])
 def AccountInfoStatsView(request,username=None):
     """
         Provides user statistics related to specific user
     """
 
-    #if username is passed through url, then send stat to its user
-    #else send stat to signed in user
+    #if username is passed through url, then send stat about its user
+    #else send stat about signed in user
     user = request.user
     if username is not None:
         user = User.objects.get(username=username)

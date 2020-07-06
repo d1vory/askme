@@ -16,6 +16,7 @@ export const authSuccess = (token) => {
 }
 
 export const authFail = (error) => {
+  //console.log('AUTH ERRORR:   ', error);
   return {
     type:actionTypes.AUTH_FAIL,
     error: error
@@ -74,7 +75,7 @@ export const authSignUp = (username, email,  password1, password2) => {
       localStorage.setItem('token',token);
       localStorage.setItem('expirationDate', expirationDate);
       dispatch(authSuccess(token));
-      dispatch(checkAuthTimeout())
+      //dispatch(checkAuthTimeout())
     }).catch((error) => {
       dispatch(authFail(error))
     })

@@ -15,7 +15,7 @@ import {
 
 } from '@material-ui/core';
 import axios from 'axios'
-import ImageUpload from './ImageUpload'
+
 // import InputLabel from "@material-ui/core/InputLabel";
 // import Input from "@material-ui/core/Input";
 const useStyles = makeStyles(() => ({
@@ -86,10 +86,13 @@ const AccountDetails = props => {
       if(values.image){
           form_data.append('avatar',values.image, values.image.name );
       }
+      if(values.sex){
+        form_data.append('gender',  values.sex)
+      }
       form_data.append('first_name' , values.firstName)
       form_data.append('last_name' , values.lastName,)
       form_data.append('email', values.email,)
-      form_data.append('gender',  values.sex)
+
       const postData = {
           first_name: values.firstName,
           last_name: values.lastName,
@@ -108,7 +111,7 @@ const AccountDetails = props => {
             console.log("OOOOKKKK");
           })
 
-        .catch(err => console.log(err))
+        .catch(err => console.log(err.response.data))
     }
 
     const handleSubmit = event => {

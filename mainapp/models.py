@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
+from django.db.models.signals import post_save
 # Create your modes here.
 
 
@@ -24,6 +25,15 @@ class MyUser(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+def create_my_user(sender, instance, created, **kwargs):
+
+    if created:
+
+        MyUser.objects.create(user=instance)
+
+post_save.connect(create_my_user, sender=User)
 
 class Question(models.Model):
     """
