@@ -105,7 +105,7 @@ class SignUp extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.username,this.state.email,this.state.password,this.state.repeatPassword, this.state.firstName, this.state.lastName)
+    this.props.onAuth(this.state.username,this.state.email,this.state.password,this.state.repeatPassword)
     //console.log(this.state)
     //this.props.history.push('/wall')
   }
@@ -163,7 +163,7 @@ class SignUp extends React.Component {
                 />
               </Grid>
 
-            
+
               <Grid item xs={12}>
 
                 <TextValidator
@@ -264,9 +264,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username,email,password1,password2, firstName,lastName ) => {
+    onAuth: (username,email,password1,password2) => {
       //console.log("posted values: ",username,email,password1,password2);
-      dispatch(actions.authSignUp(username,email,password1,password2, firstName, lastName))
+      dispatch(actions.authSignUp(username,email,password1,password2))
     }
   }
 }
