@@ -105,7 +105,7 @@ class SignUp extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.username,this.state.email,this.state.password,this.state.repeatPassword)
+    this.props.onAuth(this.state.username,this.state.email,this.state.password,this.state.repeatPassword, this.state.firstName, this.state.lastName)
     //console.log(this.state)
     //this.props.history.push('/wall')
   }
@@ -163,31 +163,7 @@ class SignUp extends React.Component {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  variant="outlined"
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value = {this.state.firstName}
-                  onChange={this.handleFirstNameChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  value = {this.state.lastName}
-                  onChange={this.handleLastNameChange}
-                />
-              </Grid>
+            
               <Grid item xs={12}>
 
                 <TextValidator
@@ -288,9 +264,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username,email,password1,password2) => {
-      console.log("posted values: ",username,email,password1,password2);
-      dispatch(actions.authSignUp(username,email,password1,password2))
+    onAuth: (username,email,password1,password2, firstName,lastName ) => {
+      //console.log("posted values: ",username,email,password1,password2);
+      dispatch(actions.authSignUp(username,email,password1,password2, firstName, lastName))
     }
   }
 }

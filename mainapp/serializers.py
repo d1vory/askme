@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from rest_auth.serializers import UserDetailsSerializer
 from friendship.models import FriendshipRequest,Friend
 
+from allauth.account import app_settings as allauth_settings
+from allauth.utils import email_address_exists
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import setup_user_email
+
 
 class UserSerializer(UserDetailsSerializer):
 
@@ -29,8 +34,6 @@ class UserSerializer(UserDetailsSerializer):
                 profile.avatar = avatar
             profile.save()
         return instance
-
-
 
 
 
