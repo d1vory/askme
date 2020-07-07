@@ -31,13 +31,23 @@ const styles = theme => ({
 
 class Answer extends Component {
 
-  state = {
-    likes: this.props.likesAmount,
-    isLiked:false,
-    dislikes: this.props.dislikesAmount,
-    isDisliked:false,
-    isCommentsOpen:false
+  constructor(props){
+    super(props)
+
+    this.state = {
+      likes: this.props.likesAmount,
+      isLiked:false,
+      dislikes: this.props.dislikesAmount,
+      isDisliked:false,
+      isCommentsOpen:false,
+      commentText:''
+    }
+
   }
+
+
+
+
 
   fetchLike = (val) => {
     const postData = {
@@ -119,6 +129,28 @@ class Answer extends Component {
     })
   }
 
+
+  handleSendButton = () => {
+    const postData = {
+      comment_text: this.state.commentText
+    }
+
+    const config = {
+      headers: {
+        'Authorization' : `Token ${this.props.token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+    axios.post(`http://127.0.0.1:8000/api/answer/${this.props.answerId}/comment/create/`,postData,config)
+      .then(res => {
+        this.setState({commentText:''});
+        if(this.state.isCommentsOpen){
+
+        }
+      }).catch(err => console.log(err.response.data))
+
+  }
+
   render(){
     const { classes } = this.props;
     const likeIcon =  this.state.isLiked ?  <ThumbUpRoundedIcon className={classes.likedButton}/> :   <ThumbUpRoundedIcon/>
@@ -151,12 +183,13 @@ class Answer extends Component {
 
                   <Grid className={classes.inputWrapper}>
                     <FormControl fullWidth variant='filled'>
-                      <FilledInput fullWidth placeholder="Write a comment!" />
+                      <FilledInput value={this.state.commentText} onChange={(event)=>{this.setState({commentText:event.target.value})}}
+                         fullWidth placeholder="Write a comment!" />
                     </FormControl>
                   </Grid>
 
 
-                      <IconButton type="submit" aria-label="Send!" component="span" >
+                      <IconButton type="submit" onClick={this.handleSendButton} aria-label="Send!" component="span" >
                         <SendIcon />
                       </IconButton>
 
@@ -185,8 +218,9 @@ class Answer extends Component {
 
 
           <Collapse in={this.state.isCommentsOpen} timeout="auto" unmountOnExit>
-            <CommentSection answerId={this.props.answerId}/>
-
+            <CardContent>
+              <CommentSection  answerId={this.props.answerId}/>
+            </CardContent>
 
           </Collapse>
 

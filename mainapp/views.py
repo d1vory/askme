@@ -142,13 +142,27 @@ class AnswersListView(generics.ListAPIView):
 
 
 class CommentListView(generics.ListAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = CommentExplicitSerializer
 
     def get_queryset(self):
         answerId = self.kwargs['answerId']
         #answerId  = 31
         queryset = Comment.objects.filter(answer_id = answerId)
         return queryset
+
+@api_view(['POST'])
+def createCommentView(request,answerId):
+    answer = get_object_or_404(Answer,pk =  answerId)
+    user = request.user
+    data = { 'comment_text':request.data['comment_text'],  'commented_user': user.id, 'answer': answer.id}
+    print(data)
+    serializer = CommentShortSerializer(data = data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 class MultipleQuestionsCreateView(generics.CreateAPIView):
     """

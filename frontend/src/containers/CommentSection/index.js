@@ -1,6 +1,8 @@
 import React,{Component} from 'react'
 
-import {Grid} from '@material-ui/core'
+import Comment from '../../components/Comment'
+
+import {Grid,Typography,Divider,Box} from '@material-ui/core'
 
 import axios from 'axios'
 import {connect} from 'react-redux'
@@ -21,7 +23,6 @@ class CommentSection extends Component{
         this.setState({
           comments: res.data
         });
-        console.log("FETCHED ", res.data)
       })
   }
 
@@ -34,9 +35,18 @@ class CommentSection extends Component{
 
 
   render(){
+    const {comments} = this.state
+    //console.log(comments);
+    const emptyOrComments = ( Array.isArray(comments) && comments.length ) ? comments.map((comment,index) => (
+      <Box key={comment.id}><Comment   data ={comment}/> <Divider light /> </Box>
+    ))  : <Typography>No comments yet.</Typography>
+
+
+
+
     return(
       <Grid>
-        
+        {emptyOrComments}
       </Grid>
     )
   }

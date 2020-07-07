@@ -66,11 +66,20 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = ('id','answer_text','likes','dislikes','timestamp', 'question_text','question_id','askedUser', 'asker')
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class CommentExplicitSerializer(serializers.ModelSerializer):
     commented_user = UserSerializer(many=False)
     class Meta:
         model = Comment
         fields = ('id', 'comment_text', 'commented_user', 'answer')
+
+
+class CommentShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'comment_text', 'commented_user', 'answer')
+
+
+
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     from_user = UserSerializer(many=False)
