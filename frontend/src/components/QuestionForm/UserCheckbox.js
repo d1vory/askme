@@ -1,6 +1,6 @@
 import React,{Component, useState} from 'react'
 import {Box,Typography,Checkbox,Container} from '@material-ui/core'
-import UserInfo from '../Answer/UserInfo'
+import UserInfo from '../UserInfo'
 import { makeStyles } from '@material-ui/core/styles';
 
 

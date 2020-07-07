@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import MyUser,Question, Answer
+from .models import MyUser,Question, Answer, Comment
 from django.contrib.auth.models import User
 from rest_auth.serializers import UserDetailsSerializer
 from friendship.models import FriendshipRequest,Friend
@@ -65,6 +65,12 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ('id','answer_text','likes','dislikes','timestamp', 'question_text','question_id','askedUser', 'asker')
 
+
+class CommentSerializer(serializers.ModelSerializer):
+    commented_user = UserSerializer(many=False)
+    class Meta:
+        model = Comment
+        fields = ('id', 'comment_text', 'commented_user', 'answer')
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
     from_user = UserSerializer(many=False)

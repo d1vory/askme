@@ -60,3 +60,12 @@ class Answer(models.Model):
     timestamp = models.DateTimeField(default= timezone.now)
     def __str__(self):
         return self.answer_text
+
+
+class Comment(models.Model):
+    comment_text =  models.TextField()
+    commented_user = models.ForeignKey(User,on_delete= models.CASCADE )
+    answer = models.ForeignKey('Answer',on_delete= models.CASCADE )
+
+    def __str__(self):
+        return self.comment_text

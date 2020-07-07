@@ -19,8 +19,11 @@ urlpatterns = [
 
     path('answer/<pk>/dislike/',AnswerLikeView.as_view(), name='dislike_answer' ),
     path('answer/<pk>/like/',AnswerLikeView.as_view(), name='like_answer' ),
+    path('answer/<answerId>/comments/', CommentListView.as_view(), name='comments_list'),
     path('answers/create/',AnswerCreateView.as_view(), name='create_answer' ),
     path('answers/',AnswersListView.as_view(), name='wall_answers' ),
+
+
 
     path('questions/multiple/create/',MultipleQuestionsCreateView.as_view(), name='create_multiple_questions' ),
     path('questions/create/',QuestionCreateView.as_view(), name='create_question' ),

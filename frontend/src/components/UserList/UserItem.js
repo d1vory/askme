@@ -5,7 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Popup from "reactjs-popup";
 import QuestionForm from '../QuestionForm'
-import UserInfo from '../Answer/UserInfo'
+import UserInfo from '../UserInfo'
 import {Link } from 'react-router-dom'
 import axios from 'axios'
 

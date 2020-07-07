@@ -2,8 +2,10 @@ import React,{Component} from 'react'
 
 import PropTypes from 'prop-types';
 //import ReactionButton from './ReactionButton'
-import UserInfo from './UserInfo'
-import {Card,Box,Typography,CardContent,CardActions,CardHeader,
+import UserInfo from '../UserInfo'
+import CommentSection from '../../containers/CommentSection'
+
+import {Card,Box,Typography,CardContent,CardActions,CardHeader,Collapse,
         FormControl,FilledInput,IconButton,Grid} from '@material-ui/core'
 import ThumbUpRoundedIcon from '@material-ui/icons/ThumbUpRounded';
 import ThumbDownRoundedIcon from '@material-ui/icons/ThumbDownRounded';
@@ -33,7 +35,8 @@ class Answer extends Component {
     likes: this.props.likesAmount,
     isLiked:false,
     dislikes: this.props.dislikesAmount,
-    isDisliked:false
+    isDisliked:false,
+    isCommentsOpen:false
   }
 
   fetchLike = (val) => {
@@ -110,6 +113,12 @@ class Answer extends Component {
 
   }
 
+  handleCommentsButton = () => {
+    this.setState({
+      isCommentsOpen: !this.state.isCommentsOpen
+    })
+  }
+
   render(){
     const { classes } = this.props;
     const likeIcon =  this.state.isLiked ?  <ThumbUpRoundedIcon className={classes.likedButton}/> :   <ThumbUpRoundedIcon/>
@@ -152,8 +161,8 @@ class Answer extends Component {
                       </IconButton>
 
 
-                        <IconButton type = 'button' component="span"> <ChatRoundedIcon/> </IconButton>
-                        <Typography> </Typography>
+                        <IconButton type = 'button' onClick={this.handleCommentsButton} component="span"> <ChatRoundedIcon/> </IconButton>
+
 
 
 
@@ -174,6 +183,12 @@ class Answer extends Component {
 
           </CardActions>
 
+
+          <Collapse in={this.state.isCommentsOpen} timeout="auto" unmountOnExit>
+            <CommentSection answerId={this.props.answerId}/>
+
+
+          </Collapse>
 
         </Card>
       </Box>

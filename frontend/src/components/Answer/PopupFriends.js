@@ -3,7 +3,7 @@ import Popup from "reactjs-popup";
 import {Box} from '@material-ui/core'
 
 import UserCheckbox from './UserCheckbox'
-import UserInfo from '../Answer/UserInfo'
+import UserInfo from '../UserInfo'
 
 
 

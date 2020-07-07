@@ -4,6 +4,13 @@ import './styles.css'
 
 export default class Start extends Component {
 
+  static getDerivedStateFromProps(props, state) {
+    if(localStorage.getItem('token')){
+      props.history.push('/wall')
+    }
+  
+    return null
+  }
 
   render(){
     return(

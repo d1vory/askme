@@ -9,7 +9,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import UserItem from '../UserList/UserItem'
-import UserInfo from '../Answer/UserInfo'
+import UserInfo from '../UserInfo'
 import UserCheckbox from './UserCheckbox'
 import Popup from "reactjs-popup";
 

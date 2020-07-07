@@ -12,7 +12,7 @@ from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
 from friendship.models import FriendshipRequest,Friend
 
 from .serializers import *
-from .models import MyUser,Question, Answer
+from .models import MyUser,Question, Answer, Comment
 
 
 
@@ -138,6 +138,16 @@ class AnswersListView(generics.ListAPIView):
                                             ORDER BY timestamp DESC;
                                         """,[user.id])
 
+        return queryset
+
+
+class CommentListView(generics.ListAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        answerId = self.kwargs['answerId']
+        #answerId  = 31
+        queryset = Comment.objects.filter(answer_id = answerId)
         return queryset
 
 class MultipleQuestionsCreateView(generics.CreateAPIView):

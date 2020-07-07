@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {Grid,Typography,Box,SwipeableDrawer,Drawer,List,ListItem, IconButton} from "@material-ui/core";
 
-import  UserInfo from '../Answer/UserInfo'
+import  UserInfo from '../UserInfo'
 import DoneIcon from '@material-ui/icons/Done';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
