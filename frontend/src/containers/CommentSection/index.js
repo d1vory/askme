@@ -26,6 +26,14 @@ class CommentSection extends Component{
       })
   }
 
+  componentWillReceiveProps(newProps){
+    if (newProps.addedNewComment){
+      this.fetchComments(this.props.token)
+      newProps.updateWithNewComment(false)
+    }
+
+  }
+
 
   componentDidMount(){
     if (this.props.token !== null){

@@ -40,13 +40,16 @@ class Answer extends Component {
       dislikes: this.props.dislikesAmount,
       isDisliked:false,
       isCommentsOpen:false,
-      commentText:''
+      commentText:'',
+      addedNewComment:false
     }
 
   }
 
 
-
+  updateWithNewComment = (val) => {
+    this.setState({addedNewComment:val})
+  }
 
 
   fetchLike = (val) => {
@@ -145,7 +148,7 @@ class Answer extends Component {
       .then(res => {
         this.setState({commentText:''});
         if(this.state.isCommentsOpen){
-
+          this.updateWithNewComment(true)
         }
       }).catch(err => console.log(err.response.data))
 
@@ -219,7 +222,7 @@ class Answer extends Component {
 
           <Collapse in={this.state.isCommentsOpen} timeout="auto" unmountOnExit>
             <CardContent>
-              <CommentSection  answerId={this.props.answerId}/>
+              <CommentSection addedNewComment={this.state.addedNewComment}  updateWithNewComment={this.updateWithNewComment} answerId={this.props.answerId}/>
             </CardContent>
 
           </Collapse>
