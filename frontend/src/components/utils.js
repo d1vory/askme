@@ -10,7 +10,7 @@
 const transformtimestamp = function(date){
     //subtract 3 hours to match timezone
     var timeNow = Date.now() - 10800000;
-  
+
     var postedDate = new Date(date.replace('T', ' '));
 
     postedDate = Date.parse(postedDate);
@@ -21,8 +21,9 @@ const transformtimestamp = function(date){
     var res = Math.round(diff/(1000*60*60*24));
 
     var minutes = Math.round(diff/(1000*60));
-
-    if (minutes < 60) {
+    if(minutes < 1){
+      return "Posted just now"
+    } else  if (minutes < 60) {
         return "Posted " + minutes + " minutes ago";
     } else if (res < 1) {
         return "Posted " + Math.round(diff/(1000*60*60)) + " hours ago";

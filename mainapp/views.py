@@ -147,7 +147,7 @@ class CommentListView(generics.ListAPIView):
     def get_queryset(self):
         answerId = self.kwargs['answerId']
         #answerId  = 31
-        queryset = Comment.objects.filter(answer_id = answerId)
+        queryset = Comment.objects.filter(answer_id = answerId).order_by('-timestamp')
         return queryset
 
 @api_view(['POST'])
@@ -155,7 +155,7 @@ def createCommentView(request,answerId):
     answer = get_object_or_404(Answer,pk =  answerId)
     user = request.user
     data = { 'comment_text':request.data['comment_text'],  'commented_user': user.id, 'answer': answer.id}
-    print(data)
+    #print(data)
     serializer = CommentShortSerializer(data = data)
     if serializer.is_valid():
         serializer.save()
