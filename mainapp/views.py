@@ -20,7 +20,7 @@ class AccountSettingsView(generics.UpdateAPIView):
     """
         updates information about user
     """
-    serializer_class = UserSerializer
+    serializer_class = UserExplicitSerializer
     queryset = User.objects.all()
 
     def get_object(self):
@@ -32,16 +32,13 @@ class AccountSettingsView(generics.UpdateAPIView):
         print('PATCH called', request.data)
         return self.partial_update(request, *args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
-        print('REQESET put:', request.data)
-        return self.partial_update(request, *args, **kwargs)
 
 
 class AccountInfoView(generics.RetrieveAPIView):
     """
         provides basic information about user
     """
-    serializer_class = UserSerializer
+    serializer_class = UserExplicitSerializer
     queryset = User.objects.all()
 
     def get_object(self):

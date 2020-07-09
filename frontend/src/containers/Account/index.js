@@ -52,7 +52,7 @@ class Account extends React.Component {
           'Authorization' : `Token ${token}`
         }
     }).then(res => {
-        //console.log("FETCHED   " ,res.data);
+      //  console.log("FETCHED  INFO:  " ,res.data);
         this.setState({
           user: res.data
         });
@@ -105,7 +105,7 @@ class Account extends React.Component {
     const firstLastName = this.props.match.params.username ? (this.state.user.first_name + ' ' + this.state.user.last_name) : "yourself"
     return(
       <Grid>
-        <UserPanel user={this.state.user} stats = {this.state.stats}/>
+        <UserPanel user={this.state.user} stats = {this.state.stats} />
         <Box>
           <QuestionForm firstLastName={firstLastName} isFriendPage={false} page="Account" askedUser={this.state.user.pk}   username="d1vory"/>
 

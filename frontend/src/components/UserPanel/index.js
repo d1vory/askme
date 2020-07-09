@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import UserStats from '../UserStats'
 import axios from 'axios'
+
+import CakeIcon from '@material-ui/icons/Cake';
 import {connect} from 'react-redux'
 
 const styles = (theme) => ({
@@ -11,6 +13,12 @@ const styles = (theme) => ({
     width: theme.spacing(9),
     height: theme.spacing(9),
   },
+  aboutText:{
+    whiteSpace: 'pre-wrap'
+  },
+  cakeIconStyle:{
+    color:'#AF0D81'
+  }
 });
 
 
@@ -43,10 +51,23 @@ class UserPanel extends React.Component {
                 {'@' + this.props.user.username}
               </Typography>
             </Box>
-
-
-
           </Box>
+
+          <Box mt = {1}>
+            <Grid container display='row'>
+              <CakeIcon className={classes.cakeIconStyle}/>
+              <Typography variant='body1' className={classes.aboutText}>
+                {this.props.user.DateOfBirth}
+              </Typography>
+            </Grid>
+
+            <Box pt={1}>
+              <Typography variant='body1' className={classes.aboutText}>
+                {this.props.user.selfDescription}
+              </Typography>
+            </Box>
+          </Box>
+
 
       </Box>
         </Grid>

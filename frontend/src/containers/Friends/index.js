@@ -33,7 +33,7 @@ class Friends extends Component {
         }
     }).then(res => {
       //console.log(res.data);
-    //  console.log("FETCHED ", res.data);
+      console.log("FETCHED FRIENDS", res.data);
       if( res.data.length > 0){
         this.setState({
           userList : res.data

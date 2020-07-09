@@ -3,24 +3,38 @@ from .models import MyUser,Question, Answer, Comment
 from django.contrib.auth.models import User
 from rest_auth.serializers import UserDetailsSerializer
 from friendship.models import FriendshipRequest,Friend
+from django.core.exceptions import ValidationError
 
 from allauth.account import app_settings as allauth_settings
 from allauth.utils import email_address_exists
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
-
+from datetime import datetime, timedelta
 
 class UserSerializer(UserDetailsSerializer):
 
-    gender = serializers.CharField(source="myuser.gender")
     avatar = serializers.ImageField(source="myuser.avatar")
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('gender','avatar')
+        fields = UserDetailsSerializer.Meta.fields + ('avatar',)
+
+
+
+class UserExplicitSerializer(UserSerializer):
+    selfDescription = serializers.CharField(source='myuser.selfDescription')
+    DateOfBirth = serializers.DateField(source='myuser.DateOfBirth')
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ('selfDescription', 'DateOfBirth')
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('myuser', {})
-        gender = profile_data.get('gender')
+        DateOfBirth = profile_data.get('DateOfBirth')
+
+        if DateOfBirth > datetime.now().date():
+            raise serializers.ValidationError('given date is invalid')
+
+        selfDescription = profile_data.get('selfDescription')
         avatar = profile_data.get('avatar')
         instance = super(UserSerializer, self).update(instance, validated_data)
 
@@ -28,10 +42,12 @@ class UserSerializer(UserDetailsSerializer):
         # get and update user profile
         profile = instance.myuser
         if profile_data:
-            if gender:
-                profile.gender = gender
             if avatar:
                 profile.avatar = avatar
+            if selfDescription:
+                profile.selfDescription = selfDescription
+            if DateOfBirth:
+                profile.DateOfBirth = DateOfBirth
             profile.save()
         return instance
 
