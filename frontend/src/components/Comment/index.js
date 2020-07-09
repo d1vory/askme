@@ -1,5 +1,5 @@
-import React,{Component} from 'react'
-import {Grid, Typography,Box,Paper,Divider} from '@material-ui/core'
+import React from 'react'
+import { Typography,Box} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
 import UserInfo from '../UserInfo'

@@ -1,12 +1,12 @@
 import React from 'react'
-import {Typography,Box,Grid,Avatar, Button} from '@material-ui/core'
+import {Typography,Box,Grid,Avatar} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import UserStats from '../UserStats'
-import axios from 'axios'
+
 
 import CakeIcon from '@material-ui/icons/Cake';
-import {connect} from 'react-redux'
+
 
 const styles = (theme) => ({
   largeAvatar: {

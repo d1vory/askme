@@ -4,10 +4,10 @@ import React,{Component} from 'react'
 import './styles.css'
 import Search from "../../components/UserSearch";
 //import UserList from "../../components/UserList";
-import {Grid,Typography,Box, List,Divider,Container,Button,Snackbar } from "@material-ui/core";
+import {Grid,Typography,Box, List,Container,Button,Snackbar } from "@material-ui/core";
 import {connect} from 'react-redux'
 import axios from 'axios'
-import UserItem from '../../components/UserList/UserItem'
+import UserItem from '../../components/UserItem'
 import FriendRequestsDrawer from '../../components/FriendRequestsDrawer'
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -33,7 +33,7 @@ class Friends extends Component {
         }
     }).then(res => {
       //console.log(res.data);
-      console.log("FETCHED FRIENDS", res.data);
+      //console.log("FETCHED FRIENDS", res.data);
       if( res.data.length > 0){
         this.setState({
           userList : res.data
@@ -131,7 +131,7 @@ class Friends extends Component {
             </Grid>
 
 
-            <Grid  justify="center" >
+            <Grid container justify="center" >
               <Container>
                 {
                   (!this.state.error) ?

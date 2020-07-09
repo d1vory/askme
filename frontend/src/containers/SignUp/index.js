@@ -116,7 +116,7 @@ class SignUp extends React.Component {
       const reducer = (accumulator, currentValue) => accumulator + '\n' + currentValue[0];
       const str = errors.reduce(reducer)
 
-      console.log(str);
+      //console.log(str);
       this.setState({
         errorMessage:  str
       })

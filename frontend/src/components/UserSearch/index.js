@@ -1,10 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Paper, Input,IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchBar from 'material-ui-search-bar'
-import SearchIcon from '@material-ui/icons/Search';
-import Box from "@material-ui/core/Box";
+
+
 import axios from 'axios'
 
 

@@ -1,12 +1,10 @@
 import React from 'react'
-import {Typography,Box,Grid} from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import {Box,Grid} from '@material-ui/core'
+
 import axios from 'axios'
 import {connect} from 'react-redux'
 
 import UserPanel from '../../components/UserPanel'
-import UserStats from '../../components/UserStats'
 import QuestionForm from '../../components/QuestionForm'
 import Feed from '../../components/Feed'
 
@@ -32,7 +30,7 @@ class Account extends React.Component {
         }
     }).then(res => {
 
-        console.log("FETCHED   " ,res.data);
+        //console.log("FETCHED   " ,res.data);
         this.setState({
           answers: res.data.results,
           nextUrl: res.data.next

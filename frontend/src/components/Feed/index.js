@@ -1,9 +1,7 @@
 import React,{Component} from 'react'
 import Answer from '../Answer'
 import {Box,Typography,CircularProgress,Grid} from '@material-ui/core'
-import axios from 'axios'
 import transformtimestamp from '../utils'
-import {connect} from 'react-redux'
 import { Waypoint } from 'react-waypoint';
 
 
@@ -14,7 +12,7 @@ class Feed extends Component {
   }
 
   prepareToLoad = () => {
-    console.log('LOAD MORE in feed');
+    //console.log('LOAD MORE in feed');
      this.setState({ loading: true });
      this.props.loadMoreAnswers()
       this.setState({ loading: false });
@@ -59,12 +57,4 @@ class Feed extends Component {
 }
 
 
-
-const mapStateToProps = state => {
-  return {
-    token: state.token
-  }
-}
-
-
-export default connect(mapStateToProps)(Feed)
+export default Feed

@@ -93,7 +93,7 @@ class SignIn extends React.Component {
     }else if(newProps.token){
       this.props.history.push('/wall')
     }
-    
+
   }
 
 
@@ -130,7 +130,7 @@ class SignIn extends React.Component {
             <ValidatorForm className={classes.form}
                 ref="form"
                 onSubmit={this.handleSubmit}
-                onError={errors => console.log(errors)}
+                
             >
 
             <TextValidator

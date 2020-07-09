@@ -1,12 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {ListItem,ListItemAvatar,Avatar,ListItemText,ListItemSecondaryAction,Button,Grid,Box,IconButton,Container} from '@material-ui/core'
+import {ListItem,Button,Grid,Box,IconButton} from '@material-ui/core'
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Popup from "reactjs-popup";
 import QuestionForm from '../QuestionForm'
 import UserInfo from '../UserInfo'
-import {Link } from 'react-router-dom'
 import axios from 'axios'
 
 const useStyles = makeStyles({
@@ -55,8 +54,6 @@ export default function UserItem(props){
 
   const classes = useStyles();
   const firstLastName = props.firstName + ' ' + props.lastName
-  const primaryLink = <Link to = {`/user/${props.username}/`}  style={{ textDecoration: 'none', color:'inherit' }} >{firstLastName} </Link>
-  const secondaryLink = <Link to = {`/user/${props.username}/`}  style={{ textDecoration: 'none', color:'inherit' }} >{'@' + props.username} </Link>
 
   const deleteQuestionButton = (
     <Button

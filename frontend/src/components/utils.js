@@ -27,7 +27,7 @@ const transformtimestamp = function(date){
         return "Posted " + minutes + " minutes ago";
     } else if (res < 1) {
         return "Posted " + Math.round(diff/(1000*60*60)) + " hours ago";
-    } else if (res == 1) {
+    } else if (res === 1) {
         return "Posted yesterday";
     } else if (1 < res && res < 31) {
         return "Posted " + res + " days ago";

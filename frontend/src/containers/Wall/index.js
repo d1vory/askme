@@ -22,7 +22,7 @@ class Wall extends Component {
           answers: res.data.results,
           nextUrl: res.data.next
         });
-        console.log("FETCHED ", res.data)
+        //console.log("FETCHED ", res.data)
       })
   }
 

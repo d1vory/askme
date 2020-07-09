@@ -2,14 +2,12 @@ import React,{Component} from 'react'
 import './styles.css'
 import SendIcon from '@material-ui/icons/Send';
 import {Box,Card,CardHeader,CardContent,Typography,Button,Snackbar,
-        FormControl,FormGroup,FormControlLabel,Switch,FilledInput,IconButton,Grid,List,Checkbox} from '@material-ui/core'
+        FormGroup,FormControlLabel,Switch,IconButton,Grid} from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios'
 import {connect} from 'react-redux'
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
-import UserItem from '../UserList/UserItem'
-import UserInfo from '../UserInfo'
 import UserCheckbox from './UserCheckbox'
 import Popup from "reactjs-popup";
 
@@ -106,7 +104,7 @@ class QuestionForm extends Component {
   }
 
   handleSubmit(event){
-    if(this.props.caller == 'wall'){
+    if(this.props.caller === 'wall'){
       this.fetchFriends(this.props.token)
 
     }else{
@@ -121,7 +119,7 @@ class QuestionForm extends Component {
       askedUsers: this.state.userList.filter((item,i) => this.state.checkedUsers[i]).map((user) => user.pk),
       isAnon: this.state.toggleValue
     }
-    if( postData.askedUsers.length == 0){
+    if( postData.askedUsers.length === 0){
       this.setState({snackbarOpen:true})
     }else{
       const config = {

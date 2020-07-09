@@ -9,14 +9,14 @@ import {connect} from 'react-redux'
 
 class Settings extends Component {
   state = {
-    openInfo:false,
+    openInfoBar:false,
     infoType:'success',
     infoMessage:''
   }
 
-  openInfo = (message, type) => {
+  openInfoBar = (message, type) => {
     this.setState({
-      openInfo:true,
+      openInfoBar:true,
       infoMessage:message,
       infoType:type
     })
@@ -24,7 +24,7 @@ class Settings extends Component {
 
   handleInfoClose = () => {
     this.setState({
-      openInfo:false
+      openInfoBar:false
     })
   }
 
@@ -34,15 +34,15 @@ class Settings extends Component {
         <Grid  container spacing={4} >
 
           <Grid item md={7} xs={12}>
-            <Edit  openInfo={this.openInfo}/>
+            <Edit  openInfoBar={this.openInfoBar}/>
           </Grid>
 
           <Grid item md={5} xs={12}  >
-            <Password  openInfo={this.openInfo}/>
+            <Password  openInfoBar={this.openInfoBar}/>
           </Grid>
         </Grid>
 
-        <Snackbar open={this.state.openInfo} autoHideDuration={6000} onClose={this.handleInfoClose}>
+        <Snackbar open={this.state.openInfoBar} autoHideDuration={6000} onClose={this.handleInfoClose}>
            <MuiAlert elevation={6} severity={this.state.infoType} onClose={this.handleInfoClose} >
              {this.state.infoMessage}
            </MuiAlert>

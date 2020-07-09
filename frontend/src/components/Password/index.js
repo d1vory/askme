@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Password = props => {
-    const { className, ...rest } = props;
+    const { className,openInfoBar, ...rest } = props;
 
     const classes = useStyles();
 
@@ -54,16 +54,15 @@ const Password = props => {
       }
       axios.post(`http://127.0.0.1:8000/rest-auth/password/change/`,form_data,config)
         .then(res => {
-            props.openInfo('Settings updated','success')
+            openInfoBar('Settings updated','success')
           })
-        //  props.openInfo(err.response.data.message, 'error')
         .catch(err =>{
           //console.log(err.response);
           let temp = err.response.data
           if(typeof temp === 'object' && temp !== null){
             temp = Object.values(temp)
           }
-          props.openInfo(temp[0], 'error')
+          openInfoBar(temp[0], 'error')
 
         } )
     }
@@ -77,7 +76,7 @@ const Password = props => {
 
     return (
         <Card
-            {...rest}
+
             className={clsx(classes.root, className)}
         >
             <form>
@@ -90,6 +89,7 @@ const Password = props => {
                         fullWidth
                         label="Old Password"
                         name="oldPassword"
+                        autoComplete="Old Password"
                         onChange={handleChange}
                         type="password"
                         value={values.oldPassword}
@@ -99,6 +99,7 @@ const Password = props => {
                     <TextField
                         fullWidth
                         label="New password"
+                        autoComplete="New password"
                         name="password"
                         onChange={handleChange}
                         style={{ marginTop: '1rem' }}
@@ -109,6 +110,7 @@ const Password = props => {
                     <TextField
                         fullWidth
                         label="Confirm password"
+                        autoComplete="Confirm password"
                         name="confirm"
                         onChange={handleChange}
                         style={{ marginTop: '1rem' }}

@@ -17,7 +17,6 @@ import {
 
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -30,7 +29,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const AccountDetails = props => {
-    const { className, ...rest } = props;
+    const { className,openInfoBar,  ...rest } = props;
 
     const classes = useStyles();
 
@@ -38,6 +37,7 @@ const AccountDetails = props => {
         firstName: '',
         lastName: '',
         email: '',
+        username:'',
         image: null,
         selfDescription:'',
         birthday:(new Date())
@@ -122,16 +122,16 @@ const AccountDetails = props => {
       }
       axios.patch(`http://127.0.0.1:8000/api/account/settings/update/`,form_data,config)
         .then(res => {
-            props.openInfo('Settings updated','success')
+          openInfoBar('Settings updated','success')
           })
-        //  props.openInfo(err.response.data.message, 'error')
+        //  props.openInfoBar(err.response.data.message, 'error')
         .catch(err =>{
           //console.log(err.response);
           let temp = err.response.data
           if(typeof temp === 'object' && temp !== null){
             temp = Object.values(temp)
           }
-          props.openInfo(temp[0], 'error')
+          openInfoBar(temp[0], 'error')
 
         } )
     }
@@ -142,7 +142,7 @@ const AccountDetails = props => {
 
 
     return (
-        <Card {...rest} className={clsx(classes.root, className)} >
+        <Card className={clsx(classes.root, className)} >
             <form autoComplete="off" noValidate >
                 <CardHeader title="User information"/>
                 <Divider />

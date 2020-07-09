@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
-import {Grid,Typography,Box,SwipeableDrawer,Drawer,List,ListItem, IconButton,Snackbar} from "@material-ui/core";
-import { makeStyles,withStyles } from '@material-ui/core/styles';
+import {Typography,Box,SwipeableDrawer,List,Snackbar} from "@material-ui/core";
+import { withStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import RequestUserItem from '../UserList/RequestUserItem'
+import RequestUserItem from '../RequestUserItem'
 import axios from 'axios'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
@@ -70,7 +70,7 @@ class FriendRequestsDrawer extends Component{
         }
     }).then(res => {
       //console.log(res.data);
-     console.log("FETCHED ", res.data);
+    // console.log("FETCHED ", res.data);
       if( res.data.length > 0){
         this.setState({
           requests : res.data
@@ -140,7 +140,7 @@ class FriendRequestsDrawer extends Component{
 
     return(
 
-      <Drawer open ={this.props.isOpen} onClose={this.close}  ModalProps={{ onBackdropClick: this.toggleDrawer }}>
+      <SwipeableDrawer open ={this.props.isOpen} onOpen={() => {this.props.toggleDrawer(true)}} onClose={this.close}  ModalProps={{ onBackdropClick: this.toggleDrawer }}>
         <Box pt ={1}>
           <Typography variant='h5' align='center'>
             Friend requests
@@ -156,7 +156,9 @@ class FriendRequestsDrawer extends Component{
             this.state.requests ?
 
               this.state.requests.map((request,index) => (
-                <RequestUserItem request={request} rejectFriendship={this.rejectFriendship} acceptFriendship={this.acceptFriendship} index= {index} />
+                <React.Fragment key ={index}>
+                  <RequestUserItem  request={request} rejectFriendship={this.rejectFriendship} acceptFriendship={this.acceptFriendship} index= {index} />
+                </React.Fragment>
               ))
               : undefined
 
@@ -173,7 +175,7 @@ class FriendRequestsDrawer extends Component{
            {this.state.infoMessage}
          </Alert>
        </Snackbar>
-      </Drawer>)
+      </SwipeableDrawer>)
   }
 
 
