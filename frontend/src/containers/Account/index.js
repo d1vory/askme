@@ -14,7 +14,8 @@ class Account extends React.Component {
   state = {
     answers: [],
     user: {},
-    stats:{}
+    stats:{},
+    nextUrl:''
   }
 
   fetchAnswers = (token, username) => {
@@ -33,7 +34,8 @@ class Account extends React.Component {
 
         console.log("FETCHED   " ,res.data);
         this.setState({
-          answers: res.data
+          answers: res.data.results,
+          nextUrl: res.data.next
         });
 
       }).catch(error => (console.log(error)))
@@ -100,6 +102,23 @@ class Account extends React.Component {
     }
   }
 
+  loadMoreAnswers = ( ) => {
+    console.log('LOAD MORE ANSWERS');
+    if(this.state.nextUrl){
+      axios.get(this.state.nextUrl,{
+          headers: {
+            'Authorization' : `Token ${this.props.token}`
+          }
+      }).then(res => {
+          this.setState({
+            answers: this.state.answers.concat(res.data.results),
+            nextUrl: res.data.next
+          });
+
+        })
+    }
+  }
+
 
   render(){
     const firstLastName = this.props.match.params.username ? (this.state.user.first_name + ' ' + this.state.user.last_name) : "yourself"
@@ -110,7 +129,7 @@ class Account extends React.Component {
           <QuestionForm firstLastName={firstLastName} isFriendPage={false} page="Account" askedUser={this.state.user.pk}   username="d1vory"/>
 
         </Box>
-        <Feed answers = {this.state.answers}/>
+        <Feed answers = {this.state.answers} loadMoreAnswers={this.loadMoreAnswers}/>
       </Grid>
     )
   }

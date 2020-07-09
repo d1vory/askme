@@ -1,14 +1,35 @@
 import React,{Component} from 'react'
 import Answer from '../Answer'
-import {Box,Typography} from '@material-ui/core'
+import {Box,Typography,CircularProgress,Grid} from '@material-ui/core'
 import axios from 'axios'
 import transformtimestamp from '../utils'
 import {connect} from 'react-redux'
+import { Waypoint } from 'react-waypoint';
+
 
 class Feed extends Component {
 
+  state= {
+    isLoading:false
+  }
+
+  prepareToLoad = () => {
+    console.log('LOAD MORE in feed');
+     this.setState({ loading: true });
+     this.props.loadMoreAnswers()
+      this.setState({ loading: false });
+  }
+
+  renderWaypoint = () => {
+    if (!this.state.isLoading) {
+      return (
+        <Waypoint onEnter={this.prepareToLoad}  threshold={2.0}/>
+      );
+    }
+  }
+
   render(){
-    const emptyOrAnswers = this.props.answers ?
+    const emptyOrAnswers =  (Array.isArray(this.props.answers) && this.props.answers.length ) ?
     (this.props.answers.map((answer,index) => (
       <Box  key = {answer.id}>
         <Answer answerId={answer.id}
@@ -23,11 +44,15 @@ class Feed extends Component {
         dislikesAmount= {answer.dislikes}
         avatar = {answer.askedUser.avatar}
         token={this.props.token}/>
+        {(index === this.props.answers.length - 2 ) && this.renderWaypoint() }
       </Box>
     )) ) : <Typography variant="h3">No answers yet </Typography>
+
+    const progress = this.state.isLoading && (<Grid container direction='row' justify ='center' > <CircularProgress />  </Grid>)
     return (
       <Box >
           {emptyOrAnswers}
+          {progress }
       </Box>
     )
   }

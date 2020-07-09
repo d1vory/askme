@@ -7,6 +7,7 @@ from django.db.models import Sum, Subquery
 from rest_framework import generics,viewsets, permissions, status, filters
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.pagination import CursorPagination
 
 from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
 from friendship.models import FriendshipRequest,Friend
@@ -93,7 +94,10 @@ class AnswerLikeView(generics.UpdateAPIView):
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
 
-
+class AnswersPagination(CursorPagination):
+    page_size= 10
+    page_size_query_param = 'page_size'
+    ordering = '-timestamp'
 
 class AnswersAccountListView(generics.ListAPIView):
     """
@@ -101,6 +105,7 @@ class AnswersAccountListView(generics.ListAPIView):
     """
 
     serializer_class = AnswerSerializer
+    pagination_class = AnswersPagination
 
     def get_queryset(self):
         user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
@@ -109,7 +114,9 @@ class AnswersAccountListView(generics.ListAPIView):
 
         #answers related to specific user
         answers = Answer.objects.filter(question__in  = questions)
-        return answers.order_by('-timestamp')
+        return answers
+
+
 
 
 class AnswersListView(generics.ListAPIView):
@@ -118,24 +125,21 @@ class AnswersListView(generics.ListAPIView):
     """
 
     serializer_class = AnswerSerializer
+    pagination_class = AnswersPagination
+
 
     def get_queryset(self):
         user  = self.request.user
-        queryset = Answer.objects.raw("""
-                                            SELECT *
-                                            FROM mainapp_answer
-                                            WHERE question_id IN(
-                                            	SELECT id
-                                            	FROM mainapp_question
-                                            	WHERE askeduser_id IN (SELECT to_user_id
-                                            							FROM friendship_friend
-                                            							WHERE from_user_id = %s) AND mainapp_question.id IN (
-                                            									  SELECT mainapp_answer.question_id
-                                            									  FROM mainapp_answer))
-                                            ORDER BY timestamp DESC;
-                                        """,[user.id])
 
-        return queryset
+        friends = Friend.objects.friends(user)
+
+        #questions related to friends
+        questions = Question.objects.filter(askedUser__in = friends)
+
+        #answers related to specific user
+        answers = Answer.objects.filter(question__in  = questions)
+
+        return answers
 
 
 class CommentListView(generics.ListAPIView):

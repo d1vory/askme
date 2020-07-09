@@ -38,7 +38,7 @@ class Settings extends Component {
           </Grid>
 
           <Grid item md={5} xs={12}  >
-            <Password />
+            <Password  openInfo={this.openInfo}/>
           </Grid>
         </Grid>
 

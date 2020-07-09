@@ -23,8 +23,8 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios'
 
-// import InputLabel from "@material-ui/core/InputLabel";
-// import Input from "@material-ui/core/Input";
+
+
 const useStyles = makeStyles(() => ({
     root: {}
 }));
@@ -202,7 +202,7 @@ const AccountDetails = props => {
                             <KeyboardDatePicker
                               margin="normal"
                               id="date-picker-dialog"
-                              label="Date picker dialog"
+                              label="Birthday"
                               format="MM/dd/yyyy"
                               value={values.birthday}
                               onChange={handleDateChange}
