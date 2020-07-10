@@ -15,7 +15,9 @@ const styles = theme => ({
       marginLeft:theme.spacing(5),
       marginRight:theme.spacing(5)
 
-    }
+    },
+    marginTop:3,
+    marginBottom:theme.spacing(0)
   }
 });
 
@@ -30,7 +32,7 @@ class CustomLayout extends React.Component{
             {
               header
             }
-            <Box className={(this.props.location.pathname !== '/') && classes.layoutWrapper}   mt={2}>
+            <Box className={(this.props.location.pathname !== '/') && classes.layoutWrapper}   >
               {this.props.children}
             </Box>
           </Box>

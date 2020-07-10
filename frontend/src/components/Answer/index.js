@@ -64,7 +64,7 @@ class Answer extends Component {
         'Content-Type': 'application/json'
       }
     }
-    axios.patch(`http://127.0.0.1:8000/api/answer/${this.props.answerId}/like/`,postData,config)
+    axios.patch(`api/answer/${this.props.answerId}/like/`,postData,config)
       .then(res => {
         this.setState({
           likes: this.state.likes + val
@@ -83,7 +83,7 @@ class Answer extends Component {
         'Content-Type': 'application/json'
       }
     }
-    axios.patch(`http://127.0.0.1:8000/api/answer/${this.props.answerId}/dislike/`,postData,config)
+    axios.patch(`api/answer/${this.props.answerId}/dislike/`,postData,config)
       .then(res => {
         this.setState({
           dislikes: this.state.dislikes + val
@@ -146,7 +146,7 @@ class Answer extends Component {
         'Content-Type': 'application/json'
       }
     }
-    axios.post(`http://127.0.0.1:8000/api/answer/${this.props.answerId}/comment/create/`,postData,config)
+    axios.post(`api/answer/${this.props.answerId}/comment/create/`,postData,config)
       .then(res => {
         this.setState({commentText:''});
         if(this.state.isCommentsOpen){
