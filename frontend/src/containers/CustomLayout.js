@@ -5,9 +5,23 @@ import {connect} from 'react-redux'
 import {Box} from '@material-ui/core'
 import * as actions from '../store/actions/auth'
 
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+
+
+const styles = theme => ({
+  layoutWrapper:{
+    [theme.breakpoints.up('sm')]: {
+      marginLeft:theme.spacing(5),
+      marginRight:theme.spacing(5)
+
+    }
+  }
+});
 
 class CustomLayout extends React.Component{
   render(){
+    const { classes } = this.props;
     const header = this.props.isAuthenticated && (<Header isAuthenticated = {this.props.isAuthenticated}  logoutFunc = {this.props.logout}> </Header>)
     return(
 
@@ -16,7 +30,7 @@ class CustomLayout extends React.Component{
             {
               header
             }
-            <Box mx={10}  mt={2}>
+            <Box className={(this.props.location.pathname !== '/') && classes.layoutWrapper}   mt={2}>
               {this.props.children}
             </Box>
           </Box>
@@ -27,6 +41,11 @@ class CustomLayout extends React.Component{
 }
 
 
+CustomLayout.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+const styledCustomLayout = withStyles(styles)(CustomLayout)
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -37,4 +56,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default withRouter(connect(null,mapDispatchToProps)(CustomLayout))
+export default withRouter(connect(null,mapDispatchToProps)(styledCustomLayout))

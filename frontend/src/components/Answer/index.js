@@ -14,6 +14,8 @@ import SendIcon from '@material-ui/icons/Send';
 import axios from 'axios'
 import { withStyles } from '@material-ui/core/styles';
 import {Link } from 'react-router-dom'
+import {connect} from 'react-redux'
+
 
 const styles = theme => ({
 
@@ -238,4 +240,13 @@ Answer.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Answer)
+
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+const styledAnswer = withStyles(styles)(Answer)
+
+export default connect(mapStateToProps)(styledAnswer)

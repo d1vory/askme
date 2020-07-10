@@ -91,7 +91,13 @@ class AnswerLikeView(generics.UpdateAPIView):
     serializer_class = AnswerSerializer
     queryset = Answer.objects.all()
 
+    def patch(self, request, *args, **kwargs):
+        print('patch called')
+        return self.partial_update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
+        print('put called')
+        print(request.user)
         return self.partial_update(request, *args, **kwargs)
 
 class AnswersPagination(CursorPagination):
