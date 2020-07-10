@@ -49,7 +49,7 @@ class Header extends Component {
       <AppBar position ="sticky" >
         <Toolbar>
           <div className="logo-holder">
-            <img className="logo-img" alt="logo" src='http://127.0.0.1:8000/static/frontend/2f76090b44e9880e862f08b39fcfe85c.png'/>
+            <img className="logo-img" alt="logo" src='http://127.0.0.1:8000/static/frontend/Webp.net-resizeimage.png'/>
 
           </div>
               <RouterLink className={classes.linkStyle} to="/wall">
