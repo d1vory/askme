@@ -29,7 +29,7 @@ class Question extends React.Component{
         'Authorization' : `Token ${this.props.token}`
       }
     }
-    axios.delete(`http://127.0.0.1:8000/api/questions/${this.props.question.id}/delete/`,config)
+    axios.delete(`api/questions/${this.props.question.id}/delete/`,config)
       .then(res => this.props.handleDelete(this.props.question.id))
       .catch(err => console.log(err))
 

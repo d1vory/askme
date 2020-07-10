@@ -15,7 +15,7 @@ class UserSearch extends React.Component {
 
 
   filter = () => {
-    const url = 'http://127.0.0.1:8000/api/users/search/?search=' + this.state.searchValue
+    const url = 'api/users/search/?search=' + this.state.searchValue
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${this.props.token}`

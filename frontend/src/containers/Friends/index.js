@@ -26,7 +26,7 @@ class Friends extends Component {
   }
 
   fetchFriends= (token) => {
-    const url = 'http://127.0.0.1:8000/api/friends/'
+    const url = 'api/friends/'
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`

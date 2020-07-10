@@ -44,7 +44,7 @@ const AccountDetails = props => {
     });
 
     const fetchValues = () => {
-      let url ='http://127.0.0.1:8000/api/account/info/'
+      let url ='api/account/info/'
       axios.get(url,{
           headers: {
             'Authorization' : `Token ${props.token}`
@@ -120,7 +120,7 @@ const AccountDetails = props => {
           'Content-Type': 'multipart/form-data'
         }
       }
-      axios.patch(`http://127.0.0.1:8000/api/account/settings/update/`,form_data,config)
+      axios.patch(`api/account/settings/update/`,form_data,config)
         .then(res => {
           openInfoBar('Settings updated','success')
           })

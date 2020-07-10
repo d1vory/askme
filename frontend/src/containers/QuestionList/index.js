@@ -25,7 +25,7 @@ class QuestionList extends React.Component{
   }
 
   fetchQuestions= (token) => {
-    const url = 'http://127.0.0.1:8000/api/questions/'
+    const url = 'api/questions/'
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`

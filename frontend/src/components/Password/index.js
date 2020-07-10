@@ -52,7 +52,7 @@ const Password = props => {
           'Content-Type': 'multipart/form-data'
         }
       }
-      axios.post(`http://127.0.0.1:8000/rest-auth/password/change/`,form_data,config)
+      axios.post(`rest-auth/password/change/`,form_data,config)
         .then(res => {
             openInfoBar('Settings updated','success')
           })

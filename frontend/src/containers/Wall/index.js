@@ -13,7 +13,7 @@ class Wall extends Component {
   }
 
   fetchAnswers = (token) => {
-    axios.get('http://127.0.0.1:8000/api/answers/',{
+    axios.get('api/answers/',{
         headers: {
           'Authorization' : `Token ${token}`
         }

@@ -43,7 +43,7 @@ class QuestionForm extends Component {
   }
 
   fetchFriends= (token) => {
-    const url = 'http://127.0.0.1:8000/api/friends/'
+    const url = 'api/friends/'
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`
@@ -84,7 +84,7 @@ class QuestionForm extends Component {
             'Content-Type': 'application/json'
           }
         }
-        axios.post('http://127.0.0.1:8000/api/questions/create/',postData,config)
+        axios.post('api/questions/create/',postData,config)
           .then(res => {this.setState({textValue:''}); this.props.closeElement(); }  )
           .catch(err => console.log(err))
   }
@@ -128,7 +128,7 @@ class QuestionForm extends Component {
           'Content-Type': 'application/json'
         }
       }
-      axios.post('http://127.0.0.1:8000/api/questions/multiple/create/',postData,config)
+      axios.post('api/questions/multiple/create/',postData,config)
         .then(res => {this.setState({textValue:'',openFriends:false}) }  )
         .catch(err => console.log(err))
     }

@@ -19,9 +19,9 @@ class Account extends React.Component {
   fetchAnswers = (token, username) => {
     let url = ''
     if(!username){
-      url = 'http://127.0.0.1:8000/api/account/answers/'
+      url = 'api/account/answers/'
     }else{
-      url = `http://127.0.0.1:8000/api/users/${username}/answers/`
+      url = `api/users/${username}/answers/`
     }
 
     axios.get(url,{
@@ -42,9 +42,9 @@ class Account extends React.Component {
   fetchUserInfo = (token, username) => {
     let url =''
     if(!username){
-      url = 'http://127.0.0.1:8000/api/account/info/'
+      url = 'api/account/info/'
     }else{
-      url = `http://127.0.0.1:8000/api/users/${username}/info/`
+      url = `api/users/${username}/info/`
     }
 
     axios.get(url,{
@@ -63,9 +63,9 @@ class Account extends React.Component {
   fetchUserStats = (token,username) => {
     let url =''
     if(!username){
-      url = 'http://127.0.0.1:8000/api/account/info/stats/'
+      url = 'api/account/info/stats/'
     }else{
-      url = `http://127.0.0.1:8000/api/users/${username}/info/stats/`
+      url = `api/users/${username}/info/stats/`
     }
 
     axios.get(url,{

@@ -63,7 +63,7 @@ class FriendRequestsDrawer extends Component{
 
 
   fetchFriendRequests= (token) => {
-    const url = 'http://127.0.0.1:8000/api/friends/requests/'
+    const url = 'api/friends/requests/'
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`
@@ -98,7 +98,7 @@ class FriendRequestsDrawer extends Component{
       }
     }
     const requestId = this.state.requests[index].id
-    axios.post(`http://127.0.0.1:8000/api/friendship/create/${requestId}/`,{}, config)
+    axios.post(`api/friendship/create/${requestId}/`,{}, config)
       .then(res => {
                     this.removeFromRequests(index);
                     this.props.fetchFriends(this.props.token);
@@ -115,7 +115,7 @@ class FriendRequestsDrawer extends Component{
       }
     }
     const requestId = this.state.requests[index].id
-    axios.post(`http://127.0.0.1:8000/api/friendship/reject/${requestId}/`,{}, config)
+    axios.post(`api/friendship/reject/${requestId}/`,{}, config)
       .then(res => {
                     this.removeFromRequests(index);
                     this.openInfo('Frienship rejected', 'info')

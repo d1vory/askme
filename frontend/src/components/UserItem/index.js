@@ -24,7 +24,7 @@ export default function UserItem(props){
         'Content-Type': 'application/json'
       }
     }
-    axios.post(`http://127.0.0.1:8000/api/friendship/request/create/${props.userId}/`,{}, config)
+    axios.post(`api/friendship/request/create/${props.userId}/`,{}, config)
       .then(res => {
             props.openInfo(res.data.message, 'success')
                     })
@@ -42,7 +42,7 @@ export default function UserItem(props){
         'Content-Type': 'application/json'
       }
     }
-    axios.post(`http://127.0.0.1:8000/api/friendship/delete/${props.userId}/`,{}, config)
+    axios.post(`api/friendship/delete/${props.userId}/`,{}, config)
       .then(res => {
             props.openInfo(res.data.message, 'success');
             props.removeFromFriends(props.index)

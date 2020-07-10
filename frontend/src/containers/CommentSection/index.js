@@ -15,7 +15,7 @@ class CommentSection extends Component{
   }
 
   fetchComments = (token) => {
-    axios.get(`http://127.0.0.1:8000/api/answer/${this.props.answerId}/comments/`,{
+    axios.get(`api/answer/${this.props.answerId}/comments/`,{
         headers: {
           'Authorization' : `Token ${token}`
         }
