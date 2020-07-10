@@ -11,17 +11,23 @@ import {
     Button,
     TextField
 } from '@material-ui/core';
+import axios from 'axios'
+import {connect} from 'react-redux'
+
+
+
 
 const useStyles = makeStyles(() => ({
     root: {}
 }));
 
 const Password = props => {
-    const { className, ...rest } = props;
+    const { className,openInfoBar, ...rest } = props;
 
     const classes = useStyles();
 
     const [values, setValues] = useState({
+        oldPassword: '',
         password: '',
         confirm: ''
     });
@@ -33,23 +39,70 @@ const Password = props => {
         });
     };
 
+    const putChanges = () => {
+      let form_data = new FormData();
+      form_data.append('old_password', values.oldPassword )
+      form_data.append('new_password1', values.password )
+      form_data.append('new_password2' , values.confirm)
+
+
+      const config = {
+        headers: {
+          'Authorization' : `Token ${props.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      axios.post(`rest-auth/password/change/`,form_data,config)
+        .then(res => {
+            openInfoBar('Settings updated','success')
+          })
+        .catch(err =>{
+          //console.log(err.response);
+          let temp = err.response.data
+          if(typeof temp === 'object' && temp !== null){
+            temp = Object.values(temp)
+          }
+          openInfoBar(temp[0], 'error')
+
+        } )
+    }
+
+    const handleSubmit = event => {
+        putChanges();
+    }
+
+
+
+
     return (
         <Card
-            {...rest}
+
             className={clsx(classes.root, className)}
         >
             <form>
                 <CardHeader
-                   // subheader="Змінити пароль"
-                    title="Пароль"
+                    title="Password"
                 />
                 <Divider />
                 <CardContent>
                     <TextField
                         fullWidth
-                        label="Password"
+                        label="Old Password"
+                        name="oldPassword"
+                        autoComplete="Old Password"
+                        onChange={handleChange}
+                        type="password"
+                        value={values.oldPassword}
+                        variant="outlined"
+                    />
+
+                    <TextField
+                        fullWidth
+                        label="New password"
+                        autoComplete="New password"
                         name="password"
                         onChange={handleChange}
+                        style={{ marginTop: '1rem' }}
                         type="password"
                         value={values.password}
                         variant="outlined"
@@ -57,6 +110,7 @@ const Password = props => {
                     <TextField
                         fullWidth
                         label="Confirm password"
+                        autoComplete="Confirm password"
                         name="confirm"
                         onChange={handleChange}
                         style={{ marginTop: '1rem' }}
@@ -70,8 +124,9 @@ const Password = props => {
                     <Button
                         color="primary"
                         variant="outlined"
+                        onClick={handleSubmit}
                     >
-                        Змінити
+                        Change
                     </Button>
                 </CardActions>
             </form>
@@ -83,4 +138,12 @@ Password.propTypes = {
     className: PropTypes.string
 };
 
-export default Password;
+
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+
+export default connect(mapStateToProps)(Password)

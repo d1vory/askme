@@ -5,23 +5,24 @@ import './styles.css'
 import axios from 'axios'
 import {connect} from 'react-redux'
 
-
 class Wall extends Component {
 
   state= {
-    answers: []
+    answers: [],
+    nextUrl:''
   }
 
   fetchAnswers = (token) => {
-    axios.get('http://127.0.0.1:8000/api/answers/',{
+    axios.get('api/answers/',{
         headers: {
           'Authorization' : `Token ${token}`
         }
     }).then(res => {
         this.setState({
-          answers: res.data
+          answers: res.data.results,
+          nextUrl: res.data.next
         });
-        console.log("FETCHED ", res.data)
+        //console.log("FETCHED ", res.data)
       })
   }
 
@@ -38,13 +39,32 @@ class Wall extends Component {
     }
   }
 
+  loadMoreAnswers = ( ) => {
+    if(this.state.nextUrl){
+      axios.get(this.state.nextUrl,{
+          headers: {
+            'Authorization' : `Token ${this.props.token}`
+          }
+      }).then(res => {
+          this.setState({
+            answers: this.state.answers.concat(res.data.results),
+            nextUrl: res.data.next
+          });
+
+        })
+    }
+  }
+
+
+
 
   render(){
     return(
-      <div >
+      <div  >
         <div className="wall">
-          <QuestionForm />
-          <Feed answers={this.state.answers} />
+          <QuestionForm caller="wall"/>
+          <Feed answers={this.state.answers} loadMoreAnswers={this.loadMoreAnswers} />
+
         </div>
       </div>
     )

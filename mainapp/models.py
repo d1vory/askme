@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
+from django.db.models.signals import post_save
 # Create your modes here.
 
 
@@ -25,6 +26,15 @@ class MyUser(models.Model):
     def __str__(self):
         return self.user.username
 
+
+def create_my_user(sender, instance, created, **kwargs):
+
+    if created:
+
+        MyUser.objects.create(user=instance)
+
+post_save.connect(create_my_user, sender=User)
+
 class Question(models.Model):
     """
     Represents a question that was asked for an user
@@ -32,7 +42,7 @@ class Question(models.Model):
 
     question_text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    asker  = models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True, related_name="asker")
+    asker  = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="asker")
     askedUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name="askedUser", default=None)
 
     def __str__(self):
@@ -50,3 +60,12 @@ class Answer(models.Model):
     timestamp = models.DateTimeField(default= timezone.now)
     def __str__(self):
         return self.answer_text
+
+
+class Comment(models.Model):
+    comment_text =  models.TextField()
+    commented_user = models.ForeignKey(User,on_delete= models.CASCADE )
+    answer = models.ForeignKey('Answer',on_delete= models.CASCADE )
+    timestamp = models.DateTimeField(default= timezone.now)
+    def __str__(self):
+        return self.comment_text

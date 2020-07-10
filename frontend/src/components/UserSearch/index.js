@@ -1,10 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Paper, Input,IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchBar from 'material-ui-search-bar'
-import SearchIcon from '@material-ui/icons/Search';
-import Box from "@material-ui/core/Box";
+
+
 import axios from 'axios'
 
 
@@ -17,7 +15,7 @@ class UserSearch extends React.Component {
 
 
   filter = () => {
-    const url = 'http://127.0.0.1:8000/api/users/search/?search=' + this.state.searchValue
+    const url = 'api/users/search/?search=' + this.state.searchValue
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${this.props.token}`
@@ -27,11 +25,11 @@ class UserSearch extends React.Component {
       if(res.data.length > 0 ){
         this.props.changeView(res.data, '', false)
       }else{
-        this.props.changeView(null, 'Nothing found!',false)
+        this.props.changeView([], 'Nothing found!',false)
       }
 
     }).catch(error => {
-      this.props.changeView(null, error,false)
+      this.props.changeView([], error,false)
     })
   }
 
@@ -48,10 +46,10 @@ class UserSearch extends React.Component {
 
   handleSearchRequest = () => {
     console.log(this.state.searchValue.length);
-    if( this.state.searchValue.length > 3 ){
+    if( this.state.searchValue.length >= 3 ){
       this.filter()
     }else{
-      this.props.changeView(null,'nothing found',false)
+      this.props.changeView([],'nothing found',false)
     }
   }
 
@@ -59,7 +57,7 @@ class UserSearch extends React.Component {
     this.setState({
       searchValue:''
     })
-    //this.props.changeView(null,'',true)
+    this.props.changeView([],'',true)
   }
 
   render(){

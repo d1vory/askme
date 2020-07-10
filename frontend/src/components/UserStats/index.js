@@ -1,12 +1,11 @@
 import React from 'react'
-import {Typography,Box,Grid,Avatar, Button,Divider,Paper} from '@material-ui/core'
+import {Typography,Box,Grid,Avatar,Divider,Paper} from '@material-ui/core'
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PeopleIcon from '@material-ui/icons/People';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import axios from 'axios'
-import {connect} from 'react-redux'
+
 
 
 
@@ -34,17 +33,16 @@ class UserStats extends React.Component {
   }
 
   render(){
-    const { classes } = this.props;
-
+    const { classes, stats } = this.props;
     return(
       <Paper>
       <Box p = {2}>
       <Grid container direction="row" alignItems="flex-start" justify="flex-start">
         <Box className={classes.gridFlex}>
-          <Grid   direction="column" justify="center" >
+          <Grid container  direction="column" justify="center" >
             <Avatar className={classes.mediumAvatar}> <ChatBubbleIcon /> </Avatar>
             <Typography align="center">
-              6
+              {stats.answersCount}
             </Typography>
             <Typography align="center">
               Posts
@@ -54,10 +52,10 @@ class UserStats extends React.Component {
 
         <Divider orientation="vertical" variant='middle'/>
         <Box className={classes.gridFlex}>
-          <Grid   direction="column" justify="center" >
+          <Grid  container direction="column" justify="center" >
             <Avatar className={classes.mediumAvatar} > <FavoriteIcon /> </Avatar>
             <Typography align="center">
-              12
+              {stats.likesCount}
             </Typography>
             <Typography align="center">
               Likes
@@ -67,10 +65,10 @@ class UserStats extends React.Component {
 
         <Divider orientation="vertical" variant='middle'/>
         <Box className={classes.gridFlex}>
-          <Grid   direction="column" justify="center" >
+          <Grid container  direction="column" justify="center" >
             <Avatar className={classes.mediumAvatar}> <PeopleIcon /> </Avatar>
             <Typography align="center">
-              3
+              {stats.friendsCount}
             </Typography>
             <Typography align="center">
               Friends

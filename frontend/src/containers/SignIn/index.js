@@ -85,14 +85,23 @@ class SignIn extends React.Component {
     this.setState({isRemember:isRemember})
   }
 
-  handleSubmit = (e) => {
+  componentWillReceiveProps(newProps){
+    if(newProps.error){
+      this.setState({
+        errorMessage:'Invalid username or password'
+      })
+    }else if(newProps.token){
+      this.props.history.push('/wall')
+    }
+
+  }
+
+
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     this.props.onAuth(this.state.username, this.state.password)
 
-    //this.props.history.push('/wall')
-    // it redirects before auth is done
-    // fix it
   }
 
   render() {
@@ -121,7 +130,7 @@ class SignIn extends React.Component {
             <ValidatorForm className={classes.form}
                 ref="form"
                 onSubmit={this.handleSubmit}
-                onError={errors => console.log(errors)}
+                
             >
 
             <TextValidator
@@ -206,7 +215,8 @@ class SignIn extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.loading,
-    error: state.error
+    error: state.error,
+    token:state.token
   }
 }
 

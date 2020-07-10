@@ -9,12 +9,7 @@ const styles = (theme) => ({
         color: theme.palette.common.white,
         position: 'relative',
         display: 'flex',
-        alignItems: 'center',
-        [theme.breakpoints.up('sm')]: {
-            height: `100vh` ,
-            minHeight: 500,
-            maxHeight: 1300,
-        },
+        alignItems: 'center'
     },
     container: {
         marginTop: theme.spacing(3),

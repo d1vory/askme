@@ -1,16 +1,24 @@
 import React from 'react'
-import {Typography,Box,Grid,Avatar, Button} from '@material-ui/core'
+import {Typography,Box,Grid,Avatar} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import UserStats from '../UserStats'
-import axios from 'axios'
-import {connect} from 'react-redux'
+
+
+import CakeIcon from '@material-ui/icons/Cake';
+
 
 const styles = (theme) => ({
   largeAvatar: {
     width: theme.spacing(9),
     height: theme.spacing(9),
   },
+  aboutText:{
+    whiteSpace: 'pre-wrap'
+  },
+  cakeIconStyle:{
+    color:'#AF0D81'
+  }
 });
 
 
@@ -21,7 +29,7 @@ class UserPanel extends React.Component {
 
   render(){
     const { classes } = this.props;
-    
+
     return(
       <Grid container direction="row" justify="space-between">
         <Box>
@@ -43,17 +51,28 @@ class UserPanel extends React.Component {
                 {'@' + this.props.user.username}
               </Typography>
             </Box>
-
-
-            <Grid>
-              <Button variant="outlined" > Add to friends </Button>
-            </Grid>
           </Box>
+
+          <Box mt = {1}>
+            <Grid container display='row'>
+              <CakeIcon className={classes.cakeIconStyle}/>
+              <Typography variant='body1' className={classes.aboutText}>
+                {this.props.user.DateOfBirth}
+              </Typography>
+            </Grid>
+
+            <Box pt={1}>
+              <Typography variant='body1' className={classes.aboutText}>
+                {this.props.user.selfDescription}
+              </Typography>
+            </Box>
+          </Box>
+
 
       </Box>
         </Grid>
     </Box>
-      <UserStats />
+      <UserStats stats={this.props.stats}/>
       </Grid>
     )
   }

@@ -40,6 +40,9 @@ const useStyles = (theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  errorMessage:{
+    whiteSpace: 'pre-wrap'
+  }
 });
 
 class SignUp extends React.Component {
@@ -53,7 +56,8 @@ class SignUp extends React.Component {
       password: '',
       repeatPassword:'',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      errorMessage:''
 
     }
   }
@@ -102,13 +106,35 @@ class SignUp extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.onAuth(this.state.username,this.state.email,this.state.password,this.state.repeatPassword)
-    console.log(this.state)
+    //console.log(this.state)
     //this.props.history.push('/wall')
+  }
+
+  componentWillReceiveProps(newProps){
+    if(newProps.error){
+      let errors = Object.values(newProps.error.response.data)
+      const reducer = (accumulator, currentValue) => accumulator + '\n' + currentValue[0];
+      const str = errors.reduce(reducer)
+
+      //console.log(str);
+      this.setState({
+        errorMessage:  str
+      })
+
+    }else  if(newProps.token){
+      this.props.history.push('/wall')
+    }
+
   }
 
 
   render(){
     const { classes } = this.props;
+    const errorMessage = this.state.errorMessage && ( <Typography className={classes.errorMessage} component="p" color='error' variant="body1">
+      {this.state.errorMessage}
+    </Typography>)
+
+
 
     return (
       <Container component="main" maxWidth="xs">
@@ -137,31 +163,7 @@ class SignUp extends React.Component {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  variant="outlined"
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value = {this.state.firstName}
-                  onChange={this.handleFirstNameChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  value = {this.state.lastName}
-                  onChange={this.handleLastNameChange}
-                />
-              </Grid>
+
               <Grid item xs={12}>
 
                 <TextValidator
@@ -192,7 +194,7 @@ class SignUp extends React.Component {
                     id="password1"
 
                     value={this.state.password}
-                    validators={['matchRegexp:^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,20})$', 'required']}
+                    validators={['matchRegexp:^(?=.*\\d).{4,}$', 'required']}
                     errorMessages={['password is too simple', 'this field is required']}
                 />
               </Grid>
@@ -214,6 +216,9 @@ class SignUp extends React.Component {
               </Grid>
 
             </Grid>
+
+            {errorMessage}
+
             <Button
               type="submit"
               fullWidth
@@ -252,14 +257,15 @@ const wrappedSignUp =  withStyles(useStyles)(SignUp)
 const mapStateToProps = (state) => {
   return {
     loading: state.loading,
-    error: state.error
+    error: state.error,
+    token: state.token
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (username,email,password1,password2) => {
-      console.log("posted values: ",username,email,password1,password2);
+      //console.log("posted values: ",username,email,password1,password2);
       dispatch(actions.authSignUp(username,email,password1,password2))
     }
   }

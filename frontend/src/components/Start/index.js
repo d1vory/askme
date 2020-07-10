@@ -13,6 +13,9 @@ const styles = (theme) => ({
         backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#7fc7d9', // Average color of the background image.
         backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        marginBottom:0,
+        height: '100%'
     },
     button: {
         minWidth: 200,
@@ -50,9 +53,8 @@ function ProductHero(props) {
     const { classes } = props;
 
     return (
-        <ProductHeroLayout backgroundClassName={classes.background}>
-            {/* Increase the network loading priority of the background image. */}
-            <img style={{ display: 'none' }} src={backgroundImage} alt="increase priority" />
+        <ProductHeroLayout  backgroundClassName={classes.background}>
+
             <Typography color="inherit" align="center" variant="h2" marked="center" className={classes.h2}>
                Welcome to AskMe!
             </Typography>

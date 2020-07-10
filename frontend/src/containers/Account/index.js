@@ -1,27 +1,27 @@
 import React from 'react'
-import {Typography,Box,Grid} from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import {Box,Grid} from '@material-ui/core'
+
 import axios from 'axios'
 import {connect} from 'react-redux'
 
 import UserPanel from '../../components/UserPanel'
-import UserStats from '../../components/UserStats'
 import QuestionForm from '../../components/QuestionForm'
 import Feed from '../../components/Feed'
 
 class Account extends React.Component {
   state = {
     answers: [],
-    user: {}
+    user: {},
+    stats:{},
+    nextUrl:''
   }
 
   fetchAnswers = (token, username) => {
     let url = ''
     if(!username){
-      url = 'http://127.0.0.1:8000/api/account/answers/'
+      url = 'api/account/answers/'
     }else{
-      url = `http://127.0.0.1:8000/api/users/${username}/answers/`
+      url = `api/users/${username}/answers/`
     }
 
     axios.get(url,{
@@ -30,9 +30,10 @@ class Account extends React.Component {
         }
     }).then(res => {
 
-        console.log("FETCHED   " ,res.data);
+        //console.log("FETCHED   " ,res.data);
         this.setState({
-          answers: res.data
+          answers: res.data.results,
+          nextUrl: res.data.next
         });
 
       }).catch(error => (console.log(error)))
@@ -41,9 +42,9 @@ class Account extends React.Component {
   fetchUserInfo = (token, username) => {
     let url =''
     if(!username){
-      url = 'http://127.0.0.1:8000/api/account/info/'
+      url = 'api/account/info/'
     }else{
-      url = `http://127.0.0.1:8000/api/users/${username}/info/`
+      url = `api/users/${username}/info/`
     }
 
     axios.get(url,{
@@ -51,7 +52,7 @@ class Account extends React.Component {
           'Authorization' : `Token ${token}`
         }
     }).then(res => {
-        console.log("FETCHED   " ,res.data);
+      //  console.log("FETCHED  INFO:  " ,res.data);
         this.setState({
           user: res.data
         });
@@ -59,6 +60,26 @@ class Account extends React.Component {
       }).catch(error => (console.log(error)))
   }
 
+  fetchUserStats = (token,username) => {
+    let url =''
+    if(!username){
+      url = 'api/account/info/stats/'
+    }else{
+      url = `api/users/${username}/info/stats/`
+    }
+
+    axios.get(url,{
+        headers: {
+          'Authorization' : `Token ${token}`
+        }
+    }).then(res => {
+      //  console.log("FETCHED   " ,res.data);
+        this.setState({
+          stats: res.data
+        });
+
+      }).catch(error => (console.log(error)))
+  }
 
 
   componentWillReceiveProps(newProps){
@@ -66,6 +87,7 @@ class Account extends React.Component {
 
       this.fetchAnswers(newProps.token, newProps.match.params.username)
       this.fetchUserInfo(newProps.token, newProps.match.params.username)
+      this.fetchUserStats(newProps.token, newProps.match.params.username)
     }
 
   }
@@ -74,19 +96,38 @@ class Account extends React.Component {
     if (this.props.token !== null){
       this.fetchAnswers(this.props.token, this.props.match.params.username)
       this.fetchUserInfo(this.props.token, this.props.match.params.username)
+      this.fetchUserStats(this.props.token, this.props.match.params.username)
+    }
+  }
+
+  loadMoreAnswers = ( ) => {
+    console.log('LOAD MORE ANSWERS');
+    if(this.state.nextUrl){
+      axios.get(this.state.nextUrl,{
+          headers: {
+            'Authorization' : `Token ${this.props.token}`
+          }
+      }).then(res => {
+          this.setState({
+            answers: this.state.answers.concat(res.data.results),
+            nextUrl: res.data.next
+          });
+
+        })
     }
   }
 
 
   render(){
+    const firstLastName = this.props.match.params.username ? (this.state.user.first_name + ' ' + this.state.user.last_name) : "yourself"
     return(
       <Grid>
-        <UserPanel user={this.state.user}/>
+        <UserPanel user={this.state.user} stats = {this.state.stats} />
         <Box>
-          <QuestionForm firstLastName="yourself" isFriendPage={false} page="Account" askedUser={this.state.user.pk}   username="d1vory"/>
+          <QuestionForm firstLastName={firstLastName} isFriendPage={false} page="Account" askedUser={this.state.user.pk}   username="d1vory"/>
 
         </Box>
-        <Feed answers = {this.state.answers}/>
+        <Feed answers = {this.state.answers} loadMoreAnswers={this.loadMoreAnswers}/>
       </Grid>
     )
   }

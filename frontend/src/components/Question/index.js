@@ -1,8 +1,7 @@
 import React from 'react'
-import {Card,Grid,Box,CardHeader,Avatar,IconButton,CardContent,Typography,Button} from '@material-ui/core'
+import {Card,Grid,Box,CardHeader,IconButton,CardContent,Typography,Button} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Popup from "reactjs-popup";
@@ -30,19 +29,17 @@ class Question extends React.Component{
         'Authorization' : `Token ${this.props.token}`
       }
     }
-    axios.delete(`http://127.0.0.1:8000/api/questions/${this.props.question.id}/delete/`,config)
+    axios.delete(`api/questions/${this.props.question.id}/delete/`,config)
       .then(res => this.props.handleDelete(this.props.question.id))
       .catch(err => console.log(err))
 
   }
 
   render(){
-    const {whenAsked,question_text} = this.props.question
+    const {question_text} = this.props.question
 
     const { classes } = this.props;
-    const ava = (<Avatar aria-label="user" >
-      <AccountCircleIcon />
-    </Avatar> )
+
     const moreButton = (<IconButton aria-label="more"> <MoreVertIcon /> </IconButton>)
     const deleteQuestionButton = (
       <Button

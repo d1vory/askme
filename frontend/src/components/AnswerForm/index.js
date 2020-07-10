@@ -31,7 +31,7 @@ class AnswerForm extends React.Component {
         'Content-Type': 'application/json'
       }
     }
-    axios.post('http://127.0.0.1:8000/api/answers/create/',postData,config)
+    axios.post('api/answers/create/',postData,config)
       .then(res => {
         this.props.deleteQuestionFromDOM(this.props.question_id)
         this.props.closeElement()})
