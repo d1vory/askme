@@ -189,5 +189,6 @@ MEDIA_URL = '/media/'
 
 ACCOUNT_EMAIL_VERIFICATION ='none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_REQUIRED= True
 django_heroku.settings(locals())
