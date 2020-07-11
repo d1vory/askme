@@ -34,8 +34,8 @@
     "start": "react-scripts start",
     "test-react": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "webpack --mode development ./src/index.js --output ./static/frontend/main.js",
-    "build": "webpack --mode production ./src/index.js --output ./static/frontend/main.js"
+    "dev": "webpack --mode development ./frontend/src/index.js --output ./frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./frontend/src/index.js --output ./frontend/static/frontend/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
