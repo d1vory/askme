@@ -17,12 +17,7 @@ class Account extends React.Component {
   }
 
   fetchAnswers = (token, username) => {
-    let url = ''
-    if(!username){
-      url = 'api/account/answers/'
-    }else{
-      url = `api/users/${username}/answers/`
-    }
+    url = (!username) ? 'api/account/answers/' : `api/users/${username}/answers/`
 
     axios.get(url,{
         headers: {
