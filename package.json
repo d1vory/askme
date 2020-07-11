@@ -6,7 +6,8 @@
     "postinstall": "cd frontend && npm install",
     "start": "react-scripts start",
     "test-react": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build" : " cd frontend && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
