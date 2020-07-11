@@ -31,6 +31,7 @@
     "register-service-worker": "^1.7.1"
   },
   "scripts": {
+    "postinstall": "cd frontend && npm install",
     "start": "react-scripts start",
     "test-react": "react-scripts test",
     "eject": "react-scripts eject",
