@@ -49,7 +49,7 @@ class Header extends Component {
       <AppBar position ="sticky" >
         <Toolbar>
           <div className="logo-holder">
-            <img className="logo-img" alt="logo" src='now-ask-me.herokuapp.com/static/frontend/Webp.net-resizeimage.png'/>
+            <img className="logo-img" alt="logo" src='http://now-ask-me.herokuapp.com/static/frontend/Webp.net-resizeimage.png'/>
 
           </div>
               <RouterLink className={classes.linkStyle} to="/wall">
