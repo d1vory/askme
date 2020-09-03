@@ -32,7 +32,7 @@
     "test-react": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "webpack --mode development ./src/index.js --output ./static/frontend/main.js",
-    "build": "webpack --mode production ./src/index.js --output ./static/frontend/main.js"
+    "build": "webpack --mode development ./src/index.js --output ./static/frontend/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
