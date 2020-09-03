@@ -54,7 +54,7 @@ def AccountInfoStatsView(request,username=None):
     """
         Provides user statistics related to specific user
     """
-
+    #import pdb; pdb.set_trace()
     #if username is passed through url, then send stat about its user
     #else send stat about signed in user
     user = request.user
