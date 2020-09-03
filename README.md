@@ -1,8 +1,7 @@
 # askme
 
- Ask.me is a platform that allows ask and answer questions
- Ask.me is a platform that help people get a better insight on a friend, colligue or classmate. It allows to ask anonymous questions
- to users and read their responses.
+ [Ask.me](https://now-ask-me.herokuapp.com) is a platform that help people get a better insight on a friend, colligue or classmate. It allows to ask questions
+ to users and read their responses, chat with friends, see what they like and stay in touch with them!
  
  ## installation
  
@@ -21,15 +20,11 @@
  ```
  5. install django-cors-headers and django-rest
  ```bash
- pip3 install django-cors-headers
- pip3 install djangorestframework
+ pip3 install requirements.txt
 ```
-6. start react development server
-```bash
-cd frontend
-npm start
+
 ```
-7. start django server
+6. start django server
 ```bash
 python3 manage.py runserver
 ```
