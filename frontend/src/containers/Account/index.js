@@ -18,14 +18,20 @@ class Account extends React.Component {
 
   fetchAnswers = (token, username) => {
     let url = (!username) ? 'api/account/answers/' : `api/users/${username}/answers/`
-    console.log(url);
+    //console.log(url);
+    axios.interceptors.request.use(function (config) {
+      console.log(config)
+      return config
+    }, function (error) {
+      return Promise.reject(error)
+    })
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`
         }
     }).then(res => {
 
-        console.log("FETCHED   " ,res);
+        //console.log("FETCHED   " ,res);
         this.setState({
           answers: res.data.results,
           nextUrl: res.data.next
