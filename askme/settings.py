@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rest_auth.registration',
     "friendship",
+    'storages'
 
 ]
 
@@ -73,7 +74,6 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'askme.urls'
@@ -172,14 +172,39 @@ CORS_ALLOW_METHODS = (
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 #CSRF_COOKIE_NAME = "csrftoken"
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
-#STATICFILES_STORAGE =  'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+#
+# STATIC_URL = '/static/'
+# #STATICFILES_STORAGE =  'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+#
+#
+#
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static'),
+    #os.path.join(BASE_DIR,'frontend/static'),
+]
+
+AWS_ACCESS_KEY_ID = os.getenv('aws_key_id')
+AWS_SECRET_ACCESS_KEY = os.getenv('aws_key')
+AWS_STORAGE_BUCKET_NAME = 'ask-me-static'
+AWS_S3_REGION_NAME = 'eu-west-3'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_LOCATION = 'static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+#MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+DEFAULT_FILE_STORAGE = 'askme.storage_backends.MediaStorage'
+
 
 ACCOUNT_EMAIL_VERIFICATION ='none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
