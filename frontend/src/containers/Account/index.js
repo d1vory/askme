@@ -8,6 +8,11 @@ import UserPanel from '../../components/UserPanel'
 import QuestionForm from '../../components/QuestionForm'
 import Feed from '../../components/Feed'
 
+// // http://127.0.0.1:8000/api/users/maffioznik/info/
+// // http://127.0.0.1:8000/api/users/maffioznik/answers/
+// http://127.0.0.1:8000/user/api/users/maffioznik/answers/
+// http://127.0.0.1:8000/user/maffioznik/api/users/maffioznik/answers/
+
 class Account extends React.Component {
   state = {
     answers: [],
@@ -19,12 +24,12 @@ class Account extends React.Component {
   fetchAnswers = (token, username) => {
     let url = (!username) ? 'api/account/answers/' : `api/users/${username}/answers/`
     //console.log(url);
-    axios.interceptors.request.use(function (config) {
-      console.log(config)
-      return config
-    }, function (error) {
-      return Promise.reject(error)
-    })
+    // axios.interceptors.request.use(function (config) {
+    //   console.log(config)
+    //   return config
+    // }, function (error) {
+    //   return Promise.reject(error)
+    // })
     axios.get(url,{
         headers: {
           'Authorization' : `Token ${token}`

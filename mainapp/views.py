@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.models import User,AnonymousUser
 from django.core.exceptions import ValidationError
 from django.db.models import Sum, Subquery
+from django.http import HttpResponseNotFound
 
 from rest_framework import generics,viewsets, permissions, status, filters,  authentication
 from rest_framework.response import Response
@@ -47,8 +48,11 @@ class AccountInfoView(generics.RetrieveAPIView):
 
     def get_object(self):
         # if it's called with username in url then use that user and signed in user otherwise
-        user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
-        obj = get_object_or_404(User, pk=user.id)
+        try:
+            user  = User.objects.get(username=self.kwargs['username']) if 'username' in self.kwargs else self.request.user
+            obj = get_object_or_404(User, pk=user.id)
+        except User.DoesNotExist:
+            return HttpResponseNotFound('not found')
         return obj
 
 
