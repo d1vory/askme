@@ -1,20 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AnonymousUser
 from django.core.exceptions import ValidationError
 from django.db.models import Sum, Subquery
 
-from rest_framework import generics,viewsets, permissions, status, filters
+from rest_framework import generics,viewsets, permissions, status, filters,  authentication
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.pagination import CursorPagination
+
 
 from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
 from friendship.models import FriendshipRequest,Friend
 
 from .serializers import *
 from .models import MyUser,Question, Answer, Comment
-
+from .utils import TokenAllowAnyAuthentication
 
 
 class AccountSettingsView(generics.UpdateAPIView):
@@ -23,6 +24,7 @@ class AccountSettingsView(generics.UpdateAPIView):
     """
     serializer_class = UserExplicitSerializer
     queryset = User.objects.all()
+
 
     def get_object(self):
         user = self.request.user
@@ -34,13 +36,12 @@ class AccountSettingsView(generics.UpdateAPIView):
         return self.partial_update(request, *args, **kwargs)
 
 
-
 class AccountInfoView(generics.RetrieveAPIView):
     """
         provides basic information about user
     """
     permission_classes = [permissions.AllowAny]
-    authentication_classes = []
+    authentication_classes = [TokenAllowAnyAuthentication]
     serializer_class = UserExplicitSerializer
     queryset = User.objects.all()
 
@@ -52,18 +53,21 @@ class AccountInfoView(generics.RetrieveAPIView):
 
 
 @api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
+@permission_classes([permissions.AllowAny])
+@authentication_classes([TokenAllowAnyAuthentication])
 def AccountInfoStatsView(request,username=None):
     """
         Provides user statistics related to specific user
     """
-    #import pdb; pdb.set_trace()
+
     #if username is passed through url, then send stat about its user
     #else send stat about signed in user
     user = request.user
     if username is not None:
         user = User.objects.get(username=username)
+
+    if isinstance(user, AnonymousUser):
+        return Response(data={},status = status.HTTP_400_BAD_REQUEST)
 
     #questions related to specific user
     questions = Question.objects.filter(askedUser_id = user.id)
@@ -104,18 +108,19 @@ class AnswerLikeView(generics.UpdateAPIView):
         print(request.user)
         return self.partial_update(request, *args, **kwargs)
 
+
 class AnswersPagination(CursorPagination):
     page_size= 10
     page_size_query_param = 'page_size'
     ordering = '-timestamp'
+
 
 class AnswersAccountListView(generics.ListAPIView):
     """
         Provides queryset of all answers that answered specific user
     """
     permission_classes = [permissions.AllowAny]
-    authentication_classes = []
-
+    authentication_classes = [TokenAllowAnyAuthentication]
     serializer_class = AnswerSerializer
     pagination_class = AnswersPagination
 
