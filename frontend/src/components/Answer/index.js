@@ -93,37 +93,45 @@ class Answer extends Component {
   }
 
   handleLikeButton = () => {
-    if(this.state.isDisliked){
-      this.handleDislikeButton()
-    }
-    if(!this.state.isLiked){
-      this.fetchLike(1)
-      this.setState({
-        isLiked:true
-      })
+    if(this.props.token){
+      if(this.state.isDisliked){
+        this.handleDislikeButton()
+      }
+      if(!this.state.isLiked){
+        this.fetchLike(1)
+        this.setState({
+          isLiked:true
+        })
+      }else{
+        this.fetchLike(-1)
+        this.setState({
+          isLiked:false
+        })
+      }
     }else{
-      this.fetchLike(-1)
-      this.setState({
-        isLiked:false
-      })
+      this.props.openInfo('Sign in to be able to like answers','error' )
     }
 
   }
 
   handleDislikeButton = () => {
-    if(this.state.isLiked){
-      this.handleLikeButton()
-    }
-    if(!this.state.isDisliked){
-      this.fetchDislike(1)
-      this.setState({
-        isDisliked:true
-      })
+    if(this.props.token){
+      if(this.state.isLiked){
+        this.handleLikeButton()
+      }
+      if(!this.state.isDisliked){
+        this.fetchDislike(1)
+        this.setState({
+          isDisliked:true
+        })
+      }else{
+        this.fetchDislike(-1)
+        this.setState({
+          isDisliked:false
+        })
+      }
     }else{
-      this.fetchDislike(-1)
-      this.setState({
-        isDisliked:false
-      })
+      this.props.openInfo('Sign in to be able to dislike answers','error' )
     }
 
   }
@@ -152,7 +160,7 @@ class Answer extends Component {
         if(this.state.isCommentsOpen){
           this.updateWithNewComment(true)
         }
-      }).catch(err => console.log(err.response.data))
+      }).catch(err => this.props.openInfo('Sign in to be able to write comments','error' ))
 
   }
 
