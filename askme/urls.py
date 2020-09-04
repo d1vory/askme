@@ -27,6 +27,8 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
 
     path('api/',include('mainapp.urls')),
+
+    #this is the only way to display user accounts properly
     path('user/<username>/api/',include('mainapp.urls'))
 
 ]

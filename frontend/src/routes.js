@@ -41,12 +41,13 @@ export  const BaseRouter = () => (
     <Route exact path="/" component={Start} />
     <Route path="/signin" component={SignIn} />
     <Route path="/signup" component={SignUp} />
+    <Route path= '/user/:username/' component={Account}/>
     <PrivateRoute path = '/wall' component={Wall}/>
     <PrivateRoute path = '/questions' component={QuestionList}/>
     <PrivateRoute path = '/settings' component={Settings}/>
     <PrivateRoute  path= '/friends' component={Friends}/>
     <PrivateRoute path= '/account' component={Account}/>
-    <PrivateRoute path= '/user/:username/' component={Account}/>
+
   </Hoc>
 );
 

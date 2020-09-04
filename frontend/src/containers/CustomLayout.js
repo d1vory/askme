@@ -24,7 +24,10 @@ const styles = theme => ({
 class CustomLayout extends React.Component{
   render(){
     const { classes } = this.props;
-    const header = this.props.isAuthenticated && (<Header isAuthenticated = {this.props.isAuthenticated}  logoutFunc = {this.props.logout}> </Header>)
+
+
+    const header = (this.props.isAuthenticated  || /\/user\/\w+\/?/.test(this.props.location.pathname)) &&
+    (<Header isAuthenticated = {this.props.isAuthenticated}  logoutFunc = {this.props.logout}> </Header>)
     return(
 
 

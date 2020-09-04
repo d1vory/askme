@@ -181,7 +181,7 @@ class QuestionForm extends Component {
 
               <Grid  container direction="row" justify="space-between">
 
-                  <FormControlLabel  control={<Switch checked= {this.state.toggleValue} onChange={this.handleToggle} />}
+                  <FormControlLabel  control={<Switch disabled={!Boolean(this.props.token)} checked= {this.state.toggleValue} onChange={this.handleToggle} />}
                     label="Anonymous question"
                   />
 

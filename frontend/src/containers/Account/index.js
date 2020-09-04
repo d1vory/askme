@@ -94,11 +94,11 @@ class Account extends React.Component {
   }
 
   componentDidMount(){
-    if (this.props.token !== null){
+    //if (this.props.token !== null){
       this.fetchAnswers(this.props.token, this.props.match.params.username)
       this.fetchUserInfo(this.props.token, this.props.match.params.username)
       this.fetchUserStats(this.props.token, this.props.match.params.username)
-    }
+    //}
   }
 
   loadMoreAnswers = ( ) => {

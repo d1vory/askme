@@ -6,7 +6,7 @@ from django.db.models import Sum, Subquery
 
 from rest_framework import generics,viewsets, permissions, status, filters
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.pagination import CursorPagination
 
 from friendship.exceptions import AlreadyExistsError, AlreadyFriendsError
@@ -39,6 +39,8 @@ class AccountInfoView(generics.RetrieveAPIView):
     """
         provides basic information about user
     """
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
     serializer_class = UserExplicitSerializer
     queryset = User.objects.all()
 
@@ -50,6 +52,8 @@ class AccountInfoView(generics.RetrieveAPIView):
 
 
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def AccountInfoStatsView(request,username=None):
     """
         Provides user statistics related to specific user
@@ -109,6 +113,8 @@ class AnswersAccountListView(generics.ListAPIView):
     """
         Provides queryset of all answers that answered specific user
     """
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
 
     serializer_class = AnswerSerializer
     pagination_class = AnswersPagination
@@ -177,7 +183,7 @@ class MultipleQuestionsCreateView(generics.CreateAPIView):
     """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+
 
     def create(self,request, *args, **kwargs ):
         user = self.request.user
@@ -204,7 +210,8 @@ class QuestionCreateView(generics.CreateAPIView):
     """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
 
     def create(self,request, *args, **kwargs):
         user = request.user
