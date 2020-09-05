@@ -28,12 +28,9 @@ urlpatterns = [
 
     path('api/',include('mainapp.urls')),
 
-    #this is the only way to display user accounts properly
-    path('user/<username>/api/',include('mainapp.urls'))
-
 ]
 
-#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
 
 urlpatterns += [path('',include('frontend.urls'))]

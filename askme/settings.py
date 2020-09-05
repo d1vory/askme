@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import django_heroku
 import os
 
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -173,41 +175,51 @@ CORS_ALLOW_METHODS = (
 
 #CSRF_COOKIE_NAME = "csrftoken"
 #
-# STATIC_URL = '/static/'
+#
 # #STATICFILES_STORAGE =  'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 #
 #
 #
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_URL = '/media/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static'),
-    #os.path.join(BASE_DIR,'frontend/static'),
-]
+# STATIC_URL = '/static/'
+#
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR,'static'),
+#     os.path.join(BASE_DIR,'frontend/static'),
+# ]
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AWS_ACCESS_KEY_ID = os.getenv('aws_key_id')
 AWS_SECRET_ACCESS_KEY = os.getenv('aws_key')
 AWS_STORAGE_BUCKET_NAME = 'ask-me-static'
-AWS_S3_REGION_NAME = 'eu-west-3'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_DEFAULT_ACL = 'public-read'
 
+AWS_S3_REGION_NAME = 'eu-west-3'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
 AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-#MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+
+STATICFILES_STORAGE = 'askme.storage_backends.StaticStorage'
 DEFAULT_FILE_STORAGE = 'askme.storage_backends.MediaStorage'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR,'frontend/static'),
+]
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ACCOUNT_EMAIL_VERIFICATION ='none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_REQUIRED= True
-django_heroku.settings(locals())
+django_heroku.settings(locals(), staticfiles=False)

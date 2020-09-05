@@ -98,7 +98,7 @@ class Header extends Component {
       <AppBar position ="sticky" >
         <Toolbar>
           <div className="logo-holder">
-            <img className="logo-img" alt="logo" src='https://now-ask-me.herokuapp.com/static/frontend/Webp.net-resizeimage.png'/>
+            <img className="logo-img" alt="logo" src='https://ask-me-static.s3.eu-west-3.amazonaws.com/static/frontend/Webp.net-resizeimage.png'/>
           </div>
 
           {items}
